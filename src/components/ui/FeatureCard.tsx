@@ -19,7 +19,7 @@ const FeatureCard = ({
   return (
     <div
       className={cn(
-        "group glass-card rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px]",
+        "group glass-card rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] cursor-pointer",
         className
       )}
       {...props}
