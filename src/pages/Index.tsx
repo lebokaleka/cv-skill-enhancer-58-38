@@ -84,9 +84,9 @@ const Index = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/20 z-0" />
-        <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-primary/5 to-transparent z-0" />
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden bg-[#ECECEC]">
+        <div className="absolute inset-0 z-0" />
+        <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-[#ECECEC] to-transparent z-0" />
         
         <div className="app-container relative z-10">
           <div className={`max-w-3xl mx-auto text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -138,7 +138,7 @@ const Index = () => {
       </section>
       
       {/* Benefits Section */}
-      <section className="py-16 md:py-24 bg-secondary/30 relative">
+      <section className="py-16 md:py-24 bg-[#D9D9D9] relative">
         <div className="app-container">
           <div className="text-center mb-16">
             <h2 className="mb-4">Why Choose Our Platform</h2>
@@ -164,8 +164,8 @@ const Index = () => {
       </section>
       
       {/* CTA Section */}
-      <section className="py-20 md:py-32 relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-background z-0" />
+      <section className="py-20 md:py-32 relative bg-[#ECECEC]">
+        <div className="absolute inset-0 z-0" />
         
         <div className="app-container relative z-10">
           <div className="max-w-3xl mx-auto text-center">
