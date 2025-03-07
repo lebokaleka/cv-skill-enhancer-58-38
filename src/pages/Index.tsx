@@ -164,7 +164,7 @@ const Index = () => {
       </section>
       
       {/* CTA Section */}
-      <section className="py-20 md:py-32 relative bg-[#ECECEC]">
+      <section className="py-20 md:py-32 relative bg-background">
         <div className="absolute inset-0 z-0" />
         
         <div className="app-container relative z-10">
