@@ -138,7 +138,7 @@ const Index = () => {
       </section>
       
       {/* Benefits Section */}
-      <section className="py-16 md:py-24 bg-[#D9D9D9] relative">
+      <section className="py-16 md:py-24 bg-[#ECECEC] relative">
         <div className="app-container">
           <div className="text-center mb-16">
             <h2 className="mb-4">Why Choose Our Platform</h2>
