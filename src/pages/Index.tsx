@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -82,8 +83,8 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Hero Section - Updated background to match middle section */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden bg-secondary/30">
+      {/* Hero Section */}
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden">
         
         <div className="app-container relative z-10">
           <div className={`max-w-3xl mx-auto text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -105,7 +106,7 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="absolute -bottom-16 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-10" />
+        <div className="absolute -bottom-16 left-0 right-0 h-24 bg-gradient-to-t from-secondary/30 to-transparent z-10" />
       </section>
       
       {/* Features Section */}
@@ -135,7 +136,7 @@ const Index = () => {
       </section>
       
       {/* Benefits Section */}
-      <section className="py-16 md:py-24 bg-secondary/30 relative">
+      <section className="py-16 md:py-24 relative">
         <div className="app-container">
           <div className="text-center mb-16">
             <h2 className="mb-4">Why Choose Our Platform</h2>
@@ -160,8 +161,8 @@ const Index = () => {
         </div>
       </section>
       
-      {/* CTA Section - Updated background to match middle section */}
-      <section className="py-20 md:py-32 relative bg-secondary/30">
+      {/* CTA Section */}
+      <section className="py-20 md:py-32 relative">
         <div className="app-container relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Ready to Transform Your Job Search?</h2>
