@@ -53,8 +53,8 @@ const Index = () => {
 
   const animateCount = () => {
     const target = 50000;
-    // Reduced duration from 2000ms to 1000ms to make it twice as fast
-    const duration = 1000;
+    // Changed duration from 1000ms to 1500ms as requested
+    const duration = 1500;
     const step = 30;
     let current = 0;
     const increment = target / (duration / step);
