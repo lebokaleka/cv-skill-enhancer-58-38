@@ -1,9 +1,10 @@
+
 import { Link } from 'react-router-dom';
 import { Github, Twitter, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border bg-[#D9D9D9]">
+    <footer className="border-t border-border bg-[#ECECEC]">
       <div className="app-container py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
