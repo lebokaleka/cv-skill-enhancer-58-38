@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -17,7 +16,8 @@ import {
   CheckCircle,
   Trophy,
   Target,
-  Sparkles
+  Sparkles,
+  PlayCircle
 } from 'lucide-react';
 
 const Index = () => {
@@ -27,12 +27,10 @@ const Index = () => {
   const userCountRef = useRef(null);
   
   useEffect(() => {
-    // Add a slight delay for the animation
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 200);
 
-    // Intersection Observer for counting animation
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting) {
@@ -56,7 +54,6 @@ const Index = () => {
 
   const animateCount = () => {
     const target = 50000;
-    // Changed duration from 1000ms to 1500ms as requested
     const duration = 1500;
     const step = 30;
     let current = 0;
@@ -126,7 +123,6 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Hero Section */}
       <section className="pt-32 pb-32 md:pt-40 md:pb-48 relative overflow-hidden bg-[#ECECEC]">
         <div className="absolute inset-0 z-0" />
         <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-[#ECECEC] to-transparent z-0" />
@@ -170,7 +166,6 @@ const Index = () => {
         <div className="absolute -bottom-16 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-10" />
       </section>
       
-      {/* Features Section */}
       <section className="py-16 md:py-24 relative">
         <div className="app-container">
           <div className="text-center mb-16">
@@ -196,7 +191,6 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Benefits Section */}
       <section className="py-20 md:py-32 bg-[#ECECEC] relative">
         <div className="app-container">
           <div className="text-center mb-16">
@@ -222,7 +216,6 @@ const Index = () => {
         </div>
       </section>
       
-      {/* CTA Section */}
       <section className="py-20 md:py-32 relative bg-background">
         <div className="absolute inset-0 z-0" />
         
