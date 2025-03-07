@@ -25,7 +25,7 @@ const FeatureCard = ({
       {...props}
     >
       <div className="flex flex-col h-full">
-        <div className="rounded-full p-3 w-12 h-12 flex items-center justify-center bg-primary/10 text-primary mb-5 transition-all duration-300 group-hover:bg-primary group-hover:text-white">
+        <div className="rounded-full p-3 w-12 h-12 flex items-center justify-center bg-accent/10 text-accent mb-5 transition-all duration-300 group-hover:bg-accent group-hover:text-white">
           {icon}
         </div>
         <h3 className="text-xl font-medium mb-2">{title}</h3>
