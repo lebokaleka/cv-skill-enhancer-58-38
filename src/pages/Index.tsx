@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import FeatureCard from "@/components/ui/FeatureCard";
@@ -13,21 +13,60 @@ import {
   MessageSquare,
   BarChart,
   Award,
-  Zap
+  Zap,
+  PlayCircle
 } from 'lucide-react';
 
 const Index = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
-
+  const [userCount, setUserCount] = useState(0);
+  const userCountRef = useRef(null);
+  
   useEffect(() => {
     // Add a slight delay for the animation
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 200);
 
-    return () => clearTimeout(timer);
+    // Intersection Observer for counting animation
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        animateCount();
+      }
+    }, {
+      threshold: 0.5
+    });
+
+    if (userCountRef.current) {
+      observer.observe(userCountRef.current);
+    }
+
+    return () => {
+      clearTimeout(timer);
+      if (userCountRef.current) {
+        observer.unobserve(userCountRef.current);
+      }
+    };
   }, []);
+
+  const animateCount = () => {
+    const target = 50000;
+    const duration = 2000;
+    const step = 30;
+    let current = 0;
+    const increment = target / (duration / step);
+    
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        clearInterval(timer);
+        current = target;
+      }
+      setUserCount(Math.floor(current));
+    }, step);
+  };
 
   const features = [
     {
@@ -84,26 +123,42 @@ const Index = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden bg-[#ECECEC]">
+      <section className="pt-32 pb-32 md:pt-40 md:pb-48 relative overflow-hidden bg-[#ECECEC]">
         <div className="absolute inset-0 z-0" />
         <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-[#ECECEC] to-transparent z-0" />
         
         <div className="app-container relative z-10">
           <div className={`max-w-3xl mx-auto text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h1 className="mb-6 leading-tight">
+            <h1 className="mb-8 leading-tight">
               Land Your Dream Job with
               <span className="text-primary"> AI-Powered</span> Career Coaching
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
               Optimize your CV, prepare for interviews, and get personalized feedback to make your application stand out from the competition.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="px-8 py-6 text-md" onClick={() => navigate('/cv-scoring')}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+              <Button 
+                size="lg" 
+                className="px-8 py-7 text-lg bg-primary hover:bg-[#4A235A] transition-colors" 
+                onClick={() => navigate('/cv-scoring')}
+              >
                 Analyze My CV
               </Button>
-              <Button size="lg" variant="outline" className="px-8 py-6 text-md" onClick={() => navigate('/job-matching')}>
-                Match to Job Description
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="px-8 py-7 text-lg border-primary text-primary hover:bg-primary/10" 
+                onClick={() => navigate('/job-matching')}
+              >
+                <PlayCircle className="mr-2" size={20} />
+                See How It Works
               </Button>
+            </div>
+            
+            <div ref={userCountRef} className="mt-16 animate-fade-in">
+              <p className="text-lg text-muted-foreground">
+                Trusted by over <span className="text-primary text-3xl font-bold">{userCount.toLocaleString()}</span> job seekers worldwide to land their dream job.
+              </p>
             </div>
           </div>
         </div>
