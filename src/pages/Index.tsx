@@ -14,7 +14,10 @@ import {
   BarChart,
   Award,
   Zap,
-  PlayCircle
+  CheckCircle,
+  Trophy,
+  Target,
+  Sparkles
 } from 'lucide-react';
 
 const Index = () => {
@@ -98,24 +101,24 @@ const Index = () => {
 
   const benefits = [
     {
-      icon: <BarChart size={20} />,
-      title: "Increase interview success",
-      description: "Our users see a 3x higher callback rate from recruiters after optimizing with our platform."
+      icon: <Trophy size={24} className="text-accent" />,
+      title: "3X More Interview Callbacks",
+      description: "Our users experience a dramatic 300% increase in interview invitations after optimizing their applications with our AI-driven platform."
     },
     {
-      icon: <Award size={20} />,
-      title: "Industry-specific insights",
-      description: "Receive tailored advice based on your industry, experience level, and career goals."
+      icon: <Target size={24} className="text-accent" />,
+      title: "Precision-Tailored Industry Insights",
+      description: "Receive expert guidance perfectly matched to your specific industry, experience level, and career aspirations for maximum relevance."
     },
     {
-      icon: <Zap size={20} />,
-      title: "Faster application process",
-      description: "Save hours on job applications with AI-powered workflows to refine your materials."
+      icon: <Sparkles size={24} className="text-accent" />,
+      title: "Slash Application Time by 65%",
+      description: "Transform your job search efficiency with our AI-powered workflows that drastically cut the time needed to perfect your application materials."
     },
     {
-      icon: <MessageSquare size={20} />,
-      title: "Confidence building",
-      description: "Build confidence through practice and feedback before your real interviews."
+      icon: <CheckCircle size={24} className="text-accent" />,
+      title: "Master Interview Performance",
+      description: "Enter every interview with confidence through strategic practice sessions and personalized feedback that prepares you to impress any hiring manager."
     }
   ];
 
@@ -194,23 +197,23 @@ const Index = () => {
       </section>
       
       {/* Benefits Section */}
-      <section className="py-16 md:py-24 bg-[#ECECEC] relative">
+      <section className="py-20 md:py-32 bg-[#ECECEC] relative">
         <div className="app-container">
           <div className="text-center mb-16">
-            <h2 className="mb-4">Why Choose Our Platform</h2>
+            <h2 className="mb-4">Why Our Platform Delivers Results</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              We've helped thousands of job seekers land their dream roles with our AI-powered tools.
+              Join thousands of professionals who have transformed their career trajectory with our cutting-edge AI technology.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {benefits.map((benefit, index) => (
-              <div key={index} className="flex gap-4 animate-fade-in" style={{ animationDelay: `${index * 150}ms` }}>
-                <div className="rounded-full p-3 w-12 h-12 flex items-center justify-center bg-primary/10 text-primary shrink-0">
+              <div key={index} className="flex gap-6 group bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 150}ms` }}>
+                <div className="rounded-full p-4 w-16 h-16 flex items-center justify-center bg-primary/10 text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                   {benefit.icon}
                 </div>
                 <div>
-                  <h3 className="text-xl font-medium mb-2">{benefit.title}</h3>
+                  <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">{benefit.title}</h3>
                   <p className="text-muted-foreground">{benefit.description}</p>
                 </div>
               </div>
