@@ -68,7 +68,10 @@ export default {
 				'teal': '#1ABC9C',
 				'light-gray': '#ECF0F1',
 				'charcoal': '#2C3E50',
-				'medium-gray': '#95A5A6'
+				'medium-gray': '#95A5A6',
+				'eggplant-purple': '#4A235A',
+				'regal-plum': '#6C3483',
+				'muted-gold': '#D4AC0D'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
