@@ -112,7 +112,7 @@ const Index = () => {
       </section>
       
       {/* Features Section */}
-      <section className="py-16 md:py-24 relative">
+      <section className="py-16 md:py-24 relative bg-[#ECECEC]">
         <div className="app-container">
           <div className="text-center mb-16">
             <h2 className="mb-4">Optimize Every Step of Your Job Search</h2>
