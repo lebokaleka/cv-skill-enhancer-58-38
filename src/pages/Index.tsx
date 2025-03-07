@@ -98,22 +98,22 @@ const Index = () => {
 
   const benefits = [
     {
-      icon: <BarChart size={20} />,
+      icon: <BarChart size={25} className="text-primary" />, // Increased size by 25%
       title: "Increase interview success",
       description: "Our users see a 3x higher callback rate from recruiters after optimizing with our platform."
     },
     {
-      icon: <Award size={20} />,
+      icon: <Award size={25} className="text-primary" />, // Increased size by 25%
       title: "Industry-specific insights",
       description: "Receive tailored advice based on your industry, experience level, and career goals."
     },
     {
-      icon: <Zap size={20} />,
+      icon: <Zap size={25} className="text-primary" />, // Increased size by 25%
       title: "Faster application process",
       description: "Save hours on job applications with AI-powered workflows to refine your materials."
     },
     {
-      icon: <MessageSquare size={20} />,
+      icon: <MessageSquare size={25} className="text-primary" />, // Increased size by 25%
       title: "Confidence building",
       description: "Build confidence through practice and feedback before your real interviews."
     }
@@ -205,13 +205,17 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {benefits.map((benefit, index) => (
-              <div key={index} className="flex gap-4 animate-fade-in" style={{ animationDelay: `${index * 150}ms` }}>
-                <div className="rounded-full p-3 w-12 h-12 flex items-center justify-center bg-primary/10 text-primary shrink-0">
+              <div 
+                key={index} 
+                className="flex gap-4 animate-fade-in group p-4 rounded-lg transition-all duration-300 hover:bg-white/50" 
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <div className="rounded-full p-3 w-14 h-14 flex items-center justify-center bg-primary/10 text-primary shrink-0 transition-all duration-300 group-hover:bg-primary/20">
                   {benefit.icon}
                 </div>
-                <div>
-                  <h3 className="text-xl font-medium mb-2">{benefit.title}</h3>
-                  <p className="text-muted-foreground">{benefit.description}</p>
+                <div className="transition-all duration-300">
+                  <h3 className="text-xl font-medium mb-2 group-hover:text-primary transition-colors duration-300">{benefit.title}</h3>
+                  <p className="text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">{benefit.description}</p>
                 </div>
               </div>
             ))}
