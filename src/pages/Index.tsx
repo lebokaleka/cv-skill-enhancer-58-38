@@ -53,7 +53,8 @@ const Index = () => {
 
   const animateCount = () => {
     const target = 50000;
-    const duration = 2000;
+    // Reduced duration from 2000ms to 1000ms to make it twice as fast
+    const duration = 1000;
     const step = 30;
     let current = 0;
     const increment = target / (duration / step);
@@ -131,7 +132,7 @@ const Index = () => {
           <div className={`max-w-3xl mx-auto text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h1 className="mb-8 leading-tight">
               Land Your Dream Job with
-              <span className="text-primary"> AI-Powered</span> Career Coaching
+              <span className="text-primary text-[110%] md:text-[115%] lg:text-[120%] font-bold"> AI-Powered</span> Career Coaching
             </h1>
             <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
               Optimize your CV, prepare for interviews, and get personalized feedback to make your application stand out from the competition.
