@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -82,9 +83,10 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Hero Section - Updated background */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden bg-[#F5F5F5]">
-        {/* Removed gradient background */}
+      {/* Hero Section */}
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/20 z-0" />
+        <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-primary/5 to-transparent z-0" />
         
         <div className="app-container relative z-10">
           <div className={`max-w-3xl mx-auto text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
