@@ -82,9 +82,8 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Hero Section - Updated background */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden bg-[#F5F5F5]">
-        {/* Removed gradient background */}
+      {/* Hero Section - Updated background to match middle section */}
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative overflow-hidden bg-secondary/30">
         
         <div className="app-container relative z-10">
           <div className={`max-w-3xl mx-auto text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -161,10 +160,8 @@ const Index = () => {
         </div>
       </section>
       
-      {/* CTA Section */}
-      <section className="py-20 md:py-32 relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-background z-0" />
-        
+      {/* CTA Section - Updated background to match middle section */}
+      <section className="py-20 md:py-32 relative bg-secondary/30">
         <div className="app-container relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Ready to Transform Your Job Search?</h2>
