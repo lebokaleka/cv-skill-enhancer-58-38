@@ -112,9 +112,19 @@
     background-color: rgba(70, 35, 92, 0.8) !important;
   }
   
-  /* Ensure tab triggers have solid backgrounds when active */
+  /* Style for tab triggers */
+  [data-radix-collection-item] {
+    background-color: rgba(70, 35, 92, 0.1) !important;
+  }
+  
   [data-radix-collection-item][data-state="active"] {
+    background-color: #46235C !important;
     opacity: 1 !important;
     isolation: isolate;
+  }
+  
+  /* Style for tabs list container */
+  [role="tablist"] {
+    background-color: rgba(70, 35, 92, 0.1) !important;
   }
 }
