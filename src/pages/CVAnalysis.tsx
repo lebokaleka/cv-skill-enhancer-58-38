@@ -162,7 +162,7 @@ const CVAnalysis = () => {
               <Card className="shadow-md overflow-hidden border">
                 <div className="pt-6 px-6">
                   <Tabs defaultValue="upload" className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
-                    <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden">
+                    <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden bg-[#897497]/20">
                       <TabsTrigger 
                         value="upload" 
                         className="data-[state=active]:bg-[#897497] data-[state=active]:text-white"
