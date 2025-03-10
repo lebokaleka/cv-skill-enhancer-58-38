@@ -99,6 +99,19 @@
     backdrop-filter: none;
   }
   
+  /* Create interactive button states with opacity variations */
+  .bg-\[\#46235C\] {
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .bg-\[\#46235C\]:hover {
+    background-color: rgba(70, 35, 92, 0.9) !important;
+  }
+  
+  .bg-\[\#46235C\]:active {
+    background-color: rgba(70, 35, 92, 0.8) !important;
+  }
+  
   /* Ensure tab triggers have solid backgrounds when active */
   [data-radix-collection-item][data-state="active"] {
     opacity: 1 !important;
