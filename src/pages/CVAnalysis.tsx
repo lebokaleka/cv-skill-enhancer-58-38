@@ -162,16 +162,16 @@ const CVAnalysis = () => {
               <Card className="shadow-md overflow-hidden border">
                 <div className="pt-6 px-6">
                   <Tabs defaultValue="upload" className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
-                    <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden bg-[#897497]/20">
+                    <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden">
                       <TabsTrigger 
                         value="upload" 
-                        className="data-[state=active]:bg-[#897497] data-[state=active]:text-white"
+                        className="data-[state=active]:bg-[#897497] data-[state=active]:text-white bg-gray-100 dark:bg-gray-800"
                       >
                         Upload File
                       </TabsTrigger>
                       <TabsTrigger 
                         value="paste" 
-                        className="data-[state=active]:bg-[#897497] data-[state=active]:text-white"
+                        className="data-[state=active]:bg-[#897497] data-[state=active]:text-white bg-gray-100 dark:bg-gray-800"
                       >
                         Paste Text
                       </TabsTrigger>
@@ -237,11 +237,11 @@ const CVAnalysis = () => {
 
                   <div className="flex justify-end my-6">
                     <Button
-                      className="rounded-full px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/90 text-white gap-2"
+                      className="rounded-md px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/80 text-white"
                       onClick={handleCVUpload}
                       disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file))}
                     >
-                      Analyze CV <ArrowRight size={16} />
+                      Analyze CV
                     </Button>
                   </div>
                 </div>
