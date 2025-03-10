@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -232,7 +233,7 @@ const CVAnalysis = () => {
 
                   <div className="flex justify-end my-6">
                     <Button
-                      className="rounded-full px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/80 text-white"
+                      className="rounded-full px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/90 text-white"
                       onClick={handleCVUpload}
                       disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file))}
                     >
