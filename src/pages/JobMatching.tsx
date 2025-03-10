@@ -69,18 +69,20 @@ const JobMatching = () => {
           </div>
 
           {!matchResult && (
-            <JobMatchingForm 
-              onAnalyze={handleAnalyze} 
-              isAnalyzing={isAnalyzing} 
-            />
+            <div className="animate-scale-in">
+              <JobMatchingForm 
+                onAnalyze={handleAnalyze} 
+                isAnalyzing={isAnalyzing} 
+              />
+            </div>
           )}
 
           {matchResult && (
             <div className="space-y-8">
-              <MatchScoreCard matchResult={matchResult} />
-              <DocumentComparisonCard matchResult={matchResult} />
-              <SuggestionsCard matchResult={matchResult} />
-              <ResultActions onNewComparison={handleNewComparison} />
+              <MatchScoreCard matchResult={matchResult} className="animate-scale-in" />
+              <DocumentComparisonCard matchResult={matchResult} className="animate-scale-in" style={{ animationDelay: '150ms' }} />
+              <SuggestionsCard matchResult={matchResult} className="animate-scale-in" style={{ animationDelay: '300ms' }} />
+              <ResultActions onNewComparison={handleNewComparison} className="animate-fade-in" style={{ animationDelay: '450ms' }} />
             </div>
           )}
         </div>
