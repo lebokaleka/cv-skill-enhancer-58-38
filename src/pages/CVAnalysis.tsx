@@ -1,13 +1,12 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertCircle, CheckCircle, FileText, AlertTriangle, Upload, Check, X, FileUp } from 'lucide-react';
+import { AlertCircle, CheckCircle, FileText, AlertTriangle, Upload, Check, X, FileUp, ArrowRight } from 'lucide-react';
 
 interface CVScoreData {
   overallScore: number;
@@ -144,81 +143,57 @@ const CVAnalysis = () => {
     return "bg-red-500";
   };
 
-  const getUploadStateIcon = () => {
-    switch (uploadState) {
-      case 'loading':
-        return <FileUp size={30} className="animate-bounce" />;
-      case 'success':
-        return <Check size={30} className="text-green-500" />;
-      case 'error':
-        return <X size={30} className="text-red-500" />;
-      default:
-        return <Upload size={30} />;
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
       <main className="flex-grow pt-24 pb-16">
-        <div className="app-container">
-          <div className="max-w-3xl mx-auto text-center mb-8">
-            <h1 className="mb-3 font-bold">CV Analysis & Optimization</h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Our AI-powered tool analyzes your CV for structure, content, and ATS compatibility, then provides detailed feedback to improve your chances of landing interviews.
-            </p>
-          </div>
-
+        <div className="max-w-4xl mx-auto px-4">
           {!scoreData && !isAnalyzing && (
-            <Card className="border-dashed animate-scale-in max-w-3xl mx-auto">
-              <CardHeader className="border-b bg-secondary/10">
-                <CardTitle className="text-center">Upload Your CV for Analysis</CardTitle>
-                <CardDescription className="text-center">
-                  We'll analyze your CV and provide detailed feedback to help you improve it
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <Tabs defaultValue="upload" className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
-                  <TabsList className="grid grid-cols-2 w-full mb-6">
-                    <TabsTrigger value="upload" className="flex items-center gap-2">
-                      <FileText size={16} /> Upload File
-                    </TabsTrigger>
-                    <TabsTrigger value="paste" className="flex items-center gap-2">
-                      <FileText size={16} /> Paste Text
-                    </TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="upload" className="mt-0">
-                    <div
-                      className={`border-2 border-dashed rounded-xl p-10 transition-all duration-200 ${
-                        isDragging 
-                          ? 'border-gray-700 bg-gray-700/5' 
-                          : file 
-                            ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
-                            : 'border-border bg-secondary/5'
-                      }`}
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                    >
-                      <div className="flex flex-col items-center justify-center text-center">
-                        <div className="w-20 h-20 mb-4 rounded-full bg-secondary/30 flex items-center justify-center">
-                          {file ? <FileText size={36} /> : getUploadStateIcon()}
-                        </div>
-                        
-                        <h3 className="text-lg font-medium mb-2">
-                          {file ? 'CV Uploaded' : 'Drag & Drop Your CV'}
-                        </h3>
-                        
-                        <p className="text-muted-foreground text-sm mb-6 max-w-md">
-                          {file 
-                            ? `File: ${file.name}`
-                            : 'Drag and drop your CV file, or click to browse. Supports PDF, DOC, DOCX and TXT files.'
-                          }
-                        </p>
-                        
-                        {!file && (
+            <div className="animate-scale-in">
+              <div className="text-center mb-8">
+                <h1 className="text-3xl font-bold mb-2">CV Analysis & Optimization</h1>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Upload your CV to receive a score, ATS compatibility check, and actionable improvements.
+                </p>
+              </div>
+
+              <Card className="shadow-md overflow-hidden border">
+                <div className="pt-6 px-6">
+                  <Tabs defaultValue="upload" className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
+                    <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden">
+                      <TabsTrigger value="upload" className="data-[state=active]:bg-gray-100 dark:data-[state=active]:bg-gray-800">
+                        Upload File
+                      </TabsTrigger>
+                      <TabsTrigger value="paste" className="data-[state=active]:bg-gray-100 dark:data-[state=active]:bg-gray-800">
+                        Paste Text
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="upload" className="mt-0">
+                      <div
+                        className={`border-2 border-dashed rounded-xl p-10 transition-all duration-200 ${
+                          isDragging 
+                            ? 'border-gray-400 bg-gray-50 dark:bg-gray-800/30' 
+                            : file 
+                              ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
+                              : 'border-gray-300 bg-transparent'
+                        }`}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                      >
+                        <div className="flex flex-col items-center justify-center text-center">
+                          <FileText className="w-12 h-12 mb-4 text-gray-400" />
+                          
+                          <h3 className="text-lg font-medium mb-1">
+                            Upload your CV
+                          </h3>
+                          
+                          <p className="text-muted-foreground text-sm mb-6">
+                            Drag and drop your CV or click to browse
+                          </p>
+                          
                           <div>
                             <input
                               type="file"
@@ -228,53 +203,43 @@ const CVAnalysis = () => {
                               onChange={handleFileInputChange}
                             />
                             <label htmlFor="cv-upload">
-                              <Button variant="secondary" className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-white rounded-full px-6" asChild>
+                              <Button variant="outline" className="cursor-pointer rounded-full px-6 font-medium border-gray-300" asChild>
                                 <span>Choose File</span>
                               </Button>
                             </label>
                           </div>
-                        )}
-                        
-                        {file && uploadState === 'success' && (
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => {
-                              setFile(null);
-                              setCvText('');
-                              setUploadState('idle');
-                            }}
-                          >
-                            Remove File
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="paste" className="mt-0">
-                    <div className="space-y-4">
-                      <Textarea
-                        value={cvText}
-                        onChange={handleTextChange}
-                        placeholder="Paste your CV content here..."
-                        className="min-h-[250px] resize-none border-2 border-dashed p-4"
-                      />
-                    </div>
-                  </TabsContent>
-                </Tabs>
 
-                <div className="flex justify-end mt-6">
-                  <Button
-                    className="px-8 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-full"
-                    onClick={handleCVUpload}
-                    disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file))}
-                  >
-                    {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
-                  </Button>
+                          <p className="text-xs text-muted-foreground mt-4">
+                            Supported formats: PDF, Word, TXT
+                          </p>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="paste" className="mt-0">
+                      <div className="space-y-4">
+                        <Textarea
+                          value={cvText}
+                          onChange={handleTextChange}
+                          placeholder="Paste your CV content here..."
+                          className="min-h-[250px] resize-none border-2 border-dashed p-4"
+                        />
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+
+                  <div className="flex justify-end my-6">
+                    <Button
+                      className="rounded-full px-6 py-2 bg-gray-700 hover:bg-gray-800 text-white gap-2"
+                      onClick={handleCVUpload}
+                      disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file))}
+                    >
+                      Analyze CV <ArrowRight size={16} />
+                    </Button>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+              </Card>
+            </div>
           )}
 
           {isAnalyzing && (
@@ -290,7 +255,6 @@ const CVAnalysis = () => {
 
           {scoreData && (
             <div className="space-y-8 animate-fade-in">
-              {/* Score Overview */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card className="col-span-1 md:col-span-2 glass-card overflow-hidden">
                   <CardHeader className="border-b bg-secondary/40">
@@ -395,7 +359,6 @@ const CVAnalysis = () => {
                 </Card>
               </div>
 
-              {/* Suggestions */}
               <Card className="glass-card overflow-hidden">
                 <CardHeader className="border-b bg-secondary/40">
                   <CardTitle>Improvement Suggestions</CardTitle>
