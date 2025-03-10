@@ -1,7 +1,8 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -162,10 +163,16 @@ const CVAnalysis = () => {
                 <div className="pt-6 px-6">
                   <Tabs defaultValue="upload" className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
                     <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden">
-                      <TabsTrigger value="upload" className="data-[state=active]:bg-gray-100 dark:data-[state=active]:bg-gray-800">
+                      <TabsTrigger 
+                        value="upload" 
+                        className="data-[state=active]:bg-[#897497] data-[state=active]:text-white"
+                      >
                         Upload File
                       </TabsTrigger>
-                      <TabsTrigger value="paste" className="data-[state=active]:bg-gray-100 dark:data-[state=active]:bg-gray-800">
+                      <TabsTrigger 
+                        value="paste" 
+                        className="data-[state=active]:bg-[#897497] data-[state=active]:text-white"
+                      >
                         Paste Text
                       </TabsTrigger>
                     </TabsList>
