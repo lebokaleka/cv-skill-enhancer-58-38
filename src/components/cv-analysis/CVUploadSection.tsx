@@ -89,16 +89,16 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
       <Card className="shadow-md overflow-hidden border">
         <div className="pt-6 px-6">
           <Tabs defaultValue="upload" className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
-            <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden">
+            <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden bg-purple-100 dark:bg-purple-900/30">
               <TabsTrigger 
                 value="upload" 
-                className="data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate bg-gray-100 dark:bg-gray-800"
+                className="data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate bg-purple-200 dark:bg-purple-800/50 text-purple-800 dark:text-purple-200"
               >
                 Upload File
               </TabsTrigger>
               <TabsTrigger 
                 value="paste" 
-                className="data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate bg-gray-100 dark:bg-gray-800"
+                className="data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate bg-purple-200 dark:bg-purple-800/50 text-purple-800 dark:text-purple-200"
               >
                 Paste Text
               </TabsTrigger>
