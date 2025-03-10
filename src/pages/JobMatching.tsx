@@ -69,14 +69,16 @@ const JobMatching = () => {
           </div>
 
           {!matchResult && (
-            <JobMatchingForm 
-              onAnalyze={handleAnalyze} 
-              isAnalyzing={isAnalyzing} 
-            />
+            <div className="animate-scale-in">
+              <JobMatchingForm 
+                onAnalyze={handleAnalyze} 
+                isAnalyzing={isAnalyzing} 
+              />
+            </div>
           )}
 
           {matchResult && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-fade-in">
               <MatchScoreCard matchResult={matchResult} />
               <DocumentComparisonCard matchResult={matchResult} />
               <SuggestionsCard matchResult={matchResult} />
