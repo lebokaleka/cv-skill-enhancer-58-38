@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 
 interface ResultActionsProps {
   onNewComparison: () => void;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-const ResultActions = ({ onNewComparison }: ResultActionsProps) => {
+const ResultActions = ({ onNewComparison, className, style }: ResultActionsProps) => {
   return (
-    <div className="flex flex-col sm:flex-row gap-4 justify-end animate-fade-in" style={{ animationDelay: '450ms' }}>
+    <div className={`flex flex-col sm:flex-row gap-4 justify-end ${className || ''}`} style={style}>
       <Button 
         variant="outline" 
         onClick={onNewComparison}
