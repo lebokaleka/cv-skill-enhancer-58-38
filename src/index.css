@@ -104,13 +104,4 @@
     opacity: 1 !important;
     isolation: isolate;
   }
-  
-  /* Custom styling for tabs */
-  [role="tablist"].bg-purple-100 {
-    @apply shadow-inner;
-  }
-  
-  [role="tab"].bg-purple-200 {
-    @apply hover:bg-purple-300 transition-colors;
-  }
 }
