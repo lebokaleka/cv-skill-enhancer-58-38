@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -87,5 +88,12 @@
   
   .cv-analysis-drag-active {
     @apply border-gray-700 bg-gray-700/5;
+  }
+  
+  /* Ensure buttons remain solid and vibrant without transparency */
+  button.bg-\[\#46235C\] {
+    opacity: 1 !important;
+    isolation: isolate;
+    backdrop-filter: none;
   }
 }

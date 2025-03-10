@@ -4,7 +4,7 @@ import CVUploader from "@/components/upload/CVUploader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Briefcase } from 'lucide-react';
+import { FileText, Briefcase, ArrowRight } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface JobMatchingFormProps {
@@ -92,9 +92,10 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
               <Button
                 onClick={handleAnalyzeClick}
                 disabled={!cvText || !jobDescription || isAnalyzing}
-                className="rounded-full"
+                className="rounded-full bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate"
               >
                 {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
+                <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </div>
           </CardContent>
