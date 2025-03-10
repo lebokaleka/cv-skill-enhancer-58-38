@@ -59,7 +59,7 @@ const JobMatching = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-grow pt-24 pb-16">
+      <main className="flex-grow pt-32 pb-16">
         <div className="app-container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h1 className="mb-4">Job Description Matching</h1>
