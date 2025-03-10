@@ -1,11 +1,13 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CVUploader from "@/components/upload/CVUploader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertCircle, CheckCircle, FileText, AlertTriangle } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { AlertCircle, CheckCircle, FileText, AlertTriangle, Upload, Check, X, FileUp } from 'lucide-react';
 
 interface CVScoreData {
   overallScore: number;
@@ -29,10 +31,67 @@ const CVAnalysis = () => {
   const [fileName, setFileName] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scoreData, setScoreData] = useState<CVScoreData | null>(null);
+  const [inputMethod, setInputMethod] = useState<'upload' | 'paste'>('upload');
+  const [file, setFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadState, setUploadState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const handleCVUpload = (text: string, name?: string) => {
-    setCvText(text);
-    if (name) setFileName(name);
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCvText(e.target.value);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFileSelect(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFileSelect(e.target.files[0]);
+    }
+  };
+
+  const handleFileSelect = (selectedFile: File) => {
+    // Check if file is PDF, DOC, DOCX, or TXT
+    const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    
+    if (!validTypes.includes(selectedFile.type)) {
+      setUploadState('error');
+      return;
+    }
+    
+    setFile(selectedFile);
+    
+    // For demonstration purposes, if it's a text file, read and set the content
+    if (selectedFile.type === 'text/plain') {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        if (typeof e.target?.result === 'string') {
+          setCvText(e.target.result);
+        }
+      };
+      
+      reader.readAsText(selectedFile);
+    }
+    
+    setUploadState('success');
+  };
+
+  const handleCVUpload = () => {
     setIsAnalyzing(true);
 
     // Simulate API call with timeout
@@ -85,36 +144,142 @@ const CVAnalysis = () => {
     return "bg-red-500";
   };
 
+  const getUploadStateIcon = () => {
+    switch (uploadState) {
+      case 'loading':
+        return <FileUp size={30} className="animate-bounce" />;
+      case 'success':
+        return <Check size={30} className="text-green-500" />;
+      case 'error':
+        return <X size={30} className="text-red-500" />;
+      default:
+        return <Upload size={30} />;
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
       <main className="flex-grow pt-24 pb-16">
         <div className="app-container">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h1 className="mb-4">CV Analysis & Optimization</h1>
-            <p className="text-muted-foreground text-lg">
-              Upload your CV to get a detailed analysis and actionable suggestions for improvement.
+          <div className="max-w-3xl mx-auto text-center mb-8">
+            <h1 className="mb-3 font-bold">CV Analysis & Optimization</h1>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Our AI-powered tool analyzes your CV for structure, content, and ATS compatibility, then provides detailed feedback to improve your chances of landing interviews.
             </p>
           </div>
 
           {!scoreData && !isAnalyzing && (
-            <Card className="border-dashed animate-scale-in">
-              <CardHeader>
-                <CardTitle>Upload Your CV</CardTitle>
-                <CardDescription>
-                  We'll analyze your CV and provide detailed feedback to help you improve it.
+            <Card className="border-dashed animate-scale-in max-w-3xl mx-auto">
+              <CardHeader className="border-b bg-secondary/10">
+                <CardTitle className="text-center">Upload Your CV for Analysis</CardTitle>
+                <CardDescription className="text-center">
+                  We'll analyze your CV and provide detailed feedback to help you improve it
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <CVUploader onUpload={handleCVUpload} />
+              <CardContent className="pt-6">
+                <Tabs defaultValue="upload" className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
+                  <TabsList className="grid grid-cols-2 w-full mb-6">
+                    <TabsTrigger value="upload" className="flex items-center gap-2">
+                      <FileText size={16} /> Upload File
+                    </TabsTrigger>
+                    <TabsTrigger value="paste" className="flex items-center gap-2">
+                      <FileText size={16} /> Paste Text
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="upload" className="mt-0">
+                    <div
+                      className={`border-2 border-dashed rounded-xl p-10 transition-all duration-200 ${
+                        isDragging 
+                          ? 'border-gray-700 bg-gray-700/5' 
+                          : file 
+                            ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
+                            : 'border-border bg-secondary/5'
+                      }`}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                    >
+                      <div className="flex flex-col items-center justify-center text-center">
+                        <div className="w-20 h-20 mb-4 rounded-full bg-secondary/30 flex items-center justify-center">
+                          {file ? <FileText size={36} /> : getUploadStateIcon()}
+                        </div>
+                        
+                        <h3 className="text-lg font-medium mb-2">
+                          {file ? 'CV Uploaded' : 'Drag & Drop Your CV'}
+                        </h3>
+                        
+                        <p className="text-muted-foreground text-sm mb-6 max-w-md">
+                          {file 
+                            ? `File: ${file.name}`
+                            : 'Drag and drop your CV file, or click to browse. Supports PDF, DOC, DOCX and TXT files.'
+                          }
+                        </p>
+                        
+                        {!file && (
+                          <div>
+                            <input
+                              type="file"
+                              id="cv-upload"
+                              className="hidden"
+                              accept=".pdf,.doc,.docx,.txt"
+                              onChange={handleFileInputChange}
+                            />
+                            <label htmlFor="cv-upload">
+                              <Button variant="secondary" className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-white rounded-full px-6" asChild>
+                                <span>Choose File</span>
+                              </Button>
+                            </label>
+                          </div>
+                        )}
+                        
+                        {file && uploadState === 'success' && (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => {
+                              setFile(null);
+                              setCvText('');
+                              setUploadState('idle');
+                            }}
+                          >
+                            Remove File
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="paste" className="mt-0">
+                    <div className="space-y-4">
+                      <Textarea
+                        value={cvText}
+                        onChange={handleTextChange}
+                        placeholder="Paste your CV content here..."
+                        className="min-h-[250px] resize-none border-2 border-dashed p-4"
+                      />
+                    </div>
+                  </TabsContent>
+                </Tabs>
+
+                <div className="flex justify-end mt-6">
+                  <Button
+                    className="px-8 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-full"
+                    onClick={handleCVUpload}
+                    disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file))}
+                  >
+                    {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}
 
           {isAnalyzing && (
-            <div className="text-center py-20 animate-pulse">
-              <FileText size={48} className="mx-auto mb-6 text-primary" />
+            <div className="text-center py-20 animate-pulse max-w-3xl mx-auto">
+              <FileText size={48} className="mx-auto mb-6 text-gray-700" />
               <h3 className="text-xl font-medium mb-3">Analyzing Your CV</h3>
               <p className="text-muted-foreground mb-6">
                 Our AI is evaluating your CV for structure, content, and ATS compatibility...

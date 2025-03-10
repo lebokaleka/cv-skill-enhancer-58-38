@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import CVAnalysis from "./pages/CVScoring";
+import CVAnalysis from "./pages/CVAnalysis";
 import JobMatching from "./pages/JobMatching";
 import CoverLetter from "./pages/CoverLetter";
 import Interview from "./pages/Interview";
