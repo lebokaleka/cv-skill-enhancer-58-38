@@ -111,7 +111,7 @@ const JobMatching = () => {
           {!matchResult && (
             <div className="space-y-6">
               {/* Tab Navigation similar to the image */}
-              <div className="max-w-lg mx-auto">
+              <div className="max-w-lg mx-auto mb-6">
                 <div className="bg-secondary/20 p-1 rounded-full flex">
                   <button
                     className={`flex-1 py-2 rounded-full text-center transition-colors ${
@@ -137,52 +137,54 @@ const JobMatching = () => {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* CV Upload/Paste Section */}
-                <Card className="glass-card border-dashed h-full animate-fade-in">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText size={20} />
-                      <span>Your CV</span>
-                    </CardTitle>
-                    <CardDescription>
-                      {activeTab === 'upload' ? 'Upload your CV file' : 'Paste your CV text'}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {activeTab === 'upload' ? (
-                      showUploader ? (
-                        <CVUploader onUpload={handleCVUpload} />
+                {/* CV Upload/Paste Section - Left Side */}
+                <div className="space-y-6">
+                  <Card className="glass-card border-dashed h-full animate-fade-in">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <FileText size={20} />
+                        <span>Your CV</span>
+                      </CardTitle>
+                      <CardDescription>
+                        {activeTab === 'upload' ? 'Upload your CV file' : 'Paste your CV text'}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {activeTab === 'upload' ? (
+                        showUploader ? (
+                          <CVUploader onUpload={handleCVUpload} />
+                        ) : (
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium">CV Uploaded</span>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => setShowUploader(true)}
+                              >
+                                Change
+                              </Button>
+                            </div>
+                            <div className="bg-secondary/50 p-4 rounded-md h-[200px] overflow-auto">
+                              <p className="text-sm whitespace-pre-wrap">{cvText}</p>
+                            </div>
+                          </div>
+                        )
                       ) : (
                         <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">CV Uploaded</span>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              onClick={() => setShowUploader(true)}
-                            >
-                              Change
-                            </Button>
-                          </div>
-                          <div className="bg-secondary/50 p-4 rounded-md h-[200px] overflow-auto">
-                            <p className="text-sm whitespace-pre-wrap">{cvText}</p>
-                          </div>
+                          <Textarea
+                            value={cvText}
+                            onChange={(e) => setCvText(e.target.value)}
+                            placeholder="Paste your CV content here..."
+                            className="min-h-[200px] resize-none"
+                          />
                         </div>
-                      )
-                    ) : (
-                      <div className="space-y-4">
-                        <Textarea
-                          value={cvText}
-                          onChange={(e) => setCvText(e.target.value)}
-                          placeholder="Paste your CV content here..."
-                          className="min-h-[200px] resize-none"
-                        />
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
 
-                {/* Job Description Section */}
+                {/* Job Description Section - Right Side */}
                 <Card className="glass-card border-dashed h-full animate-fade-in" style={{ animationDelay: '150ms' }}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -201,18 +203,20 @@ const JobMatching = () => {
                         placeholder="Paste job description here..."
                         className="min-h-[200px] resize-none"
                       />
-                      <div className="flex justify-end">
-                        <Button
-                          onClick={handleAnalyze}
-                          disabled={!cvText || !jobDescription || isAnalyzing}
-                          className="rounded-full"
-                        >
-                          {isAnalyzing ? 'Analyzing...' : 'Compare'}
-                        </Button>
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
+              </div>
+              
+              {/* Action Button - Analyze */}
+              <div className="flex justify-end mt-4">
+                <Button
+                  onClick={handleAnalyze}
+                  disabled={!cvText || !jobDescription || isAnalyzing}
+                  className="rounded-full"
+                >
+                  {isAnalyzing ? 'Analyzing...' : 'Compare'}
+                </Button>
               </div>
             </div>
           )}

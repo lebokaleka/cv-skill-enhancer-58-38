@@ -93,9 +93,9 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
+    <div className="space-y-6">
       <div
-        className={`border-2 border-dashed rounded-xl p-10 transition-all duration-200 ${
+        className={`border-2 border-dashed rounded-xl p-6 transition-all duration-200 ${
           isDragging 
             ? 'border-gray-700 bg-gray-700/5' 
             : file 
@@ -115,10 +115,10 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
             {file ? 'CV Uploaded' : 'Upload Your CV'}
           </h3>
           
-          <p className="text-muted-foreground text-sm mb-4 max-w-md">
+          <p className="text-muted-foreground text-sm mb-4">
             {file 
               ? `File: ${file.name}`
-              : 'Drag and drop your CV, or click to browse. Supports PDF, DOC, DOCX and TXT files.'
+              : 'Drag and drop your CV, or click to browse'
             }
           </p>
           
@@ -155,19 +155,18 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
         </div>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-md font-medium">Or paste your CV text</h3>
+      <div className="space-y-2">
         <Textarea
           value={cvText}
           onChange={handleTextChange}
-          placeholder="Paste your CV content here..."
-          className="min-h-[200px] resize-none"
+          placeholder="Or paste your CV content here..."
+          className="min-h-[150px] resize-none"
         />
       </div>
 
       <div className="flex justify-end">
         <Button
-          className="px-6 bg-gray-700 hover:bg-gray-800 text-white"
+          className="rounded-full bg-gray-700 hover:bg-gray-800 text-white"
           onClick={handleSubmit}
           disabled={uploadState === 'loading' || (cvText.trim() === '' && !file)}
         >
