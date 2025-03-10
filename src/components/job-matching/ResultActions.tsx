@@ -15,12 +15,6 @@ const ResultActions = ({ onNewComparison }: ResultActionsProps) => {
       >
         New Comparison
       </Button>
-      <Button 
-        onClick={() => window.location.href = '/cover-letter'}
-        className="rounded-full"
-      >
-        Generate Cover Letter
-      </Button>
     </div>
   );
 };
