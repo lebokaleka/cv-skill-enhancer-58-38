@@ -172,10 +172,10 @@ Sincerely,
           </div>
 
           {step === 'input' && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-scale-in">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* CV Upload Section */}
-                <Card className="glass-card border-dashed h-full animate-fade-in">
+                <Card className="glass-card border-dashed h-full">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <FileText size={20} />
@@ -191,7 +191,7 @@ Sincerely,
                 </Card>
 
                 {/* Job Description Section */}
-                <Card className="glass-card border-dashed h-full animate-fade-in" style={{ animationDelay: '150ms' }}>
+                <Card className="glass-card border-dashed h-full">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Briefcase size={20} />
@@ -215,7 +215,7 @@ Sincerely,
               </div>
 
               {/* Template Selection */}
-              <Card className="glass-card border-dashed animate-fade-in" style={{ animationDelay: '300ms' }}>
+              <Card className="glass-card border-dashed">
                 <CardHeader>
                   <CardTitle>Choose a Template</CardTitle>
                   <CardDescription>
@@ -247,7 +247,7 @@ Sincerely,
               </Card>
 
               {/* Generate Button */}
-              <div className="flex justify-end animate-fade-in" style={{ animationDelay: '450ms' }}>
+              <div className="flex justify-end">
                 <Button
                   size="lg"
                   className="px-8"
@@ -261,9 +261,9 @@ Sincerely,
           )}
 
           {step === 'result' && (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-scale-in">
               {/* Cover Letter Preview */}
-              <Card className="glass-card animate-scale-in">
+              <Card className="glass-card">
                 <CardHeader className="border-b bg-secondary/40">
                   <div className="flex justify-between items-center">
                     <CardTitle>Your Cover Letter</CardTitle>
@@ -320,7 +320,7 @@ Sincerely,
               </Card>
 
               {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-between animate-fade-in">
+              <div className="flex flex-col sm:flex-row gap-4 justify-between">
                 <Button 
                   variant="outline" 
                   onClick={() => setStep('input')}
