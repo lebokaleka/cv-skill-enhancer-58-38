@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -25,7 +24,7 @@ interface CVScoreData {
   missingKeywords: string[];
 }
 
-const CVScoring = () => {
+const CVAnalysis = () => {
   const [cvText, setCvText] = useState('');
   const [fileName, setFileName] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -93,7 +92,7 @@ const CVScoring = () => {
       <main className="flex-grow pt-24 pb-16">
         <div className="app-container">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h1 className="mb-4">CV Score & Optimization</h1>
+            <h1 className="mb-4">CV Analysis & Optimization</h1>
             <p className="text-muted-foreground text-lg">
               Upload your CV to get a detailed analysis and actionable suggestions for improvement.
             </p>
@@ -301,4 +300,4 @@ const CVScoring = () => {
   );
 };
 
-export default CVScoring;
+export default CVAnalysis;

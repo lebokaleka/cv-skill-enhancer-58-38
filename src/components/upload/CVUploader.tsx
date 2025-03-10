@@ -97,7 +97,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
       <div
         className={`border-2 border-dashed rounded-xl p-10 transition-all duration-200 ${
           isDragging 
-            ? 'border-primary bg-primary/5' 
+            ? 'border-gray-700 bg-gray-700/5' 
             : file 
               ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
               : 'border-border bg-secondary/50'
@@ -132,7 +132,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
                 onChange={handleFileInputChange}
               />
               <label htmlFor="cv-upload">
-                <Button variant="secondary" className="cursor-pointer" asChild>
+                <Button variant="secondary" className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-white" asChild>
                   <span>Browse Files</span>
                 </Button>
               </label>
@@ -167,7 +167,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
 
       <div className="flex justify-end">
         <Button
-          className="px-6"
+          className="px-6 bg-gray-700 hover:bg-gray-800 text-white"
           onClick={handleSubmit}
           disabled={uploadState === 'loading' || (cvText.trim() === '' && !file)}
         >

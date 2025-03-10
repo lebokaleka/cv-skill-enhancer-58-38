@@ -80,4 +80,12 @@
     @apply bg-white/90 dark:bg-gray-900/50 backdrop-blur-sm border border-secondary/20 dark:border-secondary/30;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
+  
+  .cv-analysis-button {
+    @apply bg-gray-700 hover:bg-gray-800 text-white;
+  }
+  
+  .cv-analysis-drag-active {
+    @apply border-gray-700 bg-gray-700/5;
+  }
 }
