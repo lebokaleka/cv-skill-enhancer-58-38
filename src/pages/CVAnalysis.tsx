@@ -237,11 +237,11 @@ const CVAnalysis = () => {
 
                   <div className="flex justify-end my-6">
                     <Button
-                      className="rounded-md px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/90 text-white font-medium text-base"
+                      className="rounded-full px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/90 text-white gap-2"
                       onClick={handleCVUpload}
                       disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file))}
                     >
-                      Analyze My CV
+                      Analyze CV <ArrowRight size={16} />
                     </Button>
                   </div>
                 </div>
