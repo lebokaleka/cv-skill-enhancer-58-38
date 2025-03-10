@@ -2,20 +2,9 @@
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CVUploader from "@/components/upload/CVUploader";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Download, FileText, Briefcase, Copy, Check, RefreshCw } from 'lucide-react';
-
-interface CoverLetterTemplate {
-  id: string;
-  name: string;
-  description: string;
-  style: string;
-}
+import { coverLetterTemplates } from "@/components/cover-letter/coverLetterTemplates";
+import CoverLetterInput from "@/components/cover-letter/CoverLetterInput";
+import CoverLetterPreview from "@/components/cover-letter/CoverLetterPreview";
 
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');
@@ -23,29 +12,7 @@ const CoverLetter = () => {
   const [coverLetter, setCoverLetter] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('professional');
-  const [copied, setCopied] = useState(false);
   const [step, setStep] = useState<'input' | 'result'>('input');
-
-  const templates: CoverLetterTemplate[] = [
-    {
-      id: 'professional',
-      name: 'Professional',
-      description: 'Formal and concise, ideal for corporate roles',
-      style: 'Formal tone with clear structure'
-    },
-    {
-      id: 'creative',
-      name: 'Creative',
-      description: 'Showcase your unique style and personality',
-      style: 'Conversational with storytelling elements'
-    },
-    {
-      id: 'technical',
-      name: 'Technical',
-      description: 'Highlight technical skills and achievements',
-      style: 'Detailed with emphasis on technical expertise'
-    }
-  ];
 
   const handleCVUpload = (text: string) => {
     setCvText(text);
@@ -67,7 +34,7 @@ const CoverLetter = () => {
     // Simulate API call with timeout
     setTimeout(() => {
       // Mock generated cover letter based on template
-      const template = templates.find(t => t.id === selectedTemplate);
+      const template = coverLetterTemplates.find(t => t.id === selectedTemplate);
       let mockCoverLetter = '';
       
       if (template?.id === 'professional') {
@@ -132,12 +99,6 @@ Sincerely,
     }, 2500);
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(coverLetter);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   const handleRegenerate = () => {
     setIsGenerating(true);
     
@@ -171,167 +132,27 @@ Sincerely,
             </p>
           </div>
 
-          {step === 'input' && (
-            <div className="space-y-8 animate-scale-in">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* CV Upload Section */}
-                <Card className="glass-card border-dashed h-full">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText size={20} />
-                      <span>Your CV</span>
-                    </CardTitle>
-                    <CardDescription>
-                      Upload or paste your CV
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <CVUploader onUpload={handleCVUpload} />
-                  </CardContent>
-                </Card>
-
-                {/* Job Description Section */}
-                <Card className="glass-card border-dashed h-full">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Briefcase size={20} />
-                      <span>Job Description</span>
-                    </CardTitle>
-                    <CardDescription>
-                      Paste the job description you want to apply for
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <Textarea
-                        value={jobDescription}
-                        onChange={handleJobDescriptionChange}
-                        placeholder="Paste job description here..."
-                        className="min-h-[200px] resize-none"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Template Selection */}
-              <Card className="glass-card border-dashed">
-                <CardHeader>
-                  <CardTitle>Choose a Template</CardTitle>
-                  <CardDescription>
-                    Select a template that matches the tone you want to convey
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {templates.map((template) => (
-                      <div
-                        key={template.id}
-                        className={`border rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
-                          selectedTemplate === template.id 
-                            ? 'border-primary bg-primary/5' 
-                            : 'border-border bg-secondary/30'
-                        }`}
-                        onClick={() => handleTemplateSelect(template.id)}
-                      >
-                        <h3 className="font-medium mb-1">{template.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">{template.description}</p>
-                        <div className="text-xs text-muted-foreground">
-                          <span>Style: </span>
-                          <span className="text-foreground">{template.style}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Generate Button */}
-              <div className="flex justify-end">
-                <Button
-                  size="lg"
-                  className="px-8"
-                  onClick={handleGenerate}
-                  disabled={!cvText || !jobDescription || isGenerating}
-                >
-                  {isGenerating ? 'Generating...' : 'Generate Cover Letter'}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {step === 'result' && (
-            <div className="space-y-8 animate-scale-in">
-              {/* Cover Letter Preview */}
-              <Card className="glass-card">
-                <CardHeader className="border-b bg-secondary/40">
-                  <div className="flex justify-between items-center">
-                    <CardTitle>Your Cover Letter</CardTitle>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="gap-1"
-                        onClick={handleCopy}
-                      >
-                        {copied ? (
-                          <>
-                            <Check size={14} />
-                            <span>Copied</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy size={14} />
-                            <span>Copy</span>
-                          </>
-                        )}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="gap-1"
-                        onClick={handleRegenerate}
-                        disabled={isGenerating}
-                      >
-                        <RefreshCw size={14} className={isGenerating ? 'animate-spin' : ''} />
-                        <span>Regenerate</span>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="gap-1"
-                      >
-                        <Download size={14} />
-                        <span>Download</span>
-                      </Button>
-                    </div>
-                  </div>
-                  <CardDescription>
-                    {templates.find(t => t.id === selectedTemplate)?.name} template
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="bg-white dark:bg-background border rounded-md p-6 shadow-sm min-h-[60vh]">
-                    <pre className="font-sans whitespace-pre-wrap text-foreground">
-                      {coverLetter}
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-between">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setStep('input')}
-                >
-                  Back to Editor
-                </Button>
-                <Button>
-                  Finalize Cover Letter
-                </Button>
-              </div>
-            </div>
+          {step === 'input' ? (
+            <CoverLetterInput 
+              cvText={cvText}
+              jobDescription={jobDescription}
+              selectedTemplate={selectedTemplate}
+              templates={coverLetterTemplates}
+              isGenerating={isGenerating}
+              onCVUpload={handleCVUpload}
+              onJobDescriptionChange={handleJobDescriptionChange}
+              onTemplateSelect={handleTemplateSelect}
+              onGenerate={handleGenerate}
+            />
+          ) : (
+            <CoverLetterPreview 
+              coverLetter={coverLetter}
+              selectedTemplate={selectedTemplate}
+              templates={coverLetterTemplates}
+              isGenerating={isGenerating}
+              onRegenerate={handleRegenerate}
+              onBack={() => setStep('input')}
+            />
           )}
         </div>
       </main>
