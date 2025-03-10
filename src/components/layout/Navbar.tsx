@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/cv-scoring', label: 'CV Scoring' },
+    { path: '/cv-analysis', label: 'CV Analysis' },
     { path: '/job-matching', label: 'Job Matching' },
     { path: '/cover-letter', label: 'Cover Letter' },
     { path: '/interview', label: 'Interview Coach' },

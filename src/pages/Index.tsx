@@ -72,9 +72,9 @@ const Index = () => {
   const features = [
     {
       icon: <FileText size={20} />,
-      title: "CV Scoring",
+      title: "CV Analysis",
       description: "Get your resume evaluated with specific actionable suggestions for improvement.",
-      path: "/cv-scoring"
+      path: "/cv-analysis"
     },
     {
       icon: <FileSearch size={20} />,
@@ -141,7 +141,7 @@ const Index = () => {
               <Button 
                 size="lg" 
                 className="px-8 py-7 text-lg bg-primary hover:bg-[#4A235A] transition-colors" 
-                onClick={() => navigate('/cv-scoring')}
+                onClick={() => navigate('/cv-analysis')}
               >
                 Analyze My CV
               </Button>
@@ -233,7 +233,7 @@ const Index = () => {
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
               Join thousands of professionals who have accelerated their careers with our AI-powered tools.
             </p>
-            <Button size="lg" className="px-10 py-6 text-md animate-scale-in" onClick={() => navigate('/cv-scoring')}>
+            <Button size="lg" className="px-10 py-6 text-md animate-scale-in" onClick={() => navigate('/cv-analysis')}>
               Get Started for Free
             </Button>
           </div>

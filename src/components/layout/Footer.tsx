@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Github, Twitter, Linkedin } from 'lucide-react';
 
@@ -31,8 +30,8 @@ const Footer = () => {
             <h4 className="font-semibold text-sm mb-4">Features</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/cv-scoring" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  CV Scoring
+                <Link to="/cv-analysis" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  CV Analysis
                 </Link>
               </li>
               <li>
