@@ -93,7 +93,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
       onDrop={handleDrop}
     >
       <div className="flex flex-col items-center justify-center text-center">
-        <div className="w-16 h-16 mb-4 rounded-full bg-purple-700 flex items-center justify-center text-white">
+        <div className="w-16 h-16 mb-4 rounded-full bg-purple-700 flex items-center justify-center text-white isolate">
           {file ? <FileText size={30} /> : <ArrowUp size={30} />}
         </div>
         
@@ -118,7 +118,11 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
               onChange={handleFileInputChange}
             />
             <label htmlFor="cv-upload">
-              <Button variant="secondary" className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-white" asChild>
+              <Button 
+                variant="secondary" 
+                className="cursor-pointer bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate" 
+                asChild
+              >
                 <span>Browse Files</span>
               </Button>
             </label>
@@ -134,6 +138,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
               setCvText('');
               setUploadState('idle');
             }}
+            className="isolate hover:bg-[#46235C] hover:text-white"
           >
             Remove File
           </Button>

@@ -51,8 +51,8 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
           <CardContent className="space-y-4">
             <Tabs defaultValue="upload" onValueChange={(value) => setActiveTab(value as 'upload' | 'paste')}>
               <TabsList className="grid w-full grid-cols-2 mb-4 bg-secondary/20">
-                <TabsTrigger value="upload" className="rounded-full">Upload File</TabsTrigger>
-                <TabsTrigger value="paste" className="rounded-full">Paste Text</TabsTrigger>
+                <TabsTrigger value="upload" className="rounded-full data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate">Upload File</TabsTrigger>
+                <TabsTrigger value="paste" className="rounded-full data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate">Paste Text</TabsTrigger>
               </TabsList>
               
               <TabsContent value="upload" className="space-y-4">
@@ -66,6 +66,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
                         variant="ghost" 
                         size="sm" 
                         onClick={() => setShowUploader(true)}
+                        className="isolate hover:bg-[#46235C] hover:text-white"
                       >
                         Change
                       </Button>

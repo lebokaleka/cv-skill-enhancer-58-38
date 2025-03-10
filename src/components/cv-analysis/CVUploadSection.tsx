@@ -92,13 +92,13 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
             <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden">
               <TabsTrigger 
                 value="upload" 
-                className="data-[state=active]:bg-[#897497] data-[state=active]:text-white bg-gray-100 dark:bg-gray-800"
+                className="data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate bg-gray-100 dark:bg-gray-800"
               >
                 Upload File
               </TabsTrigger>
               <TabsTrigger 
                 value="paste" 
-                className="data-[state=active]:bg-[#897497] data-[state=active]:text-white bg-gray-100 dark:bg-gray-800"
+                className="data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate bg-gray-100 dark:bg-gray-800"
               >
                 Paste Text
               </TabsTrigger>
@@ -137,7 +137,11 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
                       onChange={handleFileInputChange}
                     />
                     <label htmlFor="cv-upload">
-                      <Button variant="outline" className="cursor-pointer rounded-full px-6 font-medium border-gray-300" asChild>
+                      <Button 
+                        variant="outline" 
+                        className="cursor-pointer rounded-full px-6 font-medium border-gray-300 isolate hover:bg-[#46235C] hover:text-white hover:border-transparent" 
+                        asChild
+                      >
                         <span>Choose File</span>
                       </Button>
                     </label>

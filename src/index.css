@@ -91,9 +91,17 @@
   }
   
   /* Ensure buttons remain solid and vibrant without transparency */
-  button.bg-\[\#46235C\] {
+  button.bg-\[\#46235C\],
+  [data-state="active"].data-\[state\=active\]\:bg-\[\#46235C\],
+  .isolate {
     opacity: 1 !important;
     isolation: isolate;
     backdrop-filter: none;
+  }
+  
+  /* Ensure tab triggers have solid backgrounds when active */
+  [data-radix-collection-item][data-state="active"] {
+    opacity: 1 !important;
+    isolation: isolate;
   }
 }
