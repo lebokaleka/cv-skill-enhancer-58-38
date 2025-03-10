@@ -2,7 +2,7 @@
 import { useState, ChangeEvent } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Upload, Check, X, FileUp } from 'lucide-react';
+import { FileText, Upload, Check, X, ArrowUp } from 'lucide-react';
 
 interface CVUploaderProps {
   onUpload: (text: string, fileName?: string) => void;
@@ -79,99 +79,65 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
     }, 1000);
   };
 
-  const getUploadStateIcon = () => {
-    switch (uploadState) {
-      case 'loading':
-        return <FileUp size={24} className="animate-bounce" />;
-      case 'success':
-        return <Check size={24} className="text-green-500" />;
-      case 'error':
-        return <X size={24} className="text-red-500" />;
-      default:
-        return <Upload size={24} />;
-    }
-  };
-
   return (
-    <div className="space-y-6">
-      <div
-        className={`border-2 border-dashed rounded-xl p-6 transition-all duration-200 ${
-          isDragging 
-            ? 'border-gray-700 bg-gray-700/5' 
-            : file 
-              ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
-              : 'border-border bg-secondary/50'
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
-        <div className="flex flex-col items-center justify-center text-center">
-          <div className="w-16 h-16 mb-4 rounded-full bg-secondary flex items-center justify-center">
-            {file ? <FileText size={30} /> : getUploadStateIcon()}
-          </div>
-          
-          <h3 className="text-lg font-medium mb-2">
-            {file ? 'CV Uploaded' : 'Upload Your CV'}
-          </h3>
-          
-          <p className="text-muted-foreground text-sm mb-4">
-            {file 
-              ? `File: ${file.name}`
-              : 'Drag and drop your CV, or click to browse'
-            }
-          </p>
-          
-          {!file && (
-            <div>
-              <input
-                type="file"
-                id="cv-upload"
-                className="hidden"
-                accept=".pdf,.doc,.docx,.txt"
-                onChange={handleFileInputChange}
-              />
-              <label htmlFor="cv-upload">
-                <Button variant="secondary" className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-white" asChild>
-                  <span>Browse Files</span>
-                </Button>
-              </label>
-            </div>
-          )}
-          
-          {file && uploadState === 'success' && (
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => {
-                setFile(null);
-                setCvText('');
-                setUploadState('idle');
-              }}
-            >
-              Remove File
-            </Button>
-          )}
+    <div
+      className={`border-2 border-dashed rounded-xl p-6 transition-all duration-200 bg-purple-300/50 ${
+        isDragging 
+          ? 'border-gray-700 bg-gray-700/5' 
+          : file 
+            ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
+            : 'border-purple-300'
+      }`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      <div className="flex flex-col items-center justify-center text-center">
+        <div className="w-16 h-16 mb-4 rounded-full bg-purple-700 flex items-center justify-center text-white">
+          {file ? <FileText size={30} /> : <ArrowUp size={30} />}
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <Textarea
-          value={cvText}
-          onChange={handleTextChange}
-          placeholder="Or paste your CV content here..."
-          className="min-h-[150px] resize-none"
-        />
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          className="rounded-full bg-gray-700 hover:bg-gray-800 text-white"
-          onClick={handleSubmit}
-          disabled={uploadState === 'loading' || (cvText.trim() === '' && !file)}
-        >
-          {uploadState === 'loading' ? 'Processing...' : 'Analyze CV'}
-        </Button>
+        
+        <h3 className="text-lg font-medium mb-2">
+          {file ? 'CV Uploaded' : 'Upload Your CV'}
+        </h3>
+        
+        <p className="text-muted-foreground text-sm mb-6">
+          {file 
+            ? `File: ${file.name}`
+            : 'Drag and drop your CV, or click to browse'
+          }
+        </p>
+        
+        {!file && (
+          <div>
+            <input
+              type="file"
+              id="cv-upload"
+              className="hidden"
+              accept=".pdf,.doc,.docx,.txt"
+              onChange={handleFileInputChange}
+            />
+            <label htmlFor="cv-upload">
+              <Button variant="secondary" className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-white" asChild>
+                <span>Browse Files</span>
+              </Button>
+            </label>
+          </div>
+        )}
+        
+        {file && uploadState === 'success' && (
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => {
+              setFile(null);
+              setCvText('');
+              setUploadState('idle');
+            }}
+          >
+            Remove File
+          </Button>
+        )}
       </div>
     </div>
   );
