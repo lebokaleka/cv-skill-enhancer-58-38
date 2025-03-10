@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -65,7 +64,6 @@ const CVAnalysis = () => {
   };
 
   const handleFileSelect = (selectedFile: File) => {
-    // Check if file is PDF, DOC, DOCX, or TXT
     const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
     
     if (!validTypes.includes(selectedFile.type)) {
@@ -75,7 +73,6 @@ const CVAnalysis = () => {
     
     setFile(selectedFile);
     
-    // For demonstration purposes, if it's a text file, read and set the content
     if (selectedFile.type === 'text/plain') {
       const reader = new FileReader();
       
@@ -94,9 +91,7 @@ const CVAnalysis = () => {
   const handleCVUpload = () => {
     setIsAnalyzing(true);
 
-    // Simulate API call with timeout
     setTimeout(() => {
-      // Mock response data
       const mockData: CVScoreData = {
         overallScore: 73,
         sections: {
@@ -237,11 +232,12 @@ const CVAnalysis = () => {
 
                   <div className="flex justify-end my-6">
                     <Button
-                      className="rounded-md px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/80 text-white"
+                      className="rounded-full px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/80 text-white"
                       onClick={handleCVUpload}
                       disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file))}
                     >
                       Analyze CV
+                      <ArrowRight className="ml-1 h-4 w-4" />
                     </Button>
                   </div>
                 </div>
