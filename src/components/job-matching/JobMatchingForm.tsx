@@ -38,7 +38,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* CV Upload/Paste Section - Left Side */}
-        <Card className="glass-card border-dashed animate-fade-in h-full">
+        <Card className="glass-card border-dashed animate-fade-in">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
               <FileText size={20} />
@@ -101,7 +101,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
         </Card>
 
         {/* Job Description Section - Right Side */}
-        <Card className="glass-card border-dashed h-full animate-fade-in" style={{ animationDelay: '150ms' }}>
+        <Card className="glass-card border-dashed animate-fade-in">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Briefcase size={20} />
