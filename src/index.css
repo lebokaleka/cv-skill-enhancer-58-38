@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -114,7 +113,7 @@
   
   /* Style for tab triggers */
   [data-radix-collection-item] {
-    background-color: rgba(70, 35, 92, 0.1) !important;
+    background-color: rgba(70, 35, 92, 0.3) !important;
   }
   
   [data-radix-collection-item][data-state="active"] {
@@ -125,6 +124,6 @@
   
   /* Style for tabs list container */
   [role="tablist"] {
-    background-color: rgba(70, 35, 92, 0.1) !important;
+    background-color: rgba(70, 35, 92, 0.3) !important;
   }
 }
