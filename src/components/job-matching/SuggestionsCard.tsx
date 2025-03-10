@@ -5,13 +5,11 @@ import { AlertCircle, Lightbulb } from 'lucide-react';
 
 interface SuggestionsCardProps {
   matchResult: MatchResult;
-  className?: string;
-  style?: React.CSSProperties;
 }
 
-const SuggestionsCard = ({ matchResult, className, style }: SuggestionsCardProps) => {
+const SuggestionsCard = ({ matchResult }: SuggestionsCardProps) => {
   return (
-    <Card className={`glass-card overflow-hidden ${className || ''}`} style={style}>
+    <Card className="glass-card overflow-hidden animate-fade-in" style={{ animationDelay: '300ms' }}>
       <CardHeader className="border-b bg-secondary/40">
         <CardTitle className="flex items-center gap-2">
           <Lightbulb size={20} className="text-amber-500" />

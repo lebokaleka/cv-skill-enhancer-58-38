@@ -5,13 +5,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface DocumentComparisonCardProps {
   matchResult: MatchResult;
-  className?: string;
-  style?: React.CSSProperties;
 }
 
-const DocumentComparisonCard = ({ matchResult, className, style }: DocumentComparisonCardProps) => {
+const DocumentComparisonCard = ({ matchResult }: DocumentComparisonCardProps) => {
   return (
-    <Card className={`glass-card overflow-hidden ${className || ''}`} style={style}>
+    <Card className="glass-card overflow-hidden animate-fade-in" style={{ animationDelay: '150ms' }}>
       <CardHeader className="border-b bg-secondary/40">
         <CardTitle>Document Comparison</CardTitle>
         <CardDescription>

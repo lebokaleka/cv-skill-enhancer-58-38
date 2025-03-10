@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -174,7 +175,7 @@ Sincerely,
             <div className="space-y-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* CV Upload Section */}
-                <Card className="glass-card border-dashed h-full animate-scale-in">
+                <Card className="glass-card border-dashed h-full animate-fade-in">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <FileText size={20} />
@@ -190,7 +191,7 @@ Sincerely,
                 </Card>
 
                 {/* Job Description Section */}
-                <Card className="glass-card border-dashed h-full animate-scale-in" style={{ animationDelay: '150ms' }}>
+                <Card className="glass-card border-dashed h-full animate-fade-in" style={{ animationDelay: '150ms' }}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Briefcase size={20} />
@@ -214,7 +215,7 @@ Sincerely,
               </div>
 
               {/* Template Selection */}
-              <Card className="glass-card border-dashed animate-scale-in" style={{ animationDelay: '300ms' }}>
+              <Card className="glass-card border-dashed animate-fade-in" style={{ animationDelay: '300ms' }}>
                 <CardHeader>
                   <CardTitle>Choose a Template</CardTitle>
                   <CardDescription>

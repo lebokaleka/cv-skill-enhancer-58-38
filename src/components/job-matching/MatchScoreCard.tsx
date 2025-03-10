@@ -6,11 +6,9 @@ import { CheckCircle, XCircle } from 'lucide-react';
 
 interface MatchScoreCardProps {
   matchResult: MatchResult;
-  className?: string;
-  style?: React.CSSProperties;
 }
 
-const MatchScoreCard = ({ matchResult, className, style }: MatchScoreCardProps) => {
+const MatchScoreCard = ({ matchResult }: MatchScoreCardProps) => {
   const getScoreColor = (score: number) => {
     if (score >= 80) return "text-green-500";
     if (score >= 60) return "text-amber-500";
@@ -24,7 +22,7 @@ const MatchScoreCard = ({ matchResult, className, style }: MatchScoreCardProps) 
   };
 
   return (
-    <Card className={`glass-card overflow-hidden ${className || ''}`} style={style}>
+    <Card className="glass-card overflow-hidden animate-scale-in">
       <CardHeader className="border-b bg-secondary/40">
         <CardTitle className="flex items-center justify-between">
           <span>Match Score</span>
