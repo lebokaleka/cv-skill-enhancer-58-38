@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,11 @@ const Navbar = () => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
+  // Handle navigation click - explicitly scroll to top
+  const handleNavClick = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -40,7 +46,7 @@ const Navbar = () => {
       }`}
     >
       <div className="app-container flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2" onClick={handleNavClick}>
           <span className="font-bold text-xl tracking-tight">CVCoach</span>
         </Link>
 
@@ -50,6 +56,7 @@ const Navbar = () => {
             <Link
               key={link.path}
               to={link.path}
+              onClick={handleNavClick}
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 location.pathname === link.path 
                   ? 'text-primary' 
@@ -81,6 +88,7 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
+                onClick={handleNavClick}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   location.pathname === link.path 
                     ? 'bg-secondary text-primary' 
