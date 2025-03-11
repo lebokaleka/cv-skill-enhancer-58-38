@@ -33,9 +33,9 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Left side: CV upload and Job Description in a single column - 1/3 width */}
-      <div className="lg:col-span-1 space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Left side: CV and Job Description - 50% width */}
+      <div className="space-y-6">
         <Card className="glass-card border-dashed animate-fade-in">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
@@ -104,8 +104,8 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
         </Card>
       </div>
 
-      {/* Right side: AI analysis preview section - 2/3 width */}
-      <div className="lg:col-span-2">
+      {/* Right side: AI analysis preview section - 50% width */}
+      <div>
         <Card className="glass-card border-dashed animate-fade-in h-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
