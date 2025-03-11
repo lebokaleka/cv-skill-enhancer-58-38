@@ -51,7 +51,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Left side: Job Description and CV container - 50% width */}
       <div>
-        <Card className="glass-card border-dashed border-2 animate-fade-in h-full">
+        <Card className="glass-card border-dashed border animate-fade-in h-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Briefcase size={20} />
