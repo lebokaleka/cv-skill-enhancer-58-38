@@ -34,8 +34,30 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Left side: CV and Job Description - 50% width */}
+      {/* Left side: Job Description and CV - 50% width */}
       <div className="space-y-6">
+        <Card className="glass-card border-dashed animate-fade-in">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Briefcase size={20} />
+              <span>Job Description</span>
+            </CardTitle>
+            <CardDescription>
+              Paste the job description you want to apply for
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <Textarea
+                value={jobDescription}
+                onChange={handleJobDescriptionChange}
+                placeholder="Paste job description here..."
+                className="min-h-[220px] resize-none"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
         <Card className="glass-card border-dashed animate-fade-in">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
@@ -69,39 +91,17 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
             )}
           </CardContent>
         </Card>
-
-        <Card className="glass-card border-dashed animate-fade-in">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Briefcase size={20} />
-              <span>Job Description</span>
-            </CardTitle>
-            <CardDescription>
-              Paste the job description you want to apply for
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <Textarea
-                value={jobDescription}
-                onChange={handleJobDescriptionChange}
-                placeholder="Paste job description here..."
-                className="min-h-[220px] resize-none"
-              />
-              
-              <div className="flex justify-end">
-                <Button
-                  onClick={handleAnalyzeClick}
-                  disabled={!cvText || !jobDescription || isAnalyzing}
-                  className="rounded-full bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate"
-                >
-                  {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
-                  <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        
+        <div className="flex justify-end">
+          <Button
+            onClick={handleAnalyzeClick}
+            disabled={!cvText || !jobDescription || isAnalyzing}
+            className="rounded-full bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate"
+          >
+            {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
+            <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Right side: AI analysis preview section - 50% width */}
