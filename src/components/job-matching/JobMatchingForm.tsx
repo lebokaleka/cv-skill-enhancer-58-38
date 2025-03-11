@@ -34,8 +34,8 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Left side: CV upload and Job Description in a single column */}
-      <div className="lg:col-span-2 space-y-6">
+      {/* Left side: CV upload and Job Description in a single column - 1/3 width */}
+      <div className="lg:col-span-1 space-y-6">
         <Card className="glass-card border-dashed animate-fade-in">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
@@ -104,8 +104,8 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
         </Card>
       </div>
 
-      {/* Right side: AI analysis preview section */}
-      <div className="lg:col-span-1">
+      {/* Right side: AI analysis preview section - 2/3 width */}
+      <div className="lg:col-span-2">
         <Card className="glass-card border-dashed animate-fade-in h-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -116,7 +116,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
               AI-generated job matching analysis will appear here
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center h-[450px] text-center">
+          <CardContent className="flex flex-col items-center justify-center h-[550px] text-center">
             <div className="p-6 rounded-lg bg-secondary/10 max-w-sm mx-auto">
               <p className="text-muted-foreground">
                 Upload your CV and paste a job description, then click 'Analyze CV' to get AI-powered insights and suggestions.
