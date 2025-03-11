@@ -34,74 +34,74 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Left side: Job Description and CV - 50% width */}
-      <div className="space-y-6">
-        <Card className="glass-card border-dashed animate-fade-in">
+      {/* Left side: Job Description and CV container - 50% width */}
+      <div>
+        <Card className="glass-card border-dashed border-2 animate-fade-in h-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Briefcase size={20} />
-              <span>Job Description</span>
+              <span>Job Application Details</span>
             </CardTitle>
             <CardDescription>
-              Paste the job description you want to apply for
+              Enter job details and your CV to analyze match
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="space-y-6">
+            {/* Job Description Section */}
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium flex items-center gap-2">
+                <Briefcase size={16} />
+                <span>Job Description</span>
+              </h3>
               <Textarea
                 value={jobDescription}
                 onChange={handleJobDescriptionChange}
                 placeholder="Paste job description here..."
-                className="min-h-[220px] resize-none"
+                className="min-h-[180px] resize-none"
               />
+            </div>
+
+            {/* CV Section */}
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium flex items-center gap-2">
+                <FileText size={16} />
+                <span>Your CV</span>
+              </h3>
+              {showUploader ? (
+                <CVUploader onUpload={handleCVUpload} />
+              ) : (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">CV Uploaded</span>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => setShowUploader(true)}
+                      className="isolate hover:bg-[#46235C] hover:text-white h-7 text-xs px-3"
+                    >
+                      Change
+                    </Button>
+                  </div>
+                  <div className="bg-secondary/50 p-4 rounded-md h-[160px] overflow-auto">
+                    <p className="text-sm whitespace-pre-wrap">{cvText}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Analyze Button */}
+            <div className="flex justify-end">
+              <Button
+                onClick={handleAnalyzeClick}
+                disabled={!cvText || !jobDescription || isAnalyzing}
+                className="rounded-full bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate"
+              >
+                {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
             </div>
           </CardContent>
         </Card>
-
-        <Card className="glass-card border-dashed animate-fade-in">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2">
-              <FileText size={20} />
-              <span>Your CV</span>
-            </CardTitle>
-            <CardDescription>
-              Upload your CV
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {showUploader ? (
-              <CVUploader onUpload={handleCVUpload} />
-            ) : (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">CV Uploaded</span>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => setShowUploader(true)}
-                    className="isolate hover:bg-[#46235C] hover:text-white"
-                  >
-                    Change
-                  </Button>
-                </div>
-                <div className="bg-secondary/50 p-4 rounded-md h-[180px] overflow-auto">
-                  <p className="text-sm whitespace-pre-wrap">{cvText}</p>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-        
-        <div className="flex justify-end">
-          <Button
-            onClick={handleAnalyzeClick}
-            disabled={!cvText || !jobDescription || isAnalyzing}
-            className="rounded-full bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate"
-          >
-            {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
-            <ArrowRight className="ml-1 h-4 w-4" />
-          </Button>
-        </div>
       </div>
 
       {/* Right side: AI analysis preview section - 50% width */}
