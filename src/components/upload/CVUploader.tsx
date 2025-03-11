@@ -1,8 +1,7 @@
 
 import { useState, ChangeEvent } from 'react';
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { FileText, Upload, Check, X, ArrowUp } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 interface CVUploaderProps {
   onUpload: (text: string, fileName?: string) => void;
@@ -13,10 +12,6 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadState, setUploadState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
-  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setCvText(e.target.value);
-  };
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -81,35 +76,33 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
 
   return (
     <div
-      className={`border-2 border-dashed rounded-xl p-6 transition-all duration-200 bg-purple-300/50 ${
+      className={`border-2 border-dashed rounded-xl p-6 transition-all duration-200 ${
         isDragging 
-          ? 'border-gray-700 bg-gray-700/5' 
+          ? 'border-gray-400 bg-gray-50 dark:bg-gray-800/30' 
           : file 
             ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
-            : 'border-purple-300'
+            : 'border-gray-300'
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="flex flex-col items-center justify-center text-center">
-        <div className="w-16 h-16 mb-4 rounded-full bg-purple-700 flex items-center justify-center text-white isolate">
-          {file ? <FileText size={30} /> : <ArrowUp size={30} />}
-        </div>
+      <div className="flex flex-col items-center justify-center text-center py-6">
+        <FileText className="w-12 h-12 mb-4 text-gray-400" />
         
         <h3 className="text-lg font-medium mb-2">
-          {file ? 'CV Uploaded' : 'Upload Your CV'}
+          {file ? 'CV Uploaded' : 'Upload your CV'}
         </h3>
         
         <p className="text-muted-foreground text-sm mb-6">
           {file 
             ? `File: ${file.name}`
-            : 'Drag and drop your CV, or click to browse'
+            : 'Drag and drop your CV or click to browse'
           }
         </p>
         
         {!file && (
-          <div>
+          <div className="mb-4">
             <input
               type="file"
               id="cv-upload"
@@ -119,14 +112,20 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
             />
             <label htmlFor="cv-upload">
               <Button 
-                variant="secondary" 
-                className="cursor-pointer bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate" 
+                variant="outline" 
+                className="cursor-pointer rounded-full px-6 border-gray-300 bg-gray-50 hover:bg-gray-100 hover:text-gray-800 text-gray-700" 
                 asChild
               >
-                <span>Browse Files</span>
+                <span>Choose File</span>
               </Button>
             </label>
           </div>
+        )}
+        
+        {!file && (
+          <p className="text-xs text-muted-foreground mt-2">
+            Supported formats: PDF, Word, TXT
+          </p>
         )}
         
         {file && uploadState === 'success' && (
@@ -138,7 +137,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
               setCvText('');
               setUploadState('idle');
             }}
-            className="isolate hover:bg-[#46235C] hover:text-white"
+            className="mt-2"
           >
             Remove File
           </Button>
