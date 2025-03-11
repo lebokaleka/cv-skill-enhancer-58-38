@@ -53,10 +53,10 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
     if (!matchResult) return [];
     
     return [
-      { name: 'Skills', value: matchResult.sectionScores.skills, color: getBarColor(matchResult.sectionScores.skills) },
-      { name: 'Experience', value: matchResult.sectionScores.experience, color: getBarColor(matchResult.sectionScores.experience) },
-      { name: 'Education', value: matchResult.sectionScores.education, color: getBarColor(matchResult.sectionScores.education) },
-      { name: 'Certifications', value: matchResult.sectionScores.certifications, color: getBarColor(matchResult.sectionScores.certifications) },
+      { name: 'Skills', value: matchResult.sectionScores.skills, fill: getBarColor(matchResult.sectionScores.skills) },
+      { name: 'Experience', value: matchResult.sectionScores.experience, fill: getBarColor(matchResult.sectionScores.experience) },
+      { name: 'Education', value: matchResult.sectionScores.education, fill: getBarColor(matchResult.sectionScores.education) },
+      { name: 'Certifications', value: matchResult.sectionScores.certifications, fill: getBarColor(matchResult.sectionScores.certifications) },
     ];
   };
 
@@ -189,7 +189,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
                         <XAxis type="number" domain={[0, 100]} />
                         <YAxis type="category" dataKey="name" width={80} />
                         <Tooltip />
-                        <Bar dataKey="value" fill={(entry) => entry.color} radius={[0, 4, 4, 0]} />
+                        <Bar dataKey="value" fill="#8884d8" />
                       </RechartsBarChart>
                     </ResponsiveContainer>
                   </div>
@@ -340,8 +340,6 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
                     ))}
                   </ul>
                 </div>
-                
-                {/* Document Comparison - Removed and replaced with more detailed analysis above */}
               </div>
             )}
           </CardContent>
