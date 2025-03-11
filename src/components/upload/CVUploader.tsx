@@ -108,10 +108,10 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
           <label htmlFor="cv-upload" onClick={handleButtonClick}>
             <Button 
               variant="outline" 
-              className={`cursor-pointer rounded-full px-5 py-1 h-8 text-xs transition-all duration-300 ${
+              className={`cursor-pointer rounded-full px-6 font-medium border-gray-300 isolate transition-all duration-200 ${
                 isButtonAnimating 
                   ? 'bg-[#46235C] text-white border-[#46235C]' 
-                  : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:text-gray-800 text-gray-700'
+                  : 'hover:bg-[#46235C] hover:text-white hover:border-transparent'
               }`}
               asChild
             >
