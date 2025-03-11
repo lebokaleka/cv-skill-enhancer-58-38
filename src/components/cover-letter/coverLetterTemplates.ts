@@ -1,10 +1,10 @@
-
 export interface CoverLetterTemplate {
   id: string;
   name: string;
   description: string;
   style: string;
   imageUrl?: string;
+  preview?: React.ReactNode;
 }
 
 export const coverLetterTemplates: CoverLetterTemplate[] = [
@@ -13,7 +13,7 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     name: 'Modern Professional',
     description: 'A clean, professional template with a personal header section and structured layout',
     style: 'Contemporary with personal branding',
-    imageUrl: '/lovable-uploads/c51266ab-a6cb-4fa2-841d-25838a246426.png'
+    imageUrl: '/lovable-uploads/40be15db-f883-42ef-a2a9-881b1aaed3cb.png'
   },
   {
     id: 'classic-elegant',

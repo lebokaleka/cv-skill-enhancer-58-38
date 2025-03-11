@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { coverLetterTemplates } from "@/components/cover-letter/coverLetterTemplates";
 import CoverLetterInput from "@/components/cover-letter/CoverLetterInput";
 import CoverLetterPreview from "@/components/cover-letter/CoverLetterPreview";
+import ModernProfessionalTemplate from '@/components/cover-letter/templates/ModernProfessionalTemplate';
 
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');
@@ -38,20 +38,19 @@ const CoverLetter = () => {
       let mockCoverLetter = '';
       
       if (template?.id === 'modern-professional') {
-        mockCoverLetter = `Dear Hiring Manager,
+        mockCoverLetter = `To whom it may concern,
 
 I am writing to express my interest in the Frontend Developer position at Acme Corporation, as advertised on your company website. With over five years of experience in web development and a strong background in React, TypeScript, and modern JavaScript frameworks, I believe I would be a valuable addition to your team.
 
-Throughout my career, I have developed and maintained high-performance web applications, focusing on creating intuitive user interfaces and optimizing user experiences. My experience aligns perfectly with the requirements outlined in your job description, particularly in building responsive interfaces and implementing complex UI components.
+• Throughout my career, I have developed and maintained high-performance web applications, focusing on creating intuitive user interfaces and optimizing user experiences.
+• My experience aligns perfectly with the requirements outlined in your job description, particularly in building responsive interfaces and implementing complex UI components.
+• I have successfully led the frontend development of a customer portal that decreased support requests by 35% and increased user engagement by 28%.
 
-In my current role at XYZ Technologies, I successfully led the frontend development of a customer portal that decreased support requests by 35% and increased user engagement by 28%. I collaborated closely with UX designers and backend developers to ensure seamless integration and optimal performance.
+In my current role at XYZ Technologies, I collaborated closely with UX designers and backend developers to ensure seamless integration and optimal performance. I am particularly drawn to Acme Corporation because of your commitment to innovation and your focus on creating products that solve real-world problems.
 
-I am particularly drawn to Acme Corporation because of your commitment to innovation and your focus on creating products that solve real-world problems. I am excited about the possibility of bringing my technical expertise and creative problem-solving skills to your team.
+I am excited about the possibility of bringing my technical expertise and creative problem-solving skills to your team. Thank you for considering my application. I look forward to the opportunity to discuss how my skills and experience can contribute to Acme Corporation's continued success.
 
-Thank you for considering my application. I look forward to the opportunity to discuss how my skills and experience can contribute to Acme Corporation's continued success.
-
-Sincerely,
-[Your Name]`;
+Kind regards,`;
       } else if (template?.id === 'classic-elegant') {
         mockCoverLetter = `Dear Hiring Manager,
 
@@ -132,6 +131,20 @@ Sincerely,
     }, 1500);
   };
 
+  const renderDirectTemplatePreview = () => {
+    if (selectedTemplate === 'modern-professional') {
+      return (
+        <div className="mt-6 border rounded-lg p-4 bg-white shadow-sm">
+          <div className="text-sm text-muted-foreground mb-2">Template Preview:</div>
+          <div className="transform scale-90 origin-top-left">
+            <ModernProfessionalTemplate />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -146,17 +159,20 @@ Sincerely,
           </div>
 
           {step === 'input' ? (
-            <CoverLetterInput 
-              cvText={cvText}
-              jobDescription={jobDescription}
-              selectedTemplate={selectedTemplate}
-              templates={coverLetterTemplates}
-              isGenerating={isGenerating}
-              onCVUpload={handleCVUpload}
-              onJobDescriptionChange={handleJobDescriptionChange}
-              onTemplateSelect={handleTemplateSelect}
-              onGenerate={handleGenerate}
-            />
+            <>
+              <CoverLetterInput 
+                cvText={cvText}
+                jobDescription={jobDescription}
+                selectedTemplate={selectedTemplate}
+                templates={coverLetterTemplates}
+                isGenerating={isGenerating}
+                onCVUpload={handleCVUpload}
+                onJobDescriptionChange={handleJobDescriptionChange}
+                onTemplateSelect={handleTemplateSelect}
+                onGenerate={handleGenerate}
+              />
+              {renderDirectTemplatePreview()}
+            </>
           ) : (
             <CoverLetterPreview 
               coverLetter={coverLetter}

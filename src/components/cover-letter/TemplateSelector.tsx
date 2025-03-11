@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CoverLetterTemplate } from "./coverLetterTemplates";
 import Image from "@/components/ui/image";
-import { Eye, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { useState } from "react";
 
 interface TemplateSelectorProps {
@@ -16,8 +16,6 @@ const TemplateSelector = ({
   selectedTemplate, 
   onSelectTemplate 
 }: TemplateSelectorProps) => {
-  const [previewTemplate, setPreviewTemplate] = useState<string | null>(null);
-
   return (
     <Card className="glass-card border-dashed">
       <CardHeader className="py-4">
@@ -38,20 +36,16 @@ const TemplateSelector = ({
               }`}
             >
               <div className="flex flex-col gap-2">
-                {/* Template Preview Image */}
+                {/* Template Preview Image - Direct Preview */}
                 <div 
-                  className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden group cursor-pointer"
+                  className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer"
                   onClick={() => onSelectTemplate(template.id)}
-                  onMouseEnter={() => setPreviewTemplate(template.id)}
-                  onMouseLeave={() => setPreviewTemplate(null)}
                 >
                   {template.imageUrl && (
                     <Image 
                       src={template.imageUrl} 
                       alt={template.name}
-                      className={`object-cover w-full h-full transition-opacity duration-200 ${
-                        previewTemplate === template.id ? 'opacity-80' : 'opacity-100'
-                      }`}
+                      className="object-cover w-full h-full transition-opacity duration-200"
                     />
                   )}
                   
@@ -61,15 +55,6 @@ const TemplateSelector = ({
                       <Check size={12} />
                     </div>
                   )}
-                  
-                  {/* Preview Button Overlay */}
-                  <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
-                    previewTemplate === template.id ? 'opacity-100' : 'opacity-0'
-                  } group-hover:opacity-100`}>
-                    <div className="bg-background/80 backdrop-blur-sm rounded-full p-1.5 shadow-sm">
-                      <Eye size={14} className="text-primary" />
-                    </div>
-                  </div>
                 </div>
                 
                 {/* Template Info */}

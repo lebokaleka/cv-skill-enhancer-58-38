@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, Copy, Check, RefreshCw } from 'lucide-react';
 import { CoverLetterTemplate } from "./coverLetterTemplates";
+import ModernProfessionalTemplate from './templates/ModernProfessionalTemplate';
 
 interface CoverLetterPreviewProps {
   coverLetter: string;
@@ -28,6 +29,22 @@ const CoverLetterPreview = ({
     navigator.clipboard.writeText(coverLetter);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const renderTemplate = () => {
+    switch (selectedTemplate) {
+      case 'modern-professional':
+        return <ModernProfessionalTemplate content={coverLetter} />;
+      default:
+        // Fallback to simple display for other templates
+        return (
+          <div className="bg-white dark:bg-background border rounded-md p-6 shadow-sm min-h-[60vh]">
+            <pre className="font-sans whitespace-pre-wrap text-foreground">
+              {coverLetter}
+            </pre>
+          </div>
+        );
+    }
   };
 
   return (
@@ -81,11 +98,7 @@ const CoverLetterPreview = ({
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
-          <div className="bg-white dark:bg-background border rounded-md p-6 shadow-sm min-h-[60vh]">
-            <pre className="font-sans whitespace-pre-wrap text-foreground">
-              {coverLetter}
-            </pre>
-          </div>
+          {renderTemplate()}
         </CardContent>
       </Card>
 
