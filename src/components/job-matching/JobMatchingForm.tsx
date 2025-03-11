@@ -51,8 +51,18 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
           <CardContent className="space-y-4">
             <Tabs defaultValue="upload" onValueChange={(value) => setActiveTab(value as 'upload' | 'paste')}>
               <TabsList className="grid w-full grid-cols-2 mb-4 bg-secondary/20">
-                <TabsTrigger value="upload" className="rounded-full data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate">Upload File</TabsTrigger>
-                <TabsTrigger value="paste" className="rounded-full data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate">Paste Text</TabsTrigger>
+                <TabsTrigger 
+                  value="upload" 
+                  className="rounded-full data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate flex-1 py-1.5 h-9"
+                >
+                  Upload File
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="paste" 
+                  className="rounded-full data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate flex-1 py-1.5 h-9"
+                >
+                  Paste Text
+                </TabsTrigger>
               </TabsList>
               
               <TabsContent value="upload" className="space-y-4">
@@ -71,7 +81,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
                         Change
                       </Button>
                     </div>
-                    <div className="bg-secondary/50 p-4 rounded-md h-[200px] overflow-auto">
+                    <div className="bg-secondary/50 p-4 rounded-md h-[180px] overflow-auto">
                       <p className="text-sm whitespace-pre-wrap">{cvText}</p>
                     </div>
                   </div>
@@ -83,7 +93,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
                   value={cvText}
                   onChange={(e) => setCvText(e.target.value)}
                   placeholder="Or paste your CV content here..."
-                  className="min-h-[250px] resize-none"
+                  className="min-h-[220px] resize-none"
                 />
               </TabsContent>
             </Tabs>
@@ -119,7 +129,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
                 value={jobDescription}
                 onChange={handleJobDescriptionChange}
                 placeholder="Paste job description here..."
-                className="min-h-[250px] resize-none"
+                className="min-h-[220px] resize-none"
               />
             </div>
           </CardContent>

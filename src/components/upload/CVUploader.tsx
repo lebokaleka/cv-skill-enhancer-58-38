@@ -76,7 +76,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
 
   return (
     <div
-      className={`border-2 border-dashed rounded-xl p-6 transition-all duration-200 ${
+      className={`border-2 border-dashed rounded-xl p-4 transition-all duration-200 ${
         isDragging 
           ? 'border-gray-400 bg-gray-50 dark:bg-gray-800/30' 
           : file 
@@ -87,14 +87,14 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="flex flex-col items-center justify-center text-center py-6">
-        <FileText className="w-12 h-12 mb-4 text-gray-400" />
+      <div className="flex flex-col items-center justify-center text-center py-4">
+        <FileText className="w-10 h-10 mb-3 text-gray-400" />
         
-        <h3 className="text-lg font-medium mb-2">
+        <h3 className="text-base font-medium mb-1">
           {file ? 'CV Uploaded' : 'Upload your CV'}
         </h3>
         
-        <p className="text-muted-foreground text-sm mb-6">
+        <p className="text-muted-foreground text-xs mb-4">
           {file 
             ? `File: ${file.name}`
             : 'Drag and drop your CV or click to browse'
@@ -102,7 +102,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
         </p>
         
         {!file && (
-          <div className="mb-4">
+          <div className="mb-3">
             <input
               type="file"
               id="cv-upload"
@@ -113,7 +113,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
             <label htmlFor="cv-upload">
               <Button 
                 variant="outline" 
-                className="cursor-pointer rounded-full px-6 border-gray-300 bg-gray-50 hover:bg-gray-100 hover:text-gray-800 text-gray-700" 
+                className="cursor-pointer rounded-full px-5 py-1 h-8 border-gray-300 bg-gray-50 hover:bg-gray-100 hover:text-gray-800 text-gray-700 text-xs" 
                 asChild
               >
                 <span>Choose File</span>
@@ -123,7 +123,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
         )}
         
         {!file && (
-          <p className="text-xs text-muted-foreground mt-2">
+          <p className="text-xs text-muted-foreground">
             Supported formats: PDF, Word, TXT
           </p>
         )}
@@ -137,7 +137,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
               setCvText('');
               setUploadState('idle');
             }}
-            className="mt-2"
+            className="mt-2 text-xs h-7"
           >
             Remove File
           </Button>
