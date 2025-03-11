@@ -1,10 +1,10 @@
 
 import { useState } from 'react';
 import CVUploader from "@/components/upload/CVUploader";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { FileText, Briefcase, ArrowRight } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 
 interface JobMatchingFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -67,18 +67,6 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
                 </div>
               </div>
             )}
-
-            {/* Analyze Button - Inside the CV Card at the bottom */}
-            <div className="flex justify-end mt-4">
-              <Button
-                onClick={handleAnalyzeClick}
-                disabled={!cvText || !jobDescription || isAnalyzing}
-                className="rounded-full bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate"
-              >
-                {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
-            </div>
           </CardContent>
         </Card>
 
@@ -101,6 +89,18 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
                 placeholder="Paste job description here..."
                 className="min-h-[220px] resize-none"
               />
+              
+              {/* Moving the analyze button to the job description card */}
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleAnalyzeClick}
+                  disabled={!cvText || !jobDescription || isAnalyzing}
+                  className="rounded-full bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate"
+                >
+                  {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -11,6 +11,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadState, setUploadState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [isButtonAnimating, setIsButtonAnimating] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -34,6 +35,13 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
     if (e.target.files && e.target.files.length > 0) {
       handleFileSelect(e.target.files[0]);
     }
+  };
+
+  const handleButtonClick = () => {
+    setIsButtonAnimating(true);
+    setTimeout(() => {
+      setIsButtonAnimating(false);
+    }, 500);
   };
 
   const handleFileSelect = (selectedFile: File) => {
@@ -69,7 +77,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
 
   return (
     <div
-      className={`border-2 border-dashed rounded-lg p-6 transition-all duration-200 ${
+      className={`border border-dashed rounded-lg p-5 transition-all duration-200 ${
         isDragging 
           ? 'border-gray-400 bg-gray-50 dark:bg-gray-800/30' 
           : 'border-gray-300'
@@ -78,18 +86,18 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="flex flex-col items-center justify-center text-center py-5">
-        <FileText className="w-12 h-12 mb-4 text-gray-400" />
+      <div className="flex flex-col items-center justify-center text-center py-4">
+        <FileText className="w-10 h-10 mb-3 text-gray-400" />
         
         <h3 className="text-base font-medium mb-1">
           Upload your CV
         </h3>
         
-        <p className="text-sm text-muted-foreground mb-4">
+        <p className="text-sm text-muted-foreground mb-3">
           Drag and drop your CV or click to browse
         </p>
         
-        <div className="mb-5">
+        <div className="mb-4">
           <input
             type="file"
             id="cv-upload"
@@ -97,10 +105,14 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
             accept=".pdf,.doc,.docx,.txt"
             onChange={handleFileInputChange}
           />
-          <label htmlFor="cv-upload">
+          <label htmlFor="cv-upload" onClick={handleButtonClick}>
             <Button 
               variant="outline" 
-              className="cursor-pointer rounded-full px-5 py-1 h-8 border-gray-300 bg-gray-50 hover:bg-gray-100 hover:text-gray-800 text-gray-700 text-xs" 
+              className={`cursor-pointer rounded-full px-5 py-1 h-8 text-xs transition-all duration-300 ${
+                isButtonAnimating 
+                  ? 'bg-[#46235C] text-white border-[#46235C]' 
+                  : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:text-gray-800 text-gray-700'
+              }`}
               asChild
             >
               <span>Choose File</span>
