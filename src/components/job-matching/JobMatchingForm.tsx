@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import CVUploader from "@/components/upload/CVUploader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -121,7 +120,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
 
       {/* Right side: AI analysis preview section - 50% width */}
       <div>
-        <Card className="glass-card border-dashed animate-fade-in h-full">
+        <Card className="glass-card border-dashed border-2 animate-fade-in h-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <PenTool size={20} />
