@@ -160,7 +160,7 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
                   value={cvText}
                   onChange={handleTextChange}
                   placeholder="Paste your CV content here..."
-                  className="min-h-[400px] resize-none border-2 border-dashed p-4"
+                  className="min-h-[400px] resize-none border-2 border-gray-300 p-4 focus:border-[#46235C] focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               </div>
             </TabsContent>
