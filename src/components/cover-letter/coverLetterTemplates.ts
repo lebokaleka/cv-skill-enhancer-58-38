@@ -4,25 +4,15 @@ export interface CoverLetterTemplate {
   name: string;
   description: string;
   style: string;
+  imageUrl?: string;
 }
 
 export const coverLetterTemplates: CoverLetterTemplate[] = [
   {
-    id: 'professional',
-    name: 'Professional',
-    description: 'Formal and concise, ideal for corporate roles',
-    style: 'Formal tone with clear structure'
-  },
-  {
-    id: 'creative',
-    name: 'Creative',
-    description: 'Showcase your unique style and personality',
-    style: 'Conversational with storytelling elements'
-  },
-  {
-    id: 'technical',
-    name: 'Technical',
-    description: 'Highlight technical skills and achievements',
-    style: 'Detailed with emphasis on technical expertise'
+    id: 'modern-professional',
+    name: 'Modern Professional',
+    description: 'A clean, professional template with a personal header section and structured layout',
+    style: 'Contemporary with personal branding',
+    imageUrl: '/lovable-uploads/c51266ab-a6cb-4fa2-841d-25838a246426.png'
   }
 ];
