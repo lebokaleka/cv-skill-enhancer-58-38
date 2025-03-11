@@ -4,10 +4,6 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { MatchResult } from '@/types/jobMatching';
 import JobMatchingForm from '@/components/job-matching/JobMatchingForm';
-import MatchScoreCard from '@/components/job-matching/MatchScoreCard';
-import DocumentComparisonCard from '@/components/job-matching/DocumentComparisonCard';
-import SuggestionsCard from '@/components/job-matching/SuggestionsCard';
-import ResultActions from '@/components/job-matching/ResultActions';
 
 const JobMatching = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -68,29 +64,22 @@ const JobMatching = () => {
             </p>
           </div>
 
-          {!matchResult && (
-            <div className="animate-scale-in">
-              <JobMatchingForm 
-                onAnalyze={handleAnalyze} 
-                isAnalyzing={isAnalyzing} 
-              />
-            </div>
-          )}
+          <div className="animate-scale-in">
+            <JobMatchingForm 
+              onAnalyze={handleAnalyze} 
+              isAnalyzing={isAnalyzing}
+              matchResult={matchResult} 
+            />
+          </div>
 
           {matchResult && (
-            <div className="space-y-8 animate-fade-in">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div>
-                  <MatchScoreCard matchResult={matchResult} />
-                  <div className="mt-6">
-                    <DocumentComparisonCard matchResult={matchResult} />
-                  </div>
-                </div>
-                <div>
-                  <SuggestionsCard matchResult={matchResult} />
-                </div>
-              </div>
-              <ResultActions onNewComparison={handleNewComparison} />
+            <div className="flex justify-center mt-8">
+              <Button
+                onClick={handleNewComparison}
+                className="rounded-full bg-secondary hover:bg-secondary/80 text-secondary-foreground"
+              >
+                Start New Comparison
+              </Button>
             </div>
           )}
         </div>
