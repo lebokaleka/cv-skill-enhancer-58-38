@@ -8,7 +8,6 @@ interface CVUploaderProps {
 }
 
 const CVUploader = ({ onUpload }: CVUploaderProps) => {
-  const [cvText, setCvText] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadState, setUploadState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -54,94 +53,64 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
       
       reader.onload = (e) => {
         if (typeof e.target?.result === 'string') {
-          setCvText(e.target.result);
+          // Pass the content to the parent component
+          onUpload(e.target.result, selectedFile.name);
         }
       };
       
       reader.readAsText(selectedFile);
+    } else {
+      // For non-text files, just pass the file name
+      onUpload("File uploaded: " + selectedFile.name, selectedFile.name);
     }
     
     setUploadState('success');
   };
 
-  const handleSubmit = () => {
-    setUploadState('loading');
-    
-    // Simulate processing
-    setTimeout(() => {
-      onUpload(cvText, file?.name);
-      setUploadState('success');
-    }, 1000);
-  };
-
   return (
     <div
-      className={`border-2 border-dashed rounded-xl p-4 transition-all duration-200 ${
+      className={`border-2 border-dashed rounded-lg p-6 transition-all duration-200 ${
         isDragging 
           ? 'border-gray-400 bg-gray-50 dark:bg-gray-800/30' 
-          : file 
-            ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
-            : 'border-gray-300'
+          : 'border-gray-300'
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="flex flex-col items-center justify-center text-center py-4">
-        <FileText className="w-10 h-10 mb-3 text-gray-400" />
+      <div className="flex flex-col items-center justify-center text-center py-5">
+        <FileText className="w-12 h-12 mb-4 text-gray-400" />
         
         <h3 className="text-base font-medium mb-1">
-          {file ? 'CV Uploaded' : 'Upload your CV'}
+          Upload your CV
         </h3>
         
-        <p className="text-muted-foreground text-xs mb-4">
-          {file 
-            ? `File: ${file.name}`
-            : 'Drag and drop your CV or click to browse'
-          }
+        <p className="text-sm text-muted-foreground mb-4">
+          Drag and drop your CV or click to browse
         </p>
         
-        {!file && (
-          <div className="mb-3">
-            <input
-              type="file"
-              id="cv-upload"
-              className="hidden"
-              accept=".pdf,.doc,.docx,.txt"
-              onChange={handleFileInputChange}
-            />
-            <label htmlFor="cv-upload">
-              <Button 
-                variant="outline" 
-                className="cursor-pointer rounded-full px-5 py-1 h-8 border-gray-300 bg-gray-50 hover:bg-gray-100 hover:text-gray-800 text-gray-700 text-xs" 
-                asChild
-              >
-                <span>Choose File</span>
-              </Button>
-            </label>
-          </div>
-        )}
+        <div className="mb-5">
+          <input
+            type="file"
+            id="cv-upload"
+            className="hidden"
+            accept=".pdf,.doc,.docx,.txt"
+            onChange={handleFileInputChange}
+          />
+          <label htmlFor="cv-upload">
+            <Button 
+              variant="outline" 
+              className="cursor-pointer rounded-full px-5 py-1 h-8 border-gray-300 bg-gray-50 hover:bg-gray-100 hover:text-gray-800 text-gray-700 text-xs" 
+              asChild
+            >
+              <span>Choose File</span>
+            </Button>
+          </label>
+        </div>
         
-        {!file && (
-          <p className="text-xs text-muted-foreground">
-            Supported formats: PDF, Word, TXT
-          </p>
-        )}
-        
-        {file && uploadState === 'success' && (
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => {
-              setFile(null);
-              setCvText('');
-              setUploadState('idle');
-            }}
-            className="mt-2 text-xs h-7"
-          >
-            Remove File
-          </Button>
-        )}
+        <p className="text-xs text-muted-foreground">
+          Supported formats: PDF, Word, TXT
+        </p>
       </div>
     </div>
   );

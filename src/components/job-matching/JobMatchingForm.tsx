@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { FileText, Briefcase, ArrowRight } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface JobMatchingFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -16,7 +15,6 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
   const [cvText, setCvText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [showUploader, setShowUploader] = useState(true);
-  const [activeTab, setActiveTab] = useState<'upload' | 'paste'>('upload');
 
   const handleCVUpload = (text: string) => {
     setCvText(text);
@@ -37,7 +35,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* CV Upload/Paste Section - Left Side */}
+        {/* CV Upload Section - Left Side */}
         <Card className="glass-card border-dashed animate-fade-in">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2">
@@ -45,58 +43,30 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing }: JobMatchingFormProps) => {
               <span>Your CV</span>
             </CardTitle>
             <CardDescription>
-              Upload your CV file
+              Upload your CV
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Tabs defaultValue="upload" onValueChange={(value) => setActiveTab(value as 'upload' | 'paste')}>
-              <TabsList className="grid w-full grid-cols-2 mb-4 bg-secondary/20">
-                <TabsTrigger 
-                  value="upload" 
-                  className="rounded-full data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate flex-1 py-1.5 h-9"
-                >
-                  Upload File
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="paste" 
-                  className="rounded-full data-[state=active]:bg-[#46235C] data-[state=active]:text-white data-[state=active]:isolate flex-1 py-1.5 h-9"
-                >
-                  Paste Text
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="upload" className="space-y-4">
-                {showUploader ? (
-                  <CVUploader onUpload={handleCVUpload} />
-                ) : (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">CV Uploaded</span>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => setShowUploader(true)}
-                        className="isolate hover:bg-[#46235C] hover:text-white"
-                      >
-                        Change
-                      </Button>
-                    </div>
-                    <div className="bg-secondary/50 p-4 rounded-md h-[180px] overflow-auto">
-                      <p className="text-sm whitespace-pre-wrap">{cvText}</p>
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="paste" className="space-y-4">
-                <Textarea
-                  value={cvText}
-                  onChange={(e) => setCvText(e.target.value)}
-                  placeholder="Or paste your CV content here..."
-                  className="min-h-[220px] resize-none"
-                />
-              </TabsContent>
-            </Tabs>
+            {showUploader ? (
+              <CVUploader onUpload={handleCVUpload} />
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">CV Uploaded</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setShowUploader(true)}
+                    className="isolate hover:bg-[#46235C] hover:text-white"
+                  >
+                    Change
+                  </Button>
+                </div>
+                <div className="bg-secondary/50 p-4 rounded-md h-[180px] overflow-auto">
+                  <p className="text-sm whitespace-pre-wrap">{cvText}</p>
+                </div>
+              </div>
+            )}
 
             {/* Analyze Button - Inside the CV Card at the bottom */}
             <div className="flex justify-end mt-4">
