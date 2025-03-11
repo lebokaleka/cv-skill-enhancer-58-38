@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { CoverLetterTemplate } from "./coverLetterTemplates";
 import Image from "@/components/ui/image";
 import { Check } from "lucide-react";
-import { useState } from "react";
 
 interface TemplateSelectorProps {
   templates: CoverLetterTemplate[];
@@ -36,16 +35,20 @@ const TemplateSelector = ({
               }`}
             >
               <div className="flex flex-col gap-2">
-                {/* Template Preview Image - Direct Preview */}
+                {/* Template Preview Image */}
                 <div 
                   className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer"
                   onClick={() => onSelectTemplate(template.id)}
                 >
                   {template.imageUrl && (
-                    <Image 
+                    <img 
                       src={template.imageUrl} 
                       alt={template.name}
                       className="object-cover w-full h-full transition-opacity duration-200"
+                      onError={(e) => {
+                        // If image fails to load, show a fallback
+                        e.currentTarget.src = "/placeholder.svg";
+                      }}
                     />
                   )}
                   
