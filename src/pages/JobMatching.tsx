@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { MatchResult } from '@/types/jobMatching';
 import JobMatchingForm from '@/components/job-matching/JobMatchingForm';
+import { Button } from "@/components/ui/button";
 
 const JobMatching = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
