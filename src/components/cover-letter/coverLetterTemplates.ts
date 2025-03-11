@@ -28,5 +28,19 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     description: 'Bold design with modern elements for creative industries',
     style: 'Innovative and eye-catching',
     imageUrl: '/lovable-uploads/c51266ab-a6cb-4fa2-841d-25838a246426.png'
+  },
+  {
+    id: 'minimal-clean',
+    name: 'Minimal Clean',
+    description: 'Sleek, minimalist design with ample white space and clean typography',
+    style: 'Simple and focused',
+    imageUrl: '/lovable-uploads/c51266ab-a6cb-4fa2-841d-25838a246426.png'
+  },
+  {
+    id: 'corporate-executive',
+    name: 'Corporate Executive',
+    description: 'Professional business template ideal for corporate and executive positions',
+    style: 'Corporate and authoritative',
+    imageUrl: '/lovable-uploads/c51266ab-a6cb-4fa2-841d-25838a246426.png'
   }
 ];

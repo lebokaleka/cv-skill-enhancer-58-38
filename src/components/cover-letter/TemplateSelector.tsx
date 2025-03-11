@@ -20,27 +20,27 @@ const TemplateSelector = ({
 
   return (
     <Card className="glass-card border-dashed">
-      <CardHeader>
+      <CardHeader className="py-4">
         <CardTitle>Choose a Template</CardTitle>
         <CardDescription>
           Select a template that matches the tone you want to convey
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
           {templates.map((template) => (
             <div
               key={template.id}
-              className={`relative border rounded-xl p-3 transition-all duration-200 ${
+              className={`relative border rounded-lg p-2 transition-all duration-200 ${
                 selectedTemplate === template.id 
-                  ? 'border-primary ring-2 ring-primary/20 shadow-md' 
-                  : 'border-border hover:border-primary/30 hover:shadow'
+                  ? 'border-primary ring-1 ring-primary/20 shadow-sm' 
+                  : 'border-border hover:border-primary/30 hover:shadow-sm'
               }`}
             >
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
                 {/* Template Preview Image */}
                 <div 
-                  className="relative w-full aspect-[1/1.4] rounded-lg overflow-hidden group cursor-pointer"
+                  className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden group cursor-pointer"
                   onClick={() => onSelectTemplate(template.id)}
                   onMouseEnter={() => setPreviewTemplate(template.id)}
                   onMouseLeave={() => setPreviewTemplate(null)}
@@ -57,8 +57,8 @@ const TemplateSelector = ({
                   
                   {/* Selection Indicator */}
                   {selectedTemplate === template.id && (
-                    <div className="absolute top-2 right-2 bg-primary text-white rounded-full p-1">
-                      <Check size={16} />
+                    <div className="absolute top-1.5 right-1.5 bg-primary text-white rounded-full p-0.5">
+                      <Check size={12} />
                     </div>
                   )}
                   
@@ -66,8 +66,8 @@ const TemplateSelector = ({
                   <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
                     previewTemplate === template.id ? 'opacity-100' : 'opacity-0'
                   } group-hover:opacity-100`}>
-                    <div className="bg-background/80 backdrop-blur-sm rounded-full p-2 shadow-sm">
-                      <Eye size={18} className="text-primary" />
+                    <div className="bg-background/80 backdrop-blur-sm rounded-full p-1.5 shadow-sm">
+                      <Eye size={14} className="text-primary" />
                     </div>
                   </div>
                 </div>
@@ -75,26 +75,26 @@ const TemplateSelector = ({
                 {/* Template Info */}
                 <div className="flex flex-col justify-between flex-grow">
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">{template.name}</h3>
-                    <p className="text-xs text-muted-foreground mb-2">
+                    <h3 className="text-sm font-semibold mb-0.5 line-clamp-1">{template.name}</h3>
+                    <p className="text-xs text-muted-foreground mb-1 line-clamp-2">
                       {template.description}
                     </p>
                     <div className="text-xs text-muted-foreground">
                       <span className="font-medium">Style: </span>
-                      <span>{template.style}</span>
+                      <span className="line-clamp-1">{template.style}</span>
                     </div>
                   </div>
                   
                   {/* Selection Button */}
                   <button
                     onClick={() => onSelectTemplate(template.id)}
-                    className={`mt-3 w-full py-1.5 px-2 rounded-md text-xs font-medium transition-colors duration-200 ${
+                    className={`mt-2 w-full py-1 px-2 rounded text-xs font-medium transition-colors duration-200 ${
                       selectedTemplate === template.id 
                         ? 'bg-primary/10 text-primary border border-primary/20' 
                         : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
                     }`}
                   >
-                    {selectedTemplate === template.id ? 'Selected' : 'Select Template'}
+                    {selectedTemplate === template.id ? 'Selected' : 'Select'}
                   </button>
                 </div>
               </div>
