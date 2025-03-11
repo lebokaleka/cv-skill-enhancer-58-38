@@ -23,19 +23,19 @@ const TemplateSelector = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {templates.map((template) => (
             <div
               key={template.id}
-              className={`relative border rounded-xl p-4 cursor-pointer transition-all duration-200 hover:shadow-lg ${
+              className={`relative border rounded-xl p-3 cursor-pointer transition-all duration-200 hover:shadow-lg ${
                 selectedTemplate === template.id 
                   ? 'border-primary ring-2 ring-primary/20' 
                   : 'border-border hover:border-primary/50'
               }`}
               onClick={() => onSelectTemplate(template.id)}
             >
-              <div className="flex flex-col md:flex-row gap-6">
-                <div className="w-full md:w-2/3 aspect-[1/1.4] relative rounded-lg overflow-hidden">
+              <div className="flex flex-col gap-4">
+                <div className="w-full aspect-[1/1.4] relative rounded-lg overflow-hidden">
                   {template.imageUrl && (
                     <img 
                       src={template.imageUrl} 
@@ -44,10 +44,10 @@ const TemplateSelector = ({
                     />
                   )}
                 </div>
-                <div className="flex flex-col justify-between md:w-1/3">
+                <div className="flex flex-col justify-between flex-grow">
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">{template.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
+                    <h3 className="text-lg font-semibold mb-2">{template.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
                       {template.description}
                     </p>
                     <div className="text-sm text-muted-foreground">
@@ -55,7 +55,7 @@ const TemplateSelector = ({
                       <span>{template.style}</span>
                     </div>
                   </div>
-                  <div className="mt-4">
+                  <div className="mt-3">
                     <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                       selectedTemplate === template.id 
                         ? 'bg-primary/10 text-primary' 
