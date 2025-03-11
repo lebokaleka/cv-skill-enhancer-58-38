@@ -22,6 +22,7 @@ const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [userCount, setUserCount] = useState(0);
   const userCountRef = useRef(null);
+  const hasAnimatedRef = useRef(false);
   
   useEffect(() => {
     // Add a slight delay for the animation
@@ -32,8 +33,9 @@ const Index = () => {
     // Intersection Observer for counting animation
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
-      if (entry.isIntersecting) {
+      if (entry.isIntersecting && !hasAnimatedRef.current) {
         animateCount();
+        hasAnimatedRef.current = true; // Mark as animated so it won't run again
       }
     }, {
       threshold: 0.5
