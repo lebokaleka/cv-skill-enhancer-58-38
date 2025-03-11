@@ -106,7 +106,7 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
             
             <TabsContent value="upload" className="mt-0">
               <div
-                className={`border-2 border-dashed rounded-xl p-10 transition-all duration-200 ${
+                className={`border-2 border-dashed rounded-xl p-10 min-h-[400px] flex items-center justify-center transition-all duration-200 ${
                   isDragging 
                     ? 'border-gray-400 bg-gray-50 dark:bg-gray-800/30' 
                     : file 
@@ -160,7 +160,7 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
                   value={cvText}
                   onChange={handleTextChange}
                   placeholder="Paste your CV content here..."
-                  className="min-h-[250px] resize-none border-2 border-dashed p-4"
+                  className="min-h-[400px] resize-none border-2 border-dashed p-4"
                 />
               </div>
             </TabsContent>
