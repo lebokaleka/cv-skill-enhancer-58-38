@@ -1,7 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CoverLetterTemplate } from "./coverLetterTemplates";
-import Image from "@/components/ui/image";
 import { Check } from "lucide-react";
 
 interface TemplateSelectorProps {
@@ -33,58 +32,29 @@ const TemplateSelector = ({
                   ? 'border-primary ring-1 ring-primary/20 shadow-sm' 
                   : 'border-border hover:border-primary/30 hover:shadow-sm'
               }`}
+              onClick={() => onSelectTemplate(template.id)}
             >
-              <div className="flex flex-col gap-2">
-                {/* Template Preview Image */}
-                <div 
-                  className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer"
-                  onClick={() => onSelectTemplate(template.id)}
-                >
-                  {template.imageUrl && (
-                    <img 
-                      src={template.imageUrl} 
-                      alt={template.name}
-                      className="object-cover w-full h-full transition-opacity duration-200"
-                      onError={(e) => {
-                        // If image fails to load, show a fallback
-                        e.currentTarget.src = "/placeholder.svg";
-                      }}
-                    />
-                  )}
-                  
-                  {/* Selection Indicator */}
-                  {selectedTemplate === template.id && (
-                    <div className="absolute top-1.5 right-1.5 bg-primary text-white rounded-full p-0.5">
-                      <Check size={12} />
-                    </div>
-                  )}
-                </div>
+              {/* Template Preview Image */}
+              <div 
+                className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer"
+              >
+                {template.imageUrl && (
+                  <img 
+                    src={template.imageUrl} 
+                    alt={template.name}
+                    className="object-cover w-full h-full transition-opacity duration-200"
+                    onError={(e) => {
+                      e.currentTarget.src = "/placeholder.svg";
+                    }}
+                  />
+                )}
                 
-                {/* Template Info */}
-                <div className="flex flex-col justify-between flex-grow">
-                  <div>
-                    <h3 className="text-sm font-semibold mb-0.5 line-clamp-1">{template.name}</h3>
-                    <p className="text-xs text-muted-foreground mb-1 line-clamp-2">
-                      {template.description}
-                    </p>
-                    <div className="text-xs text-muted-foreground">
-                      <span className="font-medium">Style: </span>
-                      <span className="line-clamp-1">{template.style}</span>
-                    </div>
+                {/* Selection Indicator */}
+                {selectedTemplate === template.id && (
+                  <div className="absolute top-1.5 right-1.5 bg-primary text-white rounded-full p-0.5">
+                    <Check size={12} />
                   </div>
-                  
-                  {/* Selection Button */}
-                  <button
-                    onClick={() => onSelectTemplate(template.id)}
-                    className={`mt-2 w-full py-1 px-2 rounded text-xs font-medium transition-colors duration-200 ${
-                      selectedTemplate === template.id 
-                        ? 'bg-primary/10 text-primary border border-primary/20' 
-                        : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                    }`}
-                  >
-                    {selectedTemplate === template.id ? 'Selected' : 'Select'}
-                  </button>
-                </div>
+                )}
               </div>
             </div>
           ))}
