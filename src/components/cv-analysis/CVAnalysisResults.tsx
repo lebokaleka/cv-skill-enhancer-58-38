@@ -39,7 +39,7 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <Card className="col-span-1 md:col-span-2 glass-card overflow-hidden">
         <CardHeader className="border-b bg-secondary/40">
           <CardTitle className="flex items-center justify-between">

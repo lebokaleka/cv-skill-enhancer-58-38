@@ -78,7 +78,7 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
   };
 
   return (
-    <div className="animate-scale-in">
+    <div>
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">CV Analysis & Optimization</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">

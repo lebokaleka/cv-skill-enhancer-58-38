@@ -67,7 +67,7 @@ const CVAnalysis = () => {
           )}
 
           {isAnalyzing && (
-            <div className="text-center py-20 animate-pulse max-w-3xl mx-auto">
+            <div className="text-center py-20 max-w-3xl mx-auto">
               <FileText size={48} className="mx-auto mb-6 text-gray-700" />
               <h3 className="text-xl font-medium mb-3">Analyzing Your CV</h3>
               <p className="text-muted-foreground mb-6">
