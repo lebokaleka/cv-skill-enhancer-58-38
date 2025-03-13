@@ -61,14 +61,18 @@ const CVAnalysis = () => {
       <Navbar />
 
       <main className="flex-grow pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-8">
+        {/* Title and subtitle section - now in a separate container */}
+        <div className="cv-title-container mb-10">
+          <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-3xl font-bold mb-2">CV Analysis</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Get detailed feedback on your CV to improve your chances of landing an interview.
             </p>
           </div>
+        </div>
 
+        {/* Main content section */}
+        <div className="max-w-4xl mx-auto px-4">
           {!scoreData && !isAnalyzing && (
             <CVUploadSection onAnalyze={handleCVUpload} isAnalyzing={isAnalyzing} />
           )}
