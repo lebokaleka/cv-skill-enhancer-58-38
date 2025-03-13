@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -7,7 +6,6 @@ import CoverLetterInput from "@/components/cover-letter/CoverLetterInput";
 import CoverLetterPreview from "@/components/cover-letter/CoverLetterPreview";
 import ModernProfessionalTemplate from '@/components/cover-letter/templates/ModernProfessionalTemplate';
 import TechProfessionalTemplate from '@/components/cover-letter/templates/TechProfessionalTemplate';
-
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
@@ -15,30 +13,24 @@ const CoverLetter = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('tech-professional'); // Set default to our new template
   const [step, setStep] = useState<'input' | 'result'>('input');
-
   const handleCVUpload = (text: string) => {
     setCvText(text);
   };
-
   const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDescription(e.target.value);
   };
-
   const handleTemplateSelect = (template: string) => {
     setSelectedTemplate(template);
   };
-
   const handleGenerate = () => {
     if (!cvText || !jobDescription) return;
-    
     setIsGenerating(true);
-    
+
     // Simulate API call with timeout
     setTimeout(() => {
       // Mock generated cover letter based on template
       const template = coverLetterTemplates.find(t => t.id === selectedTemplate);
       let mockCoverLetter = '';
-      
       if (template?.id === 'modern-professional') {
         mockCoverLetter = `To whom it may concern,
 
@@ -106,58 +98,43 @@ I would welcome the opportunity to discuss how my skills and experience can bene
 Sincerely,
 [Your Name]`;
       }
-      
       setCoverLetter(mockCoverLetter);
       setIsGenerating(false);
       setStep('result');
     }, 2500);
   };
-
   const handleRegenerate = () => {
     setIsGenerating(true);
-    
+
     // Simulate API call with timeout
     setTimeout(() => {
       const currentLetter = coverLetter;
-      
+
       // Create a slightly modified version
       const paragraphs = currentLetter.split('\n\n');
-      
+
       // Modify the second paragraph if it exists
       if (paragraphs.length > 1) {
         paragraphs[1] = `With a strong background in web development and expertise in modern frontend technologies including React and TypeScript, I am confident in my ability to make significant contributions to your team. My experience has focused on creating exceptional user experiences through clean, efficient code and thoughtful UI design.`;
       }
-      
       setCoverLetter(paragraphs.join('\n\n'));
       setIsGenerating(false);
     }, 1500);
   };
-
   const renderDirectTemplatePreview = () => {
     if (selectedTemplate === 'modern-professional') {
-      return (
-        <div className="mt-6 border rounded-lg p-4 bg-white shadow-sm">
+      return <div className="mt-6 border rounded-lg p-4 bg-white shadow-sm">
           <div className="text-sm text-muted-foreground mb-2">Template Preview:</div>
           <div className="transform scale-90 origin-top-left">
             <ModernProfessionalTemplate />
           </div>
-        </div>
-      );
+        </div>;
     } else if (selectedTemplate === 'tech-professional') {
-      return (
-        <div className="mt-6 border rounded-lg p-4 bg-white shadow-sm">
-          <div className="text-sm text-muted-foreground mb-2">Template Preview:</div>
-          <div className="transform scale-90 origin-top-left">
-            <TechProfessionalTemplate />
-          </div>
-        </div>
-      );
+      return;
     }
     return null;
   };
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Navbar />
 
       <main className="flex-grow pt-24 pb-16">
@@ -169,37 +146,14 @@ Sincerely,
             </p>
           </div>
 
-          {step === 'input' ? (
-            <>
-              <CoverLetterInput 
-                cvText={cvText}
-                jobDescription={jobDescription}
-                selectedTemplate={selectedTemplate}
-                templates={coverLetterTemplates}
-                isGenerating={isGenerating}
-                onCVUpload={handleCVUpload}
-                onJobDescriptionChange={handleJobDescriptionChange}
-                onTemplateSelect={handleTemplateSelect}
-                onGenerate={handleGenerate}
-              />
+          {step === 'input' ? <>
+              <CoverLetterInput cvText={cvText} jobDescription={jobDescription} selectedTemplate={selectedTemplate} templates={coverLetterTemplates} isGenerating={isGenerating} onCVUpload={handleCVUpload} onJobDescriptionChange={handleJobDescriptionChange} onTemplateSelect={handleTemplateSelect} onGenerate={handleGenerate} />
               {renderDirectTemplatePreview()}
-            </>
-          ) : (
-            <CoverLetterPreview 
-              coverLetter={coverLetter}
-              selectedTemplate={selectedTemplate}
-              templates={coverLetterTemplates}
-              isGenerating={isGenerating}
-              onRegenerate={handleRegenerate}
-              onBack={() => setStep('input')}
-            />
-          )}
+            </> : <CoverLetterPreview coverLetter={coverLetter} selectedTemplate={selectedTemplate} templates={coverLetterTemplates} isGenerating={isGenerating} onRegenerate={handleRegenerate} onBack={() => setStep('input')} />}
         </div>
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default CoverLetter;
