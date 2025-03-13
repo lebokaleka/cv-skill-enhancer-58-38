@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -6,13 +7,14 @@ import CoverLetterInput from "@/components/cover-letter/CoverLetterInput";
 import CoverLetterPreview from "@/components/cover-letter/CoverLetterPreview";
 import ModernProfessionalTemplate from '@/components/cover-letter/templates/ModernProfessionalTemplate';
 import TechProfessionalTemplate from '@/components/cover-letter/templates/TechProfessionalTemplate';
+import ClassicProfessionalTemplate from '@/components/cover-letter/templates/ClassicProfessionalTemplate';
 
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState('tech-professional');
+  const [selectedTemplate, setSelectedTemplate] = useState('classic-professional');
   const [step, setStep] = useState<'input' | 'result'>('input');
 
   const handleCVUpload = (text: string) => {

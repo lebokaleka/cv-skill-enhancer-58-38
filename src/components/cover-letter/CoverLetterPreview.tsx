@@ -6,6 +6,7 @@ import { Download, Copy, Check, RefreshCw } from 'lucide-react';
 import { CoverLetterTemplate } from "./coverLetterTemplates";
 import ModernProfessionalTemplate from './templates/ModernProfessionalTemplate';
 import TechProfessionalTemplate from './templates/TechProfessionalTemplate';
+import ClassicProfessionalTemplate from './templates/ClassicProfessionalTemplate';
 
 interface CoverLetterPreviewProps {
   coverLetter: string;
@@ -34,6 +35,8 @@ const CoverLetterPreview = ({
 
   const renderTemplate = () => {
     switch (selectedTemplate) {
+      case 'classic-professional':
+        return <ClassicProfessionalTemplate content={coverLetter} />;
       case 'tech-professional':
         return <TechProfessionalTemplate content={coverLetter} />;
       case 'modern-professional':

@@ -10,6 +10,13 @@ export interface CoverLetterTemplate {
 
 export const coverLetterTemplates: CoverLetterTemplate[] = [
   {
+    id: 'classic-professional',
+    name: 'Classic Professional',
+    description: 'Clean, professional template with black header and photo',
+    style: 'Traditional with personal branding',
+    imageUrl: '/lovable-uploads/b265a279-0d8f-45dc-bb76-02c398bfbf97.png'
+  },
+  {
     id: 'tech-professional',
     name: 'Tech Professional',
     description: 'Clean, modern template with header and hexagon pattern background',
