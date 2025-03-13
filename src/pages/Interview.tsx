@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { toast } from "@/hooks/use-toast";
 import { InterviewStep, InterviewType, Message } from '@/types/interview';
@@ -6,6 +5,7 @@ import InterviewLanding from '@/components/interview/InterviewLanding';
 import InterviewSelection from '@/components/interview/InterviewSelection';
 import InterviewSession from '@/components/interview/InterviewSession';
 import InterviewResults from '@/components/interview/InterviewResults';
+import Navbar from '@/components/layout/Navbar';
 
 const interviewQuestionsByCategory = {
   general: {
@@ -272,9 +272,14 @@ const Interview = () => {
   };
 
   return (
-    <div className="container mx-auto px-4">
-      {renderContent()}
-    </div>
+    <>
+      <Navbar />
+      <div className="pt-20 pb-12">
+        <div className="container mx-auto px-4">
+          {renderContent()}
+        </div>
+      </div>
+    </>
   );
 };
 
