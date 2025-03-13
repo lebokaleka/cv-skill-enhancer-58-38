@@ -136,7 +136,13 @@ export const useInterviewState = () => {
 
   const handleInterviewTypeSelect = (type: 'general' | 'narrowed') => {
     setInterviewType(type);
-    setCurrentStep('selection');
+    
+    // When selecting general interview, skip the selection step and go straight to the interview
+    if (type === 'general') {
+      setCurrentStep('interview');
+    } else {
+      setCurrentStep('selection');
+    }
   };
 
   const handleStartInterview = () => {
