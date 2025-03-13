@@ -13,12 +13,16 @@ const KeySkillsField = ({ control }: KeySkillsFieldProps) => {
       control={control} 
       name="keySkills" 
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>Key Skills</FormLabel>
+        <FormItem className="space-y-2">
+          <FormLabel className="text-sm font-medium">Key Skills</FormLabel>
           <FormControl>
-            <Input placeholder="e.g. JavaScript, React, Node.js" {...field} />
+            <Input 
+              placeholder="e.g. JavaScript, React, Node.js" 
+              className="bg-background rounded-md border-border focus:border-primary" 
+              {...field} 
+            />
           </FormControl>
-          <FormMessage />
+          <FormMessage className="text-xs" />
         </FormItem>
       )} 
     />

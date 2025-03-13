@@ -5,6 +5,7 @@ import InterviewSelection from '@/components/interview/InterviewSelection';
 import InterviewSession from '@/components/interview/InterviewSession';
 import InterviewResults from '@/components/interview/InterviewResults';
 import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 const Interview = () => {
   const {
@@ -84,14 +85,15 @@ const Interview = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="pt-20 pb-12">
-        <div className="container mx-auto px-4">
+      <main className="flex-grow pt-24 pb-16">
+        <div className="app-container">
           {renderContent()}
         </div>
-      </div>
-    </>
+      </main>
+      <Footer />
+    </div>
   );
 };
 
