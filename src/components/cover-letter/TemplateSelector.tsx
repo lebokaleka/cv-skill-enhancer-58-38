@@ -1,5 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { CoverLetterTemplate } from "./coverLetterTemplates";
 import { Check } from "lucide-react";
 import Image from "@/components/ui/image";
@@ -31,16 +32,16 @@ const TemplateSelector = ({
           {displayTemplates.map((template) => (
             <div
               key={template.id}
-              className={`relative flex-1 min-w-[120px] border rounded-lg p-2 transition-all duration-200 ${
+              className={`relative flex-1 min-w-[120px] border rounded-lg p-2 transition-all duration-300 ${
                 selectedTemplate === template.id 
                   ? 'border-primary ring-2 ring-primary/20 shadow-md transform scale-105' 
                   : 'border-border hover:border-primary/30 hover:shadow-sm'
               }`}
-              onClick={() => onSelectTemplate(template.id)}
             >
               {/* Template Preview Image */}
               <div 
-                className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer"
+                className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer mb-3"
+                onClick={() => onSelectTemplate(template.id)}
               >
                 <Image 
                   src={template.imageUrl || "/placeholder.svg"} 
@@ -57,9 +58,27 @@ const TemplateSelector = ({
                 )}
               </div>
               
-              {/* Template Name - smaller and more subtle */}
-              <div className="mt-2 text-center">
-                <span className="text-xs font-medium text-muted-foreground">{template.name}</span>
+              {/* "Use This" Button - Replacing the template name text */}
+              <div className="w-full flex justify-center">
+                <Button
+                  size="sm"
+                  variant={selectedTemplate === template.id ? "default" : "outline"}
+                  className={`w-full transition-all duration-300 ${
+                    selectedTemplate === template.id 
+                      ? 'shadow-md' 
+                      : 'hover:shadow-sm'
+                  }`}
+                  onClick={() => onSelectTemplate(template.id)}
+                >
+                  {selectedTemplate === template.id ? (
+                    <>
+                      <Check size={14} className="mr-1" />
+                      Selected
+                    </>
+                  ) : (
+                    "Use This"
+                  )}
+                </Button>
               </div>
             </div>
           ))}
