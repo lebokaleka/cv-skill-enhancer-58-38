@@ -9,7 +9,7 @@ interface InterviewLandingProps {
 
 const InterviewLanding = ({ onSelectInterviewType }: InterviewLandingProps) => {
   return (
-    <div className="animate-fade-in">
+    <div>
       <div className="max-w-3xl mx-auto text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Interview Coach</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
