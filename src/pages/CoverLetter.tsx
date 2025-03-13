@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -10,6 +11,7 @@ import ClassicProfessionalTemplate from '@/components/cover-letter/templates/Cla
 import ModernMinimalistTemplate from '@/components/cover-letter/templates/ModernMinimalistTemplate';
 import CreativeAccentTemplate from '@/components/cover-letter/templates/CreativeAccentTemplate';
 import ExecutiveElegantTemplate from '@/components/cover-letter/templates/ExecutiveElegantTemplate';
+import ProfessionalCornerTemplate from '@/components/cover-letter/templates/ProfessionalCornerTemplate';
 
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');

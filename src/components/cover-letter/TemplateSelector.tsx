@@ -16,8 +16,8 @@ const TemplateSelector = ({
   selectedTemplate, 
   onSelectTemplate 
 }: TemplateSelectorProps) => {
-  // We'll only show the first 5 templates in a single row
-  const displayTemplates = templates.slice(0, 5);
+  // Show all available templates in the display
+  const displayTemplates = templates;
   
   return (
     <Card className="glass-card border-dashed">

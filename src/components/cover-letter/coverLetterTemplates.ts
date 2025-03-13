@@ -43,5 +43,12 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     description: 'Modern template with hexagon pattern for tech industry roles',
     style: 'Professional with geometric design',
     imageUrl: '/lovable-uploads/2efc55ec-83df-49c1-a46f-9aa4e295518e.png'
+  },
+  {
+    id: 'professional-corner',
+    name: 'Professional Corner',
+    description: 'Elegant design with burgundy corner accents and circular profile photo',
+    style: 'Polished and distinctive',
+    imageUrl: '/lovable-uploads/20681fdb-61c2-4cf6-8bbf-f149eb3f5e31.png'
   }
 ];

@@ -10,6 +10,7 @@ import ClassicProfessionalTemplate from './templates/ClassicProfessionalTemplate
 import ModernMinimalistTemplate from './templates/ModernMinimalistTemplate';
 import CreativeAccentTemplate from './templates/CreativeAccentTemplate';
 import ExecutiveElegantTemplate from './templates/ExecutiveElegantTemplate';
+import ProfessionalCornerTemplate from './templates/ProfessionalCornerTemplate';
 
 interface CoverLetterPreviewProps {
   coverLetter: string;
@@ -50,6 +51,8 @@ const CoverLetterPreview = ({
         return <CreativeAccentTemplate content={coverLetter} />;
       case 'executive-elegant':
         return <ExecutiveElegantTemplate content={coverLetter} />;
+      case 'professional-corner':
+        return <ProfessionalCornerTemplate content={coverLetter} />;
       default:
         // Fallback to simple display for other templates
         return (
