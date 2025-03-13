@@ -123,12 +123,7 @@ Sincerely,
   };
   const renderDirectTemplatePreview = () => {
     if (selectedTemplate === 'modern-professional') {
-      return <div className="mt-6 border rounded-lg p-4 bg-white shadow-sm">
-          <div className="text-sm text-muted-foreground mb-2">Template Preview:</div>
-          <div className="transform scale-90 origin-top-left">
-            <ModernProfessionalTemplate />
-          </div>
-        </div>;
+      return;
     } else if (selectedTemplate === 'tech-professional') {
       return;
     }
