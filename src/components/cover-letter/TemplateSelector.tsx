@@ -2,7 +2,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CoverLetterTemplate } from "./coverLetterTemplates";
 import { Check } from "lucide-react";
-import Image from "@/components/ui/image";
 
 interface TemplateSelectorProps {
   templates: CoverLetterTemplate[];
@@ -40,11 +39,13 @@ const TemplateSelector = ({
                 className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer"
               >
                 {template.imageUrl && (
-                  <Image 
+                  <img 
                     src={template.imageUrl} 
                     alt={template.name}
                     className="object-cover w-full h-full transition-opacity duration-200"
-                    fallback="/placeholder.svg"
+                    onError={(e) => {
+                      e.currentTarget.src = "/placeholder.svg";
+                    }}
                   />
                 )}
                 
