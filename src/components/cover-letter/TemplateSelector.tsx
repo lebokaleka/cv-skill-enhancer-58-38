@@ -43,12 +43,18 @@ const TemplateSelector = ({
                 className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer mb-3"
                 onClick={() => onSelectTemplate(template.id)}
               >
-                <Image 
-                  src={template.imageUrl || "/placeholder.svg"} 
-                  alt={template.name}
-                  className="object-cover w-full h-full transition-opacity duration-200"
-                  fallback="/placeholder.svg"
-                />
+                {template.imageUrl ? (
+                  <Image 
+                    src={template.imageUrl} 
+                    alt={template.name}
+                    className="object-cover w-full h-full transition-opacity duration-200"
+                    fallback="/placeholder.svg"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                    <span className="text-xs">No preview</span>
+                  </div>
+                )}
                 
                 {/* Selection Indicator */}
                 {selectedTemplate === template.id && (

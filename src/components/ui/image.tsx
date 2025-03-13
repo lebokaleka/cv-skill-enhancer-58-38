@@ -13,15 +13,27 @@ const Image = ({
   ...props 
 }: ImageProps) => {
   const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   
   return (
-    <img
-      src={error ? fallback : (src || fallback)}
-      alt={alt}
-      className={className}
-      onError={() => setError(true)}
-      {...props}
-    />
+    <div className="relative w-full h-full">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+          <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+        </div>
+      )}
+      <img
+        src={error ? fallback : (src || fallback)}
+        alt={alt || "Template preview"}
+        className={`${className} ${loading ? 'opacity-0' : 'opacity-100'}`}
+        onError={() => {
+          setError(true);
+          setLoading(false);
+        }}
+        onLoad={() => setLoading(false)}
+        {...props}
+      />
+    </div>
   );
 };
 

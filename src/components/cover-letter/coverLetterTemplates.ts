@@ -35,14 +35,14 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     name: 'Executive Elegant',
     description: 'Sophisticated design with subtle gold accents for leadership roles',
     style: 'Refined and authoritative',
-    imageUrl: '/lovable-uploads/b265a279-0d8f-45dc-bb76-02c398bfbf97.png'
+    imageUrl: '/lovable-uploads/a5e5f604-78cc-41ad-aa11-dc5fb06ba156.png'
   },
   {
     id: 'tech-professional',
     name: 'Tech Professional',
     description: 'Modern template with hexagon pattern for tech industry roles',
     style: 'Professional with geometric design',
-    imageUrl: '/lovable-uploads/2efc55ec-83df-49c1-a46f-9aa4e295518e.png'
+    imageUrl: '/lovable-uploads/40be15db-f883-42ef-a2a9-881b1aaed3cb.png'
   },
   {
     id: 'professional-corner',
