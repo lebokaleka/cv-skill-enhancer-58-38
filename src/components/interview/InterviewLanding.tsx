@@ -1,15 +1,13 @@
-
 import { BrainCircuit, Upload } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
 interface InterviewLandingProps {
   onSelectInterviewType: (type: 'general' | 'narrowed') => void;
 }
-
-const InterviewLanding = ({ onSelectInterviewType }: InterviewLandingProps) => {
-  return (
-    <div>
+const InterviewLanding = ({
+  onSelectInterviewType
+}: InterviewLandingProps) => {
+  return <div>
       <div className="max-w-3xl mx-auto text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Interview Coach</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -19,10 +17,7 @@ const InterviewLanding = ({ onSelectInterviewType }: InterviewLandingProps) => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 animate-scale-in">
-        <Card 
-          className="glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer" 
-          onClick={() => onSelectInterviewType('general')}
-        >
+        <Card onClick={() => onSelectInterviewType('general')} className="glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer my-[33px] mx-[56px] px-[9px] py-[7px] rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BrainCircuit size={20} />
@@ -42,10 +37,7 @@ const InterviewLanding = ({ onSelectInterviewType }: InterviewLandingProps) => {
           </CardFooter>
         </Card>
         
-        <Card 
-          className="glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer" 
-          onClick={() => onSelectInterviewType('narrowed')}
-        >
+        <Card className="glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer" onClick={() => onSelectInterviewType('narrowed')}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Upload size={20} />
@@ -65,8 +57,6 @@ const InterviewLanding = ({ onSelectInterviewType }: InterviewLandingProps) => {
           </CardFooter>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default InterviewLanding;
