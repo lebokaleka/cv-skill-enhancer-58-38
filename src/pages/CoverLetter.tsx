@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -8,6 +7,9 @@ import CoverLetterPreview from "@/components/cover-letter/CoverLetterPreview";
 import ModernProfessionalTemplate from '@/components/cover-letter/templates/ModernProfessionalTemplate';
 import TechProfessionalTemplate from '@/components/cover-letter/templates/TechProfessionalTemplate';
 import ClassicProfessionalTemplate from '@/components/cover-letter/templates/ClassicProfessionalTemplate';
+import ModernMinimalistTemplate from '@/components/cover-letter/templates/ModernMinimalistTemplate';
+import CreativeAccentTemplate from '@/components/cover-letter/templates/CreativeAccentTemplate';
+import ExecutiveElegantTemplate from '@/components/cover-letter/templates/ExecutiveElegantTemplate';
 
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');
@@ -36,6 +38,7 @@ const CoverLetter = () => {
     setTimeout(() => {
       const template = coverLetterTemplates.find(t => t.id === selectedTemplate);
       let mockCoverLetter = '';
+      
       if (template?.id === 'modern-professional') {
         mockCoverLetter = `To whom it may concern,
 
@@ -89,6 +92,45 @@ I believe great products come from collaboration between diverse perspectives, a
 Looking forward to potentially creating something amazing together,
 
 [Your Name]`;
+      } else if (template?.id === 'modern-minimalist') {
+        mockCoverLetter = `Dear Hiring Manager,
+
+I am writing to express my interest in the UX Designer position at Acme Corporation as advertised on your career page. With my background in user-centered design and experience creating intuitive digital experiences, I believe I would be a valuable addition to your team.
+
+Throughout my career, I have focused on combining aesthetic design with functional usability to create products that users genuinely enjoy interacting with. My work on the recent redesign of XYZ App resulted in a 45% increase in user engagement and a significant reduction in customer support inquiries.
+
+I am particularly drawn to Acme Corporation because of your commitment to innovation and your user-first approach to product development. These values align perfectly with my own professional philosophy, and I am excited about the possibility of contributing to your continued success.
+
+Thank you for considering my application. I look forward to the opportunity to discuss how my skills and experience could benefit your team.
+
+Sincerely,
+ALEX MORGAN`;
+      } else if (template?.id === 'creative-accent') {
+        mockCoverLetter = `Dear Creative Team,
+
+I am excited to apply for the Graphic Designer position at Studio Creative. As a passionate designer with five years of experience creating compelling visual identities and marketing materials, I believe my creative approach would be a perfect fit for your innovative team.
+
+My portfolio showcases a diverse range of projects, from branding for startups to campaign materials for established corporations. I pride myself on delivering designs that not only look beautiful but also effectively communicate my clients' messages and values.
+
+I've been following Studio Creative's work for several years and have been particularly impressed by your recent campaign for Eco Essentials. Your ability to blend aesthetic appeal with meaningful storytelling is exactly the kind of work I aspire to create.
+
+I would welcome the opportunity to bring my creativity, technical skills, and collaborative spirit to your studio. Thank you for considering my application.
+
+Creatively yours,
+Jordan Rivers`;
+      } else if (template?.id === 'executive-elegant') {
+        mockCoverLetter = `Dear Hiring Committee,
+
+I am writing to express my interest in the Chief Operations Officer position at Global Enterprises, as advertised in the Wall Street Journal. With over 15 years of senior leadership experience and a proven track record of organizational transformation, I am confident in my ability to contribute significantly to your executive team.
+
+Throughout my career, I have successfully led cross-functional teams through periods of substantial growth and change. At Visionary Corp, I oversaw a comprehensive operational restructuring that resulted in a 30% increase in efficiency and $4.5M in annual cost savings. My approach combines strategic vision with meticulous execution, ensuring that ambitious goals translate into measurable results.
+
+I am particularly drawn to Global Enterprises' commitment to sustainability alongside profitability. This balanced approach aligns perfectly with my leadership philosophy, and I would welcome the opportunity to advance these dual priorities in the COO role.
+
+Thank you for your consideration. I look forward to discussing how my experience and leadership style could benefit Global Enterprises during this pivotal growth period.
+
+Respectfully,
+Morgan Reynolds`;
       } else {
         mockCoverLetter = `Dear Hiring Manager,
 
