@@ -1,12 +1,14 @@
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form } from "@/components/ui/form";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { ArrowLeft } from 'lucide-react';
+import JobTitleField from "../form-fields/JobTitleField";
+import CompanyNameField from "../form-fields/CompanyNameField";
+import JobDescriptionField from "../form-fields/JobDescriptionField";
+import PositionLevelField from "../form-fields/PositionLevelField";
+import KeySkillsField from "../form-fields/KeySkillsField";
 
 interface JobSpecificFormData {
   jobTitle: string;
@@ -42,88 +44,11 @@ const JobSpecificSettings = ({ onStartInterview, onBack }: JobSpecificSettingsPr
         <CardContent>
           <Form {...form}>
             <form className="space-y-4">
-              <FormField 
-                control={form.control} 
-                name="jobTitle" 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Job Title</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. Software Engineer" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} 
-              />
-              
-              <FormField 
-                control={form.control} 
-                name="companyName" 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Company Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. Tech Solutions Inc." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} 
-              />
-              
-              <FormField 
-                control={form.control} 
-                name="jobDescription" 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Job Description</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Paste the job description here..." 
-                        className="min-h-32" 
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} 
-              />
-              
-              <FormField 
-                control={form.control} 
-                name="positionLevel" 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Position Level</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select position level" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="entry">Entry Level</SelectItem>
-                        <SelectItem value="mid">Mid Level</SelectItem>
-                        <SelectItem value="senior">Senior Level</SelectItem>
-                        <SelectItem value="manager">Management</SelectItem>
-                        <SelectItem value="executive">Executive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )} 
-              />
-              
-              <FormField 
-                control={form.control} 
-                name="keySkills" 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} 
-              />
+              <JobTitleField control={form.control} />
+              <CompanyNameField control={form.control} />
+              <JobDescriptionField control={form.control} />
+              <PositionLevelField control={form.control} />
+              <KeySkillsField control={form.control} />
             </form>
           </Form>
         </CardContent>
