@@ -50,5 +50,12 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     description: 'Elegant design with burgundy corner accents and circular profile photo',
     style: 'Polished and distinctive',
     imageUrl: '/lovable-uploads/20681fdb-61c2-4cf6-8bbf-f149eb3f5e31.png'
+  },
+  {
+    id: 'professional-burgundy',
+    name: 'Professional Burgundy',
+    description: 'Elegant design with burgundy triangle corners and circular profile photo',
+    style: 'Clean and professional',
+    imageUrl: '/lovable-uploads/ca0f80b7-ee23-4a1d-8f56-8e88a00047ca.png'
   }
 ];

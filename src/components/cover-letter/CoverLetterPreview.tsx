@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +10,7 @@ import ModernMinimalistTemplate from './templates/ModernMinimalistTemplate';
 import CreativeAccentTemplate from './templates/CreativeAccentTemplate';
 import ExecutiveElegantTemplate from './templates/ExecutiveElegantTemplate';
 import ProfessionalCornerTemplate from './templates/ProfessionalCornerTemplate';
+import ProfessionalBurgundyTemplate from './templates/ProfessionalBurgundyTemplate';
 
 interface CoverLetterPreviewProps {
   coverLetter: string;
@@ -53,6 +53,8 @@ const CoverLetterPreview = ({
         return <ExecutiveElegantTemplate content={coverLetter} />;
       case 'professional-corner':
         return <ProfessionalCornerTemplate content={coverLetter} />;
+      case 'professional-burgundy':
+        return <ProfessionalBurgundyTemplate content={coverLetter} />;
       default:
         // Fallback to simple display for other templates
         return (

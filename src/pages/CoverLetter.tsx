@@ -12,6 +12,7 @@ import ModernMinimalistTemplate from '@/components/cover-letter/templates/Modern
 import CreativeAccentTemplate from '@/components/cover-letter/templates/CreativeAccentTemplate';
 import ExecutiveElegantTemplate from '@/components/cover-letter/templates/ExecutiveElegantTemplate';
 import ProfessionalCornerTemplate from '@/components/cover-letter/templates/ProfessionalCornerTemplate';
+import ProfessionalBurgundyTemplate from '@/components/cover-letter/templates/ProfessionalBurgundyTemplate';
 
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');
