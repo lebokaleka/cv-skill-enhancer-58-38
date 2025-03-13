@@ -25,8 +25,9 @@ const Image = ({
       <img
         src={error ? fallback : (src || fallback)}
         alt={alt || "Template preview"}
-        className={`${className} ${loading ? 'opacity-0' : 'opacity-100'}`}
+        className={`${className} ${loading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         onError={() => {
+          console.error(`Failed to load image: ${src}`);
           setError(true);
           setLoading(false);
         }}

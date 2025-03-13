@@ -21,7 +21,7 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     name: 'Modern Minimalist',
     description: 'Sleek, minimalist design with elegant typography and ample whitespace',
     style: 'Contemporary and refined',
-    imageUrl: '/lovable-uploads/2efc55ec-83df-49c1-a46f-9aa4e295518e.png'
+    imageUrl: '/lovable-uploads/8065e7c3-a943-4ec4-8725-acd2d35419de.png'
   },
   {
     id: 'creative-accent',
