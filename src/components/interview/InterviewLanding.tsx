@@ -1,9 +1,12 @@
+
 import { BrainCircuit, Upload } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+
 interface InterviewLandingProps {
   onSelectInterviewType: (type: 'general' | 'narrowed') => void;
 }
+
 const InterviewLanding = ({
   onSelectInterviewType
 }: InterviewLandingProps) => {
@@ -37,7 +40,7 @@ const InterviewLanding = ({
           </CardFooter>
         </Card>
         
-        <Card className="glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer" onClick={() => onSelectInterviewType('narrowed')}>
+        <Card onClick={() => onSelectInterviewType('narrowed')} className="glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer my-[33px] mx-[56px] px-[9px] py-[7px] rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Upload size={20} />
@@ -59,4 +62,5 @@ const InterviewLanding = ({
       </div>
     </div>;
 };
+
 export default InterviewLanding;
