@@ -1,4 +1,3 @@
-
 export interface CoverLetterTemplate {
   id: string;
   name: string;
@@ -9,6 +8,13 @@ export interface CoverLetterTemplate {
 }
 
 export const coverLetterTemplates: CoverLetterTemplate[] = [
+  {
+    id: 'tech-professional',
+    name: 'Tech Professional',
+    description: 'Clean, modern template with header and hexagon pattern background',
+    style: 'Professional with geometric design',
+    imageUrl: '/lovable-uploads/2efc55ec-83df-49c1-a46f-9aa4e295518e.png'
+  },
   {
     id: 'modern-professional',
     name: 'Modern Professional',

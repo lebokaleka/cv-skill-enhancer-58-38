@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -5,13 +6,14 @@ import { coverLetterTemplates } from "@/components/cover-letter/coverLetterTempl
 import CoverLetterInput from "@/components/cover-letter/CoverLetterInput";
 import CoverLetterPreview from "@/components/cover-letter/CoverLetterPreview";
 import ModernProfessionalTemplate from '@/components/cover-letter/templates/ModernProfessionalTemplate';
+import TechProfessionalTemplate from '@/components/cover-letter/templates/TechProfessionalTemplate';
 
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState('modern-professional');
+  const [selectedTemplate, setSelectedTemplate] = useState('tech-professional'); // Set default to our new template
   const [step, setStep] = useState<'input' | 'result'>('input');
 
   const handleCVUpload = (text: string) => {
@@ -138,6 +140,15 @@ Sincerely,
           <div className="text-sm text-muted-foreground mb-2">Template Preview:</div>
           <div className="transform scale-90 origin-top-left">
             <ModernProfessionalTemplate />
+          </div>
+        </div>
+      );
+    } else if (selectedTemplate === 'tech-professional') {
+      return (
+        <div className="mt-6 border rounded-lg p-4 bg-white shadow-sm">
+          <div className="text-sm text-muted-foreground mb-2">Template Preview:</div>
+          <div className="transform scale-90 origin-top-left">
+            <TechProfessionalTemplate />
           </div>
         </div>
       );
