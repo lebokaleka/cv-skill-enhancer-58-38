@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallback?: string;
 }
@@ -10,11 +12,14 @@ const Image = ({
   className,
   ...props 
 }: ImageProps) => {
+  const [error, setError] = React.useState(false);
+  
   return (
     <img
-      src={src || fallback}
+      src={error ? fallback : (src || fallback)}
       alt={alt}
       className={className}
+      onError={() => setError(true)}
       {...props}
     />
   );

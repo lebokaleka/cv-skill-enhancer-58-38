@@ -1,3 +1,4 @@
+
 export interface CoverLetterTemplate {
   id: string;
   name: string;
@@ -41,13 +42,6 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     name: 'Minimal Clean',
     description: 'Sleek, minimalist design with ample white space and clean typography',
     style: 'Simple and focused',
-    imageUrl: '/lovable-uploads/40be15db-f883-42ef-a2a9-881b1aaed3cb.png'
-  },
-  {
-    id: 'corporate-executive',
-    name: 'Corporate Executive',
-    description: 'Professional business template ideal for corporate and executive positions',
-    style: 'Corporate and authoritative',
     imageUrl: '/lovable-uploads/40be15db-f883-42ef-a2a9-881b1aaed3cb.png'
   }
 ];
