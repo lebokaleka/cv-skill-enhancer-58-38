@@ -62,6 +62,13 @@ const CVAnalysis = () => {
 
       <main className="flex-grow pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-8">
+            <h1 className="text-3xl font-bold mb-2">CV Analysis</h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Get detailed feedback on your CV to improve your chances of landing an interview.
+            </p>
+          </div>
+
           {!scoreData && !isAnalyzing && (
             <CVUploadSection onAnalyze={handleCVUpload} isAnalyzing={isAnalyzing} />
           )}
