@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAuth } from '@/context/AuthContext';
-import { Mail, Lock } from 'lucide-react';
+import { Mail, Lock, CheckCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const signInSchema = z.object({
   email: z.string().email({
@@ -45,6 +46,24 @@ const SignInForm = () => {
     toast({
       title: "Welcome back!",
       description: "You have successfully signed in to CVCoach."
+    });
+  };
+
+  const handleForgotPassword = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const email = form.getValues("email");
+    
+    toast({
+      title: "Password Reset Email Sent",
+      description: (
+        <Alert className="bg-amber-50 border border-amber-200 text-amber-800 animate-fade-in">
+          <CheckCircle className="h-4 w-4 mr-2 inline-block text-amber-600" />
+          <AlertDescription className="text-amber-800">
+            Instructions have been sent to {email || "your email"}. Please check your inbox.
+          </AlertDescription>
+        </Alert>
+      ),
+      duration: 5000,
     });
   };
 
@@ -89,13 +108,7 @@ const SignInForm = () => {
           <a 
             href="#" 
             className="text-primary hover:underline" 
-            onClick={e => {
-              e.preventDefault();
-              toast({
-                title: "Password Reset",
-                description: "Instructions sent! Check your email."
-              });
-            }}
+            onClick={handleForgotPassword}
           >
             Forgot Password?
           </a>
