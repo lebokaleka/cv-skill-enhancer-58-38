@@ -9,7 +9,6 @@ import { useAuth } from '@/context/AuthContext';
 import { Mail, Lock, CheckCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useState } from 'react';
 
 const signInSchema = z.object({
   email: z.string().email({
@@ -25,7 +24,6 @@ type SignInFormValues = z.infer<typeof signInSchema>;
 const SignInForm = () => {
   const { setUser } = useAuth();
   const { toast } = useToast();
-  const [showPasswordResetAlert, setShowPasswordResetAlert] = useState(false);
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
@@ -53,12 +51,20 @@ const SignInForm = () => {
 
   const handleForgotPassword = (e: React.MouseEvent) => {
     e.preventDefault();
-    setShowPasswordResetAlert(true);
+    const email = form.getValues("email");
     
-    // Auto-hide the alert after 5 seconds
-    setTimeout(() => {
-      setShowPasswordResetAlert(false);
-    }, 5000);
+    toast({
+      title: "Password Reset Email Sent",
+      description: (
+        <Alert className="bg-amber-50 border border-amber-200 text-amber-800 animate-fade-in">
+          <CheckCircle className="h-4 w-4 mr-2 inline-block text-amber-600" />
+          <AlertDescription className="text-amber-800">
+            Instructions have been sent to {email || "your email"}. Please check your inbox.
+          </AlertDescription>
+        </Alert>
+      ),
+      duration: 5000,
+    });
   };
 
   return (
@@ -97,17 +103,6 @@ const SignInForm = () => {
             </FormItem>
           )} 
         />
-        
-        {showPasswordResetAlert && (
-          <Alert className="bg-amber-50 border border-amber-200 text-amber-800 animate-in fade-in duration-300">
-            <div className="flex items-start">
-              <CheckCircle className="h-5 w-5 mr-2 text-amber-600 flex-shrink-0 mt-0.5" />
-              <AlertDescription className="text-amber-800">
-                Password reset instructions have been sent to {form.getValues("email") || "your email"}. Please check your inbox.
-              </AlertDescription>
-            </div>
-          </Alert>
-        )}
         
         <div className="text-sm text-right">
           <a 
