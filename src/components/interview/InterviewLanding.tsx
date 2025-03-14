@@ -73,9 +73,9 @@ const InterviewLanding = ({
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 animate-scale-in">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 animate-scale-in">
         <Card 
-          className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer my-[33px] mx-[56px] px-[9px] py-[7px] rounded-xl ${activeTab === 'general' ? 'ring-2 ring-primary' : ''}`}
+          className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${activeTab === 'general' ? 'ring-2 ring-primary' : ''}`}
           onClick={() => setActiveTab('general')}
         >
           <CardHeader>
@@ -154,7 +154,7 @@ const InterviewLanding = ({
         </Card>
         
         <Card 
-          className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer my-[33px] mx-[56px] px-[9px] py-[7px] rounded-xl ${activeTab === 'job' ? 'ring-2 ring-primary' : ''}`}
+          className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${activeTab === 'job' ? 'ring-2 ring-primary' : ''}`}
           onClick={() => setActiveTab('job')}
         >
           <CardHeader>
