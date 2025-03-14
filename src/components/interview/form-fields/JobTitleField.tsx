@@ -13,16 +13,12 @@ const JobTitleField = ({ control }: JobTitleFieldProps) => {
       control={control} 
       name="jobTitle" 
       render={({ field }) => (
-        <FormItem className="space-y-2">
-          <FormLabel className="text-sm font-medium">Job Title</FormLabel>
+        <FormItem>
+          <FormLabel>Job Title</FormLabel>
           <FormControl>
-            <Input 
-              placeholder="e.g. Software Engineer" 
-              className="bg-background rounded-md border-border focus:border-primary" 
-              {...field} 
-            />
+            <Input placeholder="e.g. Software Engineer" {...field} />
           </FormControl>
-          <FormMessage className="text-xs" />
+          <FormMessage />
         </FormItem>
       )} 
     />

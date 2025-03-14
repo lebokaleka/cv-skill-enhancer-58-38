@@ -15,20 +15,20 @@ const PositionLevelField = ({ control }: PositionLevelFieldProps) => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>Position Level</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl>
+          <FormControl>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
               <SelectTrigger>
                 <SelectValue placeholder="Select position level" />
               </SelectTrigger>
-            </FormControl>
-            <SelectContent className="bg-background text-foreground">
-              <SelectItem value="entry">Entry Level</SelectItem>
-              <SelectItem value="mid">Mid Level</SelectItem>
-              <SelectItem value="senior">Senior Level</SelectItem>
-              <SelectItem value="manager">Management</SelectItem>
-              <SelectItem value="executive">Executive</SelectItem>
-            </SelectContent>
-          </Select>
+              <SelectContent className="bg-background text-foreground">
+                <SelectItem value="entry">Entry Level</SelectItem>
+                <SelectItem value="mid">Mid Level</SelectItem>
+                <SelectItem value="senior">Senior Level</SelectItem>
+                <SelectItem value="manager">Management</SelectItem>
+                <SelectItem value="executive">Executive</SelectItem>
+              </SelectContent>
+            </Select>
+          </FormControl>
           <FormMessage />
         </FormItem>
       )} 
