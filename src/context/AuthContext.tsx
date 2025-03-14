@@ -1,17 +1,23 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { SubscriptionTier } from '@/types/subscription';
 
 type User = {
   id: string;
   name: string;
   email: string;
+  subscriptionTier?: SubscriptionTier;
 } | null;
 
 type AuthContextType = {
   user: User;
   isAuthenticated: boolean;
   isAuthModalOpen: boolean;
+  isSubscriptionModalOpen: boolean;
+  selectedSubscription: SubscriptionTier | null;
   setIsAuthModalOpen: (isOpen: boolean) => void;
+  setIsSubscriptionModalOpen: (isOpen: boolean) => void;
+  setSelectedSubscription: (tier: SubscriptionTier | null) => void;
   setUser: (user: User) => void;
   logout: () => void;
 };
@@ -21,6 +27,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionTier | null>(null);
 
   // Mock authentication for now - we could replace this with actual auth implementation later
   const isAuthenticated = user !== null;
@@ -51,7 +59,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       user, 
       isAuthenticated, 
       isAuthModalOpen,
+      isSubscriptionModalOpen,
+      selectedSubscription,
       setIsAuthModalOpen,
+      setIsSubscriptionModalOpen,
+      setSelectedSubscription,
       setUser,
       logout
     }}>

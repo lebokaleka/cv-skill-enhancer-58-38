@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -9,18 +8,32 @@ import CVAnalysisResults from "@/components/cv-analysis/CVAnalysisResults";
 import CVSuggestions from "@/components/cv-analysis/CVSuggestions";
 import type { CVScoreData } from "@/types/cvAnalysis";
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from "@/components/ui/use-toast";
 
 const CVAnalysis = () => {
   const [cvText, setCvText] = useState('');
   const [fileName, setFileName] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scoreData, setScoreData] = useState<CVScoreData | null>(null);
-  const { isAuthenticated, setIsAuthModalOpen } = useAuth();
+  const { isAuthenticated, setIsSubscriptionModalOpen, user } = useAuth();
+  const { toast } = useToast();
 
   const handleCVUpload = (text: string, name?: string) => {
     if (!isAuthenticated) {
-      setIsAuthModalOpen(true);
+      setIsSubscriptionModalOpen(true);
       return;
+    }
+    
+    if (user?.subscriptionTier === 'free') {
+      const mockUsageCount = Math.floor(Math.random() * 4);
+      if (mockUsageCount >= 3) {
+        toast({
+          title: "Weekly limit reached",
+          description: "You've reached your 3 free CV analyses this week. Upgrade to continue.",
+          variant: "destructive"
+        });
+        return;
+      }
     }
     
     setCvText(text);

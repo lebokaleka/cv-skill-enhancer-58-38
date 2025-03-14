@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -17,7 +16,13 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const { isAuthenticated, user, logout, setIsAuthModalOpen } = useAuth();
+  const { 
+    isAuthenticated, 
+    user, 
+    logout, 
+    setIsAuthModalOpen, 
+    setIsSubscriptionModalOpen 
+  } = useAuth();
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -27,7 +32,6 @@ const Navbar = () => {
     { path: '/interview', label: 'Interview Coach' },
   ];
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -37,19 +41,17 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when changing routes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  // Handle navigation click - explicitly scroll to top
   const handleNavClick = () => {
     window.scrollTo(0, 0);
   };
 
   const handleGetStarted = () => {
     if (!isAuthenticated) {
-      setIsAuthModalOpen(true);
+      setIsSubscriptionModalOpen(true);
     }
   };
 
@@ -66,7 +68,6 @@ const Navbar = () => {
           <span className="font-bold text-xl tracking-tight">CVCoach</span>
         </Link>
 
-        {/* Desktop navigation */}
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <Link
@@ -101,6 +102,11 @@ const Navbar = () => {
                     <p className="text-xs leading-none text-muted-foreground">
                       {user?.email}
                     </p>
+                    {user?.subscriptionTier && (
+                      <p className="text-xs text-primary font-medium">
+                        {user.subscriptionTier.charAt(0).toUpperCase() + user.subscriptionTier.slice(1)} Plan
+                      </p>
+                    )}
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -120,7 +126,6 @@ const Navbar = () => {
           )}
         </nav>
 
-        {/* Mobile menu button */}
         <button
           className="md:hidden p-2 rounded-md text-foreground"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -129,7 +134,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border animate-slide-down">
           <nav className="app-container py-4 flex flex-col space-y-3">

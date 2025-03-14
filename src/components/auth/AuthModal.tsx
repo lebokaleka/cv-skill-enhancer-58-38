@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useAuth } from '@/context/AuthContext';
 import { Mail, Lock, User, LogIn } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+
 const signUpSchema = z.object({
   name: z.string().min(2, {
     message: 'Name must be at least 2 characters'
@@ -27,6 +28,7 @@ const signUpSchema = z.object({
   message: "Passwords don't match",
   path: ["confirmPassword"]
 });
+
 const signInSchema = z.object({
   email: z.string().email({
     message: 'Please enter a valid email address'
@@ -35,18 +37,20 @@ const signInSchema = z.object({
     message: 'Please enter your password'
   })
 });
+
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 type SignInFormValues = z.infer<typeof signInSchema>;
+
 const AuthModal = () => {
   const {
     isAuthModalOpen,
     setIsAuthModalOpen,
-    setUser
+    setUser,
+    selectedSubscription
   } = useAuth();
   const [activeTab, setActiveTab] = useState('sign-in');
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+
   const signUpForm = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -56,6 +60,7 @@ const AuthModal = () => {
       confirmPassword: ''
     }
   });
+
   const signInForm = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -63,60 +68,95 @@ const AuthModal = () => {
       password: ''
     }
   });
+
   const handleSignUp = (values: SignUpFormValues) => {
-    // Mock signup - would integrate with actual auth service
     console.log('Sign up values:', values);
 
-    // Create mock user
     setUser({
       id: Math.random().toString(36).substring(2, 9),
       name: values.name,
-      email: values.email
+      email: values.email,
+      subscriptionTier: selectedSubscription || 'free'
     });
+
     toast({
       title: "Account created!",
-      description: "You have successfully signed up for CVCoach."
+      description: `You have successfully signed up for CVCoach with a ${selectedSubscription || 'free'} plan.`
     });
+    
     setIsAuthModalOpen(false);
+    
+    if (selectedSubscription && selectedSubscription !== 'free') {
+      toast({
+        title: "Payment Required",
+        description: "You would now be redirected to complete payment for your subscription.",
+        variant: "default"
+      });
+    }
   };
+
   const handleSignIn = (values: SignInFormValues) => {
-    // Mock login - would integrate with actual auth service
     console.log('Sign in values:', values);
 
-    // Create mock user
     setUser({
       id: Math.random().toString(36).substring(2, 9),
       name: 'Test User',
-      email: values.email
+      email: values.email,
+      subscriptionTier: 'free'
     });
+    
     toast({
       title: "Welcome back!",
       description: "You have successfully signed in to CVCoach."
     });
+    
     setIsAuthModalOpen(false);
   };
+
   const handleGoogleAuth = () => {
-    // Mock Google auth - would integrate with actual auth service
     console.log('Signing in with Google');
 
-    // Create mock user
     setUser({
       id: Math.random().toString(36).substring(2, 9),
       name: 'Google User',
-      email: 'google-user@example.com'
+      email: 'google-user@example.com',
+      subscriptionTier: selectedSubscription || 'free'
     });
+    
     toast({
       title: "Welcome via Google!",
-      description: "You have successfully signed in with Google."
+      description: `You have successfully signed in with Google${selectedSubscription ? ` and selected the ${selectedSubscription} plan` : ''}.`
     });
+    
     setIsAuthModalOpen(false);
+    
+    if (selectedSubscription && selectedSubscription !== 'free' && activeTab === 'sign-up') {
+      toast({
+        title: "Payment Required",
+        description: "You would now be redirected to complete payment for your subscription.",
+        variant: "default"
+      });
+    }
   };
-  return <Dialog open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen}>
+
+  useEffect(() => {
+    if (isAuthModalOpen && selectedSubscription) {
+      setActiveTab('sign-up');
+    }
+  }, [isAuthModalOpen, selectedSubscription]);
+
+  return (
+    <Dialog open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen}>
       <DialogContent className="sm:max-w-[425px] animate-scale-in">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold">
             {activeTab === 'sign-up' ? 'Create an Account' : 'Welcome Back'}
           </DialogTitle>
+          {selectedSubscription && activeTab === 'sign-up' && (
+            <p className="text-center text-sm mt-2 text-primary font-medium">
+              You've selected the {selectedSubscription.charAt(0).toUpperCase() + selectedSubscription.slice(1)} Plan
+            </p>
+          )}
         </DialogHeader>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4">
@@ -125,13 +165,12 @@ const AuthModal = () => {
             <TabsTrigger value="sign-up">Sign Up</TabsTrigger>
           </TabsList>
           
-          {/* Sign In Tab */}
           <TabsContent value="sign-in" className="mt-4 space-y-4">
             <Form {...signInForm}>
               <form onSubmit={signInForm.handleSubmit(handleSignIn)} className="space-y-4">
                 <FormField control={signInForm.control} name="email" render={({
-                field
-              }) => <FormItem>
+                  field
+                }) => <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <div className="flex items-center border rounded-md focus-within:border-primary">
@@ -143,8 +182,8 @@ const AuthModal = () => {
                     </FormItem>} />
                 
                 <FormField control={signInForm.control} name="password" render={({
-                field
-              }) => <FormItem>
+                  field
+                }) => <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <div className="flex items-center border rounded-md focus-within:border-primary">
@@ -181,13 +220,12 @@ const AuthModal = () => {
             
           </TabsContent>
           
-          {/* Sign Up Tab */}
           <TabsContent value="sign-up" className="mt-4 space-y-4">
             <Form {...signUpForm}>
               <form onSubmit={signUpForm.handleSubmit(handleSignUp)} className="space-y-4">
                 <FormField control={signUpForm.control} name="name" render={({
-                field
-              }) => <FormItem>
+                  field
+                }) => <FormItem>
                       <FormLabel>Full Name</FormLabel>
                       <FormControl>
                         <div className="flex items-center border rounded-md focus-within:border-primary">
@@ -199,8 +237,8 @@ const AuthModal = () => {
                     </FormItem>} />
                 
                 <FormField control={signUpForm.control} name="email" render={({
-                field
-              }) => <FormItem>
+                  field
+                }) => <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <div className="flex items-center border rounded-md focus-within:border-primary">
@@ -212,8 +250,8 @@ const AuthModal = () => {
                     </FormItem>} />
                 
                 <FormField control={signUpForm.control} name="password" render={({
-                field
-              }) => <FormItem>
+                  field
+                }) => <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <div className="flex items-center border rounded-md focus-within:border-primary">
@@ -225,8 +263,8 @@ const AuthModal = () => {
                     </FormItem>} />
                 
                 <FormField control={signUpForm.control} name="confirmPassword" render={({
-                field
-              }) => <FormItem>
+                  field
+                }) => <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
                         <div className="flex items-center border rounded-md focus-within:border-primary">
@@ -252,6 +290,8 @@ const AuthModal = () => {
           </TabsContent>
         </Tabs>
       </DialogContent>
-    </Dialog>;
+    </Dialog>
+  );
 };
+
 export default AuthModal;

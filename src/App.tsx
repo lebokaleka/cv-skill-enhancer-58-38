@@ -13,6 +13,7 @@ import CoverLetter from "./pages/CoverLetter";
 import Interview from "./pages/Interview";
 import { AuthProvider } from "./context/AuthContext";
 import AuthModal from "./components/auth/AuthModal";
+import SubscriptionModal from "./components/subscription/SubscriptionModal";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           <AuthModal />
+          <SubscriptionModal />
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
