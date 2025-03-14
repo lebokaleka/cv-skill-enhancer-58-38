@@ -21,7 +21,7 @@ const PositionLevelField = ({ control }: PositionLevelFieldProps) => {
                 <SelectValue placeholder="Select position level" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent className="bg-background text-foreground">
               <SelectItem value="entry">Entry Level</SelectItem>
               <SelectItem value="mid">Mid Level</SelectItem>
               <SelectItem value="senior">Senior Level</SelectItem>
