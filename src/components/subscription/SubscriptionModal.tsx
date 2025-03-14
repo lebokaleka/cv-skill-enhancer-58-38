@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -29,7 +28,6 @@ const SubscriptionModal = () => {
     setIsAuthModalOpen(true);
   };
 
-  // Get the icon for each plan
   const getPlanIcon = (planId: SubscriptionTier) => {
     switch (planId) {
       case 'free':
@@ -46,7 +44,7 @@ const SubscriptionModal = () => {
 
   return (
     <Dialog open={isSubscriptionModalOpen} onOpenChange={setIsSubscriptionModalOpen}>
-      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto p-6 animate-scale-in">
+      <DialogContent className="sm:max-w-[95%] md:max-w-[90%] lg:max-w-[1200px] max-h-[90vh] overflow-y-auto p-6 animate-scale-in">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold">
             Choose Your Plan
@@ -56,7 +54,7 @@ const SubscriptionModal = () => {
           </p>
         </DialogHeader>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
           {SUBSCRIPTION_PLANS.map((plan) => (
             <div 
               key={plan.id}
