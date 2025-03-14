@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form";
 import InterviewHeader from './landing/InterviewHeader';
 import GeneralInterviewCard from './landing/GeneralInterviewCard';
 import JobSpecificCard from './landing/JobSpecificCard';
+import { InterviewType } from '@/types/interview';
 
 interface InterviewLandingProps {
-  onSelectInterviewType: (type: 'general' | 'narrowed') => void;
+  onSelectInterviewType: (type: InterviewType) => void;
 }
 
 const InterviewLanding = ({

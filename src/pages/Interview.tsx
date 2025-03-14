@@ -7,6 +7,7 @@ import InterviewResults from '@/components/interview/InterviewResults';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
+import { InterviewType } from '@/types/interview';
 import { useEffect } from 'react';
 
 const Interview = () => {
@@ -39,7 +40,7 @@ const Interview = () => {
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
   
   // Check authentication when attempting to start an interview
-  const handleInterviewTypeSelectWithAuth = (type: string | null) => {
+  const handleInterviewTypeSelectWithAuth = (type: InterviewType) => {
     if (type && !isAuthenticated) {
       setIsAuthModalOpen(true);
       return;

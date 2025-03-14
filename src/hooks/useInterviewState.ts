@@ -151,7 +151,7 @@ export const useInterviewState = () => {
     }
   };
 
-  const handleInterviewTypeSelect = (type: 'general' | 'narrowed') => {
+  const handleInterviewTypeSelect = (type: InterviewType) => {
     setInterviewType(type);
     
     if (type === 'general') {
