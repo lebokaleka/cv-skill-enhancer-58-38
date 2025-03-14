@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -133,12 +134,13 @@
     opacity: 1 !important;
   }
   
-  /* Style for Select item hover and selected states */
+  /* Style for Select item hover and selected states - no color change */
   [data-radix-select-item]:hover,
   [data-radix-select-item][data-highlighted],
   [data-radix-select-item][data-state="checked"] {
     transform: scale(1.02);
     font-weight: 600;
     transition: all 0.2s ease;
+    color: inherit !important; /* Keep text color the same on hover */
   }
 }
