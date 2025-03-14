@@ -1,0 +1,30 @@
+
+import { InterviewStep, InterviewType, Message } from '@/types/interview';
+
+export interface InterviewState {
+  currentStep: InterviewStep;
+  interviewType: InterviewType;
+  difficulty: string;
+  questionCount: number;
+  isRecording: boolean;
+  recordingTime: number;
+  isPlaying: boolean;
+  currentQuestionIndex: number;
+  questions: string[];
+  messages: Message[];
+  audioUrl: string | null;
+  isAnalyzing: boolean;
+}
+
+export interface InterviewActions {
+  setDifficulty: (difficulty: string) => void;
+  setQuestionCount: (count: number) => void;
+  handleStartRecording: () => void;
+  handleStopRecording: () => void;
+  handleTogglePlayback: () => void;
+  handleSubmitRecording: () => void;
+  handleInterviewTypeSelect: (type: InterviewType) => void;
+  handleStartInterview: () => void;
+  handleStartNewInterview: () => void;
+  handleClearRecording: () => void;
+}
