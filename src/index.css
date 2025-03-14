@@ -23,7 +23,7 @@
     --destructive-foreground: 210 20% 98%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 47 84% 44%;
+    --ring: 277 45% 25%; /* Changed from accent color to match primary */
     --radius: 0.5rem;
   }
 
@@ -46,7 +46,7 @@
     --destructive-foreground: 210 20% 98%;
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
-    --ring: 47 84% 44%;
+    --ring: 277 45% 25%; /* Changed from accent color to match primary */
   }
 }
 
@@ -142,5 +142,13 @@
     font-weight: 600;
     transition: all 0.2s ease;
     color: inherit !important; /* Keep text color the same on hover */
+  }
+  
+  /* Add standardized focus styles for input elements */
+  input:focus-visible,
+  textarea:focus-visible,
+  [contenteditable="true"]:focus-visible {
+    @apply outline-none ring-2 ring-primary border-primary;
+    box-shadow: 0 0 0 2px rgba(70, 35, 92, 0.2);
   }
 }
