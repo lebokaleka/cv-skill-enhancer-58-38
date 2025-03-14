@@ -2,12 +2,22 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, user, logout, setIsAuthModalOpen } = useAuth();
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -35,6 +45,12 @@ const Navbar = () => {
   // Handle navigation click - explicitly scroll to top
   const handleNavClick = () => {
     window.scrollTo(0, 0);
+  };
+
+  const handleGetStarted = () => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+    }
   };
 
   return (
@@ -66,9 +82,42 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Button size="sm" className="ml-2">
-            Get Started
-          </Button>
+          
+          {isAuthenticated ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full ml-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+                    <span className="text-primary-foreground font-medium text-sm">
+                      {user?.name?.charAt(0).toUpperCase() || 'U'}
+                    </span>
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user?.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="flex items-center cursor-pointer"
+                  onClick={logout}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button size="sm" className="ml-2" onClick={handleGetStarted}>
+              Get Started
+            </Button>
+          )}
         </nav>
 
         {/* Mobile menu button */}
@@ -98,9 +147,32 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Button size="sm" className="mt-2 w-full">
-              Get Started
-            </Button>
+            
+            {isAuthenticated ? (
+              <div className="px-4 py-2 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium">{user?.name}</p>
+                  <p className="text-xs text-muted-foreground">{user?.email}</p>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="ml-2"
+                  onClick={logout}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Log out
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                size="sm" 
+                className="mt-2 w-full"
+                onClick={handleGetStarted}
+              >
+                Get Started
+              </Button>
+            )}
           </nav>
         </div>
       )}

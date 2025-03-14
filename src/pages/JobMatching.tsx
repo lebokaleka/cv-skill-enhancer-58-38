@@ -1,16 +1,22 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { MatchResult } from '@/types/jobMatching';
 import JobMatchingForm from '@/components/job-matching/JobMatchingForm';
 import { Button } from "@/components/ui/button";
+import { useAuth } from '@/context/AuthContext';
 
 const JobMatching = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
+  const { isAuthenticated, setIsAuthModalOpen } = useAuth();
 
   const handleAnalyze = (cvText: string, jobDescription: string) => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    
     if (!cvText || !jobDescription) return;
     
     setIsAnalyzing(true);

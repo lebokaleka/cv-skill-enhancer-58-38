@@ -1,18 +1,10 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { coverLetterTemplates } from "@/components/cover-letter/coverLetterTemplates";
 import CoverLetterInput from "@/components/cover-letter/CoverLetterInput";
 import CoverLetterPreview from "@/components/cover-letter/CoverLetterPreview";
-import ModernProfessionalTemplate from '@/components/cover-letter/templates/ModernProfessionalTemplate';
-import TechProfessionalTemplate from '@/components/cover-letter/templates/TechProfessionalTemplate';
-import ClassicProfessionalTemplate from '@/components/cover-letter/templates/ClassicProfessionalTemplate';
-import ModernMinimalistTemplate from '@/components/cover-letter/templates/ModernMinimalistTemplate';
-import CreativeAccentTemplate from '@/components/cover-letter/templates/CreativeAccentTemplate';
-import ExecutiveElegantTemplate from '@/components/cover-letter/templates/ExecutiveElegantTemplate';
-import ProfessionalCornerTemplate from '@/components/cover-letter/templates/ProfessionalCornerTemplate';
-import ProfessionalBurgundyTemplate from '@/components/cover-letter/templates/ProfessionalBurgundyTemplate';
+import { useAuth } from '@/context/AuthContext';
 
 const CoverLetter = () => {
   const [cvText, setCvText] = useState('');
@@ -21,8 +13,13 @@ const CoverLetter = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('classic-professional');
   const [step, setStep] = useState<'input' | 'result'>('input');
+  const { isAuthenticated, setIsAuthModalOpen } = useAuth();
 
   const handleCVUpload = (text: string) => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
     setCvText(text);
   };
 
@@ -35,6 +32,11 @@ const CoverLetter = () => {
   };
 
   const handleGenerate = () => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    
     if (!cvText || !jobDescription) return;
     setIsGenerating(true);
 
@@ -155,6 +157,11 @@ Sincerely,
   };
 
   const handleRegenerate = () => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    
     setIsGenerating(true);
 
     setTimeout(() => {
@@ -186,10 +193,31 @@ Sincerely,
             </p>
           </div>
 
-          {step === 'input' ? <>
-              <CoverLetterInput cvText={cvText} jobDescription={jobDescription} selectedTemplate={selectedTemplate} templates={coverLetterTemplates.slice(0, 5)} isGenerating={isGenerating} onCVUpload={handleCVUpload} onJobDescriptionChange={handleJobDescriptionChange} onTemplateSelect={handleTemplateSelect} onGenerate={handleGenerate} />
+          {step === 'input' ? (
+            <>
+              <CoverLetterInput 
+                cvText={cvText} 
+                jobDescription={jobDescription} 
+                selectedTemplate={selectedTemplate} 
+                templates={coverLetterTemplates.slice(0, 5)} 
+                isGenerating={isGenerating} 
+                onCVUpload={handleCVUpload} 
+                onJobDescriptionChange={handleJobDescriptionChange} 
+                onTemplateSelect={handleTemplateSelect} 
+                onGenerate={handleGenerate} 
+              />
               {renderDirectTemplatePreview()}
-            </> : <CoverLetterPreview coverLetter={coverLetter} selectedTemplate={selectedTemplate} templates={coverLetterTemplates} isGenerating={isGenerating} onRegenerate={handleRegenerate} onBack={() => setStep('input')} />}
+            </>
+          ) : (
+            <CoverLetterPreview 
+              coverLetter={coverLetter} 
+              selectedTemplate={selectedTemplate} 
+              templates={coverLetterTemplates} 
+              isGenerating={isGenerating} 
+              onRegenerate={handleRegenerate} 
+              onBack={() => setStep('input')} 
+            />
+          )}
         </div>
       </main>
 

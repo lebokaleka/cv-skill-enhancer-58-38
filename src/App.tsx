@@ -11,27 +11,32 @@ import CVAnalysis from "./pages/CVAnalysis";
 import JobMatching from "./pages/JobMatching";
 import CoverLetter from "./pages/CoverLetter";
 import Interview from "./pages/Interview";
+import { AuthProvider } from "./context/AuthContext";
+import AuthModal from "./components/auth/AuthModal";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/cv-scoring" element={<CVAnalysis />} />
-          <Route path="/cv-analysis" element={<CVAnalysis />} />
-          <Route path="/job-matching" element={<JobMatching />} />
-          <Route path="/cover-letter" element={<CoverLetter />} />
-          <Route path="/interview" element={<Interview />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/cv-scoring" element={<CVAnalysis />} />
+            <Route path="/cv-analysis" element={<CVAnalysis />} />
+            <Route path="/job-matching" element={<JobMatching />} />
+            <Route path="/cover-letter" element={<CoverLetter />} />
+            <Route path="/interview" element={<Interview />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <AuthModal />
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

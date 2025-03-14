@@ -8,14 +8,21 @@ import CVUploadSection from "@/components/cv-analysis/CVUploadSection";
 import CVAnalysisResults from "@/components/cv-analysis/CVAnalysisResults";
 import CVSuggestions from "@/components/cv-analysis/CVSuggestions";
 import type { CVScoreData } from "@/types/cvAnalysis";
+import { useAuth } from '@/context/AuthContext';
 
 const CVAnalysis = () => {
   const [cvText, setCvText] = useState('');
   const [fileName, setFileName] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scoreData, setScoreData] = useState<CVScoreData | null>(null);
+  const { isAuthenticated, setIsAuthModalOpen } = useAuth();
 
   const handleCVUpload = (text: string, name?: string) => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    
     setCvText(text);
     if (name) setFileName(name);
     setIsAnalyzing(true);

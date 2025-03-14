@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { useAuth } from '@/context/AuthContext';
 import { 
   FileText, 
   FileSearch, 
@@ -23,6 +24,7 @@ const Index = () => {
   const [userCount, setUserCount] = useState(0);
   const userCountRef = useRef(null);
   const hasAnimatedRef = useRef(false);
+  const { isAuthenticated, setIsAuthModalOpen } = useAuth();
   
   useEffect(() => {
     // Add a slight delay for the animation
@@ -69,6 +71,22 @@ const Index = () => {
       }
       setUserCount(Math.floor(current));
     }, step);
+  };
+
+  const handleFeatureClick = (path: string) => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+    } else {
+      navigate(path);
+    }
+  };
+
+  const handleGetStarted = () => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+    } else {
+      navigate('/cv-analysis');
+    }
   };
 
   const features = [
@@ -143,7 +161,7 @@ const Index = () => {
               <Button 
                 size="lg" 
                 className="px-8 py-7 text-lg bg-primary hover:bg-[#4A235A] transition-colors" 
-                onClick={() => navigate('/cv-analysis')}
+                onClick={() => handleFeatureClick('/cv-analysis')}
               >
                 Analyze My CV
               </Button>
@@ -186,7 +204,7 @@ const Index = () => {
                 icon={feature.icon}
                 title={feature.title}
                 description={feature.description}
-                onClick={() => navigate(feature.path)}
+                onClick={() => handleFeatureClick(feature.path)}
                 className="cursor-pointer animate-fade-in"
                 style={{ animationDelay: `${index * 150}ms` }}
               />
@@ -235,7 +253,11 @@ const Index = () => {
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
               Join thousands of professionals who have accelerated their careers with our AI-powered tools.
             </p>
-            <Button size="lg" className="px-10 py-6 text-md animate-scale-in" onClick={() => navigate('/cv-analysis')}>
+            <Button 
+              size="lg" 
+              className="px-10 py-6 text-md animate-scale-in" 
+              onClick={handleGetStarted}
+            >
               Get Started for Free
             </Button>
           </div>

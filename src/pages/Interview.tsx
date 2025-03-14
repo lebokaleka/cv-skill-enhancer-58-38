@@ -6,6 +6,8 @@ import InterviewSession from '@/components/interview/InterviewSession';
 import InterviewResults from '@/components/interview/InterviewResults';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import { useAuth } from '@/context/AuthContext';
+import { useEffect } from 'react';
 
 const Interview = () => {
   const {
@@ -33,13 +35,32 @@ const Interview = () => {
     handleStartNewInterview,
     handleClearRecording
   } = useInterviewState();
+  
+  const { isAuthenticated, setIsAuthModalOpen } = useAuth();
+  
+  // Check authentication when attempting to start an interview
+  const handleInterviewTypeSelectWithAuth = (type: string | null) => {
+    if (type && !isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    handleInterviewTypeSelect(type);
+  };
+  
+  const handleStartInterviewWithAuth = () => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    handleStartInterview();
+  };
 
   // Render content based on current step
   const renderContent = () => {
     switch (currentStep) {
       case 'landing':
         return (
-          <InterviewLanding onSelectInterviewType={handleInterviewTypeSelect} />
+          <InterviewLanding onSelectInterviewType={handleInterviewTypeSelectWithAuth} />
         );
       case 'selection':
         return (
@@ -49,7 +70,7 @@ const Interview = () => {
             questionCount={questionCount}
             onSetDifficulty={setDifficulty}
             onSetQuestionCount={setQuestionCount}
-            onStartInterview={handleStartInterview}
+            onStartInterview={handleStartInterviewWithAuth}
             onBack={() => handleInterviewTypeSelect(null)}
           />
         );
