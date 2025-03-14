@@ -1,6 +1,5 @@
 
 import { InterviewType } from '@/types/interview';
-import JobSpecificSettings from './settings/JobSpecificSettings';
 
 interface InterviewSelectionProps {
   interviewType: InterviewType;
@@ -14,22 +13,14 @@ interface InterviewSelectionProps {
 
 const InterviewSelection = ({ 
   interviewType, 
-  difficulty, 
-  questionCount, 
-  onSetDifficulty, 
-  onSetQuestionCount, 
   onStartInterview, 
   onBack 
 }: InterviewSelectionProps) => {
-  // Now we only need to handle the narrowed (job-specific) interview type
-  // as the general interview is directly started from the landing page
+  // This component is now essentially a pass-through since job-specific settings
+  // are directly handled in the InterviewLanding component
   if (interviewType === 'narrowed') {
-    return (
-      <JobSpecificSettings
-        onStartInterview={onStartInterview}
-        onBack={onBack}
-      />
-    );
+    onStartInterview(); // Automatically start the interview
+    return null;
   }
   
   return null;

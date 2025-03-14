@@ -1,3 +1,4 @@
+
 import { ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,17 +7,20 @@ import { Progress } from "@/components/ui/progress";
 import InterviewChat from './InterviewChat';
 import InterviewTips from './InterviewTips';
 import QuestionStrategy from './QuestionStrategy';
+
 interface SentimentScore {
   confidence: number;
   clarity: number;
   relevance: number;
   overall: number;
 }
+
 interface Message {
   role: 'user' | 'ai';
   content: string;
   sentiment?: SentimentScore;
 }
+
 interface InterviewSessionProps {
   interviewType: 'general' | 'narrowed' | null;
   currentQuestionIndex: number;
@@ -34,6 +38,7 @@ interface InterviewSessionProps {
   clearRecording: () => void;
   onGoBack: () => void;
 }
+
 const InterviewSession = ({
   interviewType,
   currentQuestionIndex,
@@ -54,7 +59,9 @@ const InterviewSession = ({
   return <div className="grid grid-cols-1 md:grid-cols-12 gap-6 py-8">
       <div className="md:col-span-8">
         <div className="flex items-center mb-6">
-          
+          <Button variant="outline" size="sm" onClick={onGoBack}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back
+          </Button>
           <div className="ml-auto space-x-2">
             <Badge variant="outline" className="text-xs">
               {interviewType === 'general' ? 'General Interview' : 'Job-Specific Interview'}
@@ -83,4 +90,5 @@ const InterviewSession = ({
       </div>
     </div>;
 };
+
 export default InterviewSession;
