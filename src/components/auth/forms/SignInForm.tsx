@@ -85,10 +85,10 @@ const SignInForm = () => {
           )} 
         />
         
-        <div className="text-sm text-right">
+        <div className="flex justify-end">
           <a 
             href="#" 
-            className="text-primary hover:underline" 
+            className="text-accent font-medium hover:text-accent/80 hover:underline transition-colors py-1 px-2 rounded-md bg-accent/10 shadow-sm" 
             onClick={e => {
               e.preventDefault();
               toast({
