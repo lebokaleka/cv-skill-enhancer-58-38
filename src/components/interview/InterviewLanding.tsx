@@ -75,7 +75,7 @@ const InterviewLanding = ({
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 animate-scale-in">
         <Card 
-          className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${activeTab === 'general' ? 'ring-2 ring-primary' : ''}`}
+          className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${activeTab === 'general' ? 'ring-2 ring-primary' : ''} flex flex-col`}
           onClick={() => setActiveTab('general')}
         >
           <CardHeader>
@@ -87,7 +87,7 @@ const InterviewLanding = ({
               Practice common interview questions that apply to most job positions
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4 flex-1">
             <div className="space-y-4">
               <div>
                 <h3 className="font-medium mb-2">Difficulty Level</h3>
@@ -143,7 +143,7 @@ const InterviewLanding = ({
               )}
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="mt-auto">
             <Button 
               className="w-full rounded-full" 
               onClick={handleGeneralInterviewStart}
@@ -154,7 +154,7 @@ const InterviewLanding = ({
         </Card>
         
         <Card 
-          className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${activeTab === 'job' ? 'ring-2 ring-primary' : ''}`}
+          className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${activeTab === 'job' ? 'ring-2 ring-primary' : ''} flex flex-col`}
           onClick={() => setActiveTab('job')}
         >
           <CardHeader>
@@ -166,7 +166,7 @@ const InterviewLanding = ({
               Customize the interview based on a specific job position
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             <FormProvider {...jobForm}>
               <form className="space-y-4">
                 <FormField 
@@ -278,7 +278,7 @@ const InterviewLanding = ({
               </form>
             </FormProvider>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="mt-auto">
             <Button 
               className="w-full rounded-full"
               onClick={handleJobSpecificInterviewStart}
