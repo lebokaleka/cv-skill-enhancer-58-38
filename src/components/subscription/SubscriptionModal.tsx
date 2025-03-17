@@ -50,17 +50,17 @@ const SubscriptionModal = () => {
 
   return (
     <Dialog open={isSubscriptionModalOpen} onOpenChange={setIsSubscriptionModalOpen}>
-      <DialogContent className="sm:max-w-[95%] md:max-w-[90%] lg:max-w-[1200px] h-auto">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[95%] md:max-w-[90%] lg:max-w-[1200px] h-auto overflow-hidden">
+        <DialogHeader className="pb-2">
           <DialogTitle className="text-center text-2xl font-bold">
             Choose Your Plan
           </DialogTitle>
-          <p className="text-center text-muted-foreground mt-1">
+          <p className="text-center text-muted-foreground">
             Select a subscription plan to access our AI-powered career tools
           </p>
         </DialogHeader>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
           {SUBSCRIPTION_PLANS.map((plan) => (
             <div 
               key={plan.id}
@@ -68,7 +68,7 @@ const SubscriptionModal = () => {
                 selectedPlan === plan.id 
                   ? 'border-2 border-primary bg-primary/5 shadow-lg' 
                   : 'border border-border hover:border-primary/50 hover:shadow'
-              } ${plan.highlighted ? 'md:scale-105' : ''}`}
+              } ${plan.highlighted ? 'md:scale-[1.03]' : ''}`}
               onClick={() => handleSelectPlan(plan.id)}
             >
               {plan.highlighted && (
@@ -97,9 +97,9 @@ const SubscriptionModal = () => {
                 </div>
               )}
               
-              <ul className="space-y-1.5 mb-3 flex-grow">
+              <ul className="space-y-1.5 flex-grow">
                 {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-1.5 text-xs">
+                  <li key={idx} className="flex items-start gap-1.5 text-sm">
                     <Check className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
                     <span>{feature}</span>
                   </li>
@@ -108,7 +108,7 @@ const SubscriptionModal = () => {
               
               <Button
                 variant={selectedPlan === plan.id ? "default" : "outline"}
-                className="mt-1 w-full text-xs py-1.5 h-auto"
+                className="mt-3 w-full text-sm h-8"
                 onClick={() => handleSelectPlan(plan.id)}
               >
                 {selectedPlan === plan.id ? 'Selected' : 'Select Plan'}
@@ -117,26 +117,24 @@ const SubscriptionModal = () => {
           ))}
         </div>
         
-        <div className="flex flex-col items-center mt-4">
-          <Button size="sm" onClick={handleConfirm} className="px-6">
+        <div className="flex flex-col items-center mt-4 space-y-2">
+          <Button onClick={handleConfirm} className="px-6 h-9">
             Continue with {selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} Plan
           </Button>
           
-          <div className="mt-3">
-            <Button 
-              variant="ghost" 
-              onClick={handleLogin}
-              className="text-primary hover:text-primary/80 flex items-center gap-1.5 text-sm h-8"
-            >
-              <LogIn className="h-3.5 w-3.5" />
-              Already have an account? Log in
-            </Button>
-          </div>
+          <Button 
+            variant="ghost" 
+            onClick={handleLogin}
+            className="text-primary hover:text-primary/80 flex items-center gap-1.5 text-sm h-8"
+          >
+            <LogIn className="h-3.5 w-3.5" />
+            Already have an account? Log in
+          </Button>
+          
+          <p className="text-xs text-muted-foreground">
+            You can change your plan at any time after signup
+          </p>
         </div>
-        
-        <p className="text-center text-xs text-muted-foreground mt-2">
-          You can change your plan at any time after signup
-        </p>
       </DialogContent>
     </Dialog>
   );
