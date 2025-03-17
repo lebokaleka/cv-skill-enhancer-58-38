@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -10,6 +9,7 @@ import CVSuggestions from "@/components/cv-analysis/CVSuggestions";
 import type { CVScoreData } from "@/types/cvAnalysis";
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const CVAnalysis = () => {
   const [cvText, setCvText] = useState('');
@@ -113,8 +113,26 @@ const CVAnalysis = () => {
           {scoreData && !isAnalyzing && (
             <div id="cv-analysis-results" className="space-y-8 animate-fade-in">
               <h2 className="text-2xl font-bold text-center mb-6">CV Analysis Results</h2>
-              <CVAnalysisResults scoreData={scoreData} fileName={fileName} />
-              <CVSuggestions suggestions={scoreData.suggestions} />
+              
+              {/* First window: Score Overview */}
+              <Card className="glass-card overflow-hidden">
+                <CardHeader className="border-b bg-secondary/40">
+                  <CardTitle>CV Score Overview</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <CVAnalysisResults scoreData={scoreData} fileName={fileName} />
+                </CardContent>
+              </Card>
+              
+              {/* Second window: Improvement Suggestions */}
+              <Card className="glass-card overflow-hidden">
+                <CardHeader className="border-b bg-secondary/40">
+                  <CardTitle>CV Improvement Suggestions</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <CVSuggestions suggestions={scoreData.suggestions} />
+                </CardContent>
+              </Card>
             </div>
           )}
         </div>

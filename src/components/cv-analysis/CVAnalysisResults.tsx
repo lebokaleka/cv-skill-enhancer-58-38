@@ -1,7 +1,7 @@
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, AlertCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 interface CVScoreData {
   overallScore: number;
@@ -40,19 +40,15 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in">
-      <Card className="col-span-1 md:col-span-2 glass-card overflow-hidden">
-        <CardHeader className="border-b bg-secondary/40">
-          <CardTitle className="flex items-center justify-between">
-            <span>CV Score Overview</span>
+      <div className="col-span-1 md:col-span-2">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-lg font-medium">Overall Score:</span>
             <span className={`text-2xl font-bold ${getScoreColor(scoreData.overallScore)}`}>
               {scoreData.overallScore}/100
             </span>
-          </CardTitle>
-          <CardDescription>
-            {fileName ? `Analysis for: ${fileName}` : 'Analysis of your CV'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6">
+          </div>
+          
           <div className="space-y-6">
             <div className="space-y-2">
               <div className="flex justify-between">
@@ -94,12 +90,12 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
               <Progress value={scoreData.sections.impact} className={getProgressColor(scoreData.sections.impact)} />
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <Card className="glass-card overflow-hidden">
         <CardHeader className={`border-b ${scoreData.atsCompatible ? 'bg-green-50 dark:bg-green-900/10' : 'bg-red-50 dark:bg-red-900/10'}`}>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-lg">
             {scoreData.atsCompatible ? (
               <>
                 <CheckCircle size={20} className="text-green-500" />
