@@ -4,6 +4,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { FileText } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import CVUploadSection from "@/components/cv-analysis/CVUploadSection";
 import CVAnalysisResults from "@/components/cv-analysis/CVAnalysisResults";
 import CVSuggestions from "@/components/cv-analysis/CVSuggestions";
@@ -94,8 +96,15 @@ const CVAnalysis = () => {
 
       <main className="flex-grow pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4 space-y-12">
-          {/* Always show the upload section */}
-          <CVUploadSection onAnalyze={handleCVUpload} isAnalyzing={isAnalyzing} />
+          {/* Upload Section - Always visible */}
+          <Card className="shadow-md border overflow-hidden">
+            <CardHeader className="bg-secondary/30 border-b">
+              <CardTitle className="text-center">CV Analysis & Optimization</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <CVUploadSection onAnalyze={handleCVUpload} isAnalyzing={isAnalyzing} />
+            </CardContent>
+          </Card>
 
           {/* Loading indicator */}
           {isAnalyzing && (
@@ -111,11 +120,16 @@ const CVAnalysis = () => {
 
           {/* Results section - only shown after analysis */}
           {scoreData && !isAnalyzing && (
-            <div id="cv-analysis-results" className="space-y-8 animate-fade-in">
-              <h2 className="text-2xl font-bold text-center mb-6">CV Analysis Results</h2>
-              <CVAnalysisResults scoreData={scoreData} fileName={fileName} />
-              <CVSuggestions suggestions={scoreData.suggestions} />
-            </div>
+            <Card id="cv-analysis-results" className="shadow-md border overflow-hidden animate-fade-in">
+              <CardHeader className="bg-secondary/30 border-b">
+                <CardTitle className="text-center">CV Analysis Results</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-8">
+                <CVAnalysisResults scoreData={scoreData} fileName={fileName} />
+                <Separator className="my-6" />
+                <CVSuggestions suggestions={scoreData.suggestions} />
+              </CardContent>
+            </Card>
           )}
         </div>
       </main>
