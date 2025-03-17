@@ -22,8 +22,18 @@ const AuthTabs = ({ initialTab = 'sign-in' }: AuthTabsProps) => {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4">
       <TabsList className="grid grid-cols-2 w-full">
-        <TabsTrigger value="sign-in">Sign In</TabsTrigger>
-        <TabsTrigger value="sign-up">Sign Up</TabsTrigger>
+        <TabsTrigger 
+          value="sign-in" 
+          className="data-[state=active]:bg-[#46235C] data-[state=active]:text-white bg-[#E8DFE8] text-gray-700"
+        >
+          Sign In
+        </TabsTrigger>
+        <TabsTrigger 
+          value="sign-up" 
+          className="data-[state=active]:bg-[#46235C] data-[state=active]:text-white bg-[#E8DFE8] text-gray-700"
+        >
+          Sign Up
+        </TabsTrigger>
       </TabsList>
       
       <TabsContent value="sign-in" className="mt-4 space-y-4">
