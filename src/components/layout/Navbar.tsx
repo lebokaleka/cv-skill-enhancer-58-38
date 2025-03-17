@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { 
   DropdownMenu,
@@ -88,13 +87,11 @@ const Navbar = () => {
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative flex items-center gap-2 px-3 py-2 rounded-full h-auto min-w-[120px] ml-2">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary">
-                    <span className="text-primary-foreground font-medium text-sm">
-                      {user?.name?.charAt(0).toUpperCase() || 'U'}
-                    </span>
-                  </div>
-                  <span className="text-sm font-medium truncate">
+                <Button 
+                  variant="ghost" 
+                  className="relative flex items-center gap-2 px-3 py-2 rounded-full h-auto min-w-[120px] ml-2 bg-[#46235C] text-white hover:bg-[#46235C]/90"
+                >
+                  <span className="text-sm font-medium">
                     {user?.name || 'User'}
                   </span>
                 </Button>
