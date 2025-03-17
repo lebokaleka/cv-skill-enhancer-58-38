@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -40,6 +41,9 @@ const CVAnalysis = () => {
     if (name) setFileName(name);
     setIsAnalyzing(true);
 
+    // Scroll to the top for better UX when analysis starts
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     setTimeout(() => {
       const mockData: CVScoreData = {
         overallScore: 73,
@@ -73,6 +77,14 @@ const CVAnalysis = () => {
 
       setScoreData(mockData);
       setIsAnalyzing(false);
+      
+      // Scroll to results section after analysis is complete
+      setTimeout(() => {
+        const resultsElement = document.getElementById('cv-analysis-results');
+        if (resultsElement) {
+          resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
     }, 2000);
   };
 
@@ -81,13 +93,13 @@ const CVAnalysis = () => {
       <Navbar />
 
       <main className="flex-grow pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-4">
-          {!scoreData && !isAnalyzing && (
-            <CVUploadSection onAnalyze={handleCVUpload} isAnalyzing={isAnalyzing} />
-          )}
+        <div className="max-w-4xl mx-auto px-4 space-y-12">
+          {/* Always show the upload section */}
+          <CVUploadSection onAnalyze={handleCVUpload} isAnalyzing={isAnalyzing} />
 
+          {/* Loading indicator */}
           {isAnalyzing && (
-            <div className="text-center py-20 animate-pulse max-w-3xl mx-auto">
+            <div className="text-center py-10 animate-pulse">
               <FileText size={48} className="mx-auto mb-6 text-gray-700" />
               <h3 className="text-xl font-medium mb-3">Analyzing Your CV</h3>
               <p className="text-muted-foreground mb-6">
@@ -97,8 +109,10 @@ const CVAnalysis = () => {
             </div>
           )}
 
-          {scoreData && (
-            <div className="space-y-8">
+          {/* Results section - only shown after analysis */}
+          {scoreData && !isAnalyzing && (
+            <div id="cv-analysis-results" className="space-y-8 animate-fade-in">
+              <h2 className="text-2xl font-bold text-center mb-6">CV Analysis Results</h2>
               <CVAnalysisResults scoreData={scoreData} fileName={fileName} />
               <CVSuggestions suggestions={scoreData.suggestions} />
             </div>
