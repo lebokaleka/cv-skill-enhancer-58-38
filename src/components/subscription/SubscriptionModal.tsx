@@ -50,21 +50,21 @@ const SubscriptionModal = () => {
 
   return (
     <Dialog open={isSubscriptionModalOpen} onOpenChange={setIsSubscriptionModalOpen}>
-      <DialogContent className="sm:max-w-[95%] md:max-w-[90%] lg:max-w-[1200px] max-h-[90vh] overflow-y-auto p-6 animate-scale-in">
+      <DialogContent className="sm:max-w-[95%] md:max-w-[90%] lg:max-w-[1200px] h-auto">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold">
             Choose Your Plan
           </DialogTitle>
-          <p className="text-center text-muted-foreground mt-2">
+          <p className="text-center text-muted-foreground mt-1">
             Select a subscription plan to access our AI-powered career tools
           </p>
         </DialogHeader>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
           {SUBSCRIPTION_PLANS.map((plan) => (
             <div 
               key={plan.id}
-              className={`rounded-xl p-5 flex flex-col h-full relative cursor-pointer transition-all duration-300 ${
+              className={`rounded-xl p-4 flex flex-col h-full relative cursor-pointer transition-all duration-300 ${
                 selectedPlan === plan.id 
                   ? 'border-2 border-primary bg-primary/5 shadow-lg' 
                   : 'border border-border hover:border-primary/50 hover:shadow'
@@ -73,34 +73,34 @@ const SubscriptionModal = () => {
             >
               {plan.highlighted && (
                 <div className="absolute -top-3 left-0 right-0 flex justify-center">
-                  <span className="bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <span className="bg-primary text-white text-xs font-semibold px-3 py-0.5 rounded-full">
                     Popular Choice
                   </span>
                 </div>
               )}
               
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-1">
                 {getPlanIcon(plan.id)}
                 <h3 className="font-semibold text-lg">{plan.name}</h3>
               </div>
               
-              <div className="mb-4">
+              <div className="mb-2">
                 <span className="text-2xl font-bold">{plan.price}</span>
                 <span className="text-muted-foreground"> {plan.period}</span>
               </div>
               
-              <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
+              <p className="text-sm text-muted-foreground mb-2">{plan.description}</p>
               
               {plan.limit && (
-                <div className="bg-amber-50 text-amber-700 text-xs p-2 rounded-md mb-4">
+                <div className="bg-amber-50 text-amber-700 text-xs p-1.5 rounded-md mb-2">
                   {plan.limit}
                 </div>
               )}
               
-              <ul className="space-y-2 mb-4 flex-grow">
+              <ul className="space-y-1.5 mb-3 flex-grow">
                 {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm">
-                    <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <li key={idx} className="flex items-start gap-1.5 text-xs">
+                    <Check className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -108,7 +108,7 @@ const SubscriptionModal = () => {
               
               <Button
                 variant={selectedPlan === plan.id ? "default" : "outline"}
-                className="mt-2 w-full"
+                className="mt-1 w-full text-xs py-1.5 h-auto"
                 onClick={() => handleSelectPlan(plan.id)}
               >
                 {selectedPlan === plan.id ? 'Selected' : 'Select Plan'}
@@ -117,24 +117,24 @@ const SubscriptionModal = () => {
           ))}
         </div>
         
-        <div className="flex flex-col items-center mt-6">
-          <Button size="lg" onClick={handleConfirm} className="px-8">
+        <div className="flex flex-col items-center mt-4">
+          <Button size="sm" onClick={handleConfirm} className="px-6">
             Continue with {selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} Plan
           </Button>
           
-          <div className="mt-4">
+          <div className="mt-3">
             <Button 
               variant="ghost" 
               onClick={handleLogin}
-              className="text-primary hover:text-primary/80 flex items-center gap-2"
+              className="text-primary hover:text-primary/80 flex items-center gap-1.5 text-sm h-8"
             >
-              <LogIn className="h-4 w-4" />
+              <LogIn className="h-3.5 w-3.5" />
               Already have an account? Log in
             </Button>
           </div>
         </div>
         
-        <p className="text-center text-sm text-muted-foreground mt-4">
+        <p className="text-center text-xs text-muted-foreground mt-2">
           You can change your plan at any time after signup
         </p>
       </DialogContent>
