@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -87,12 +88,15 @@ const Navbar = () => {
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full ml-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+                <Button variant="ghost" className="relative flex items-center gap-2 px-3 py-2 rounded-full h-auto min-w-[120px] ml-2">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary">
                     <span className="text-primary-foreground font-medium text-sm">
                       {user?.name?.charAt(0).toUpperCase() || 'U'}
                     </span>
                   </div>
+                  <span className="text-sm font-medium truncate">
+                    {user?.name || 'User'}
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
