@@ -1,7 +1,8 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Check, Award, Calendar, Star } from 'lucide-react';
+import { Check, Award, Calendar, Star, LogIn } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { SubscriptionTier, SUBSCRIPTION_PLANS } from '@/types/subscription';
 
@@ -24,6 +25,11 @@ const SubscriptionModal = () => {
 
   const handleConfirm = () => {
     setSelectedSubscription(selectedPlan);
+    setIsSubscriptionModalOpen(false);
+    setIsAuthModalOpen(true);
+  };
+
+  const handleLogin = () => {
     setIsSubscriptionModalOpen(false);
     setIsAuthModalOpen(true);
   };
@@ -111,10 +117,21 @@ const SubscriptionModal = () => {
           ))}
         </div>
         
-        <div className="flex justify-center mt-6">
+        <div className="flex flex-col items-center mt-6">
           <Button size="lg" onClick={handleConfirm} className="px-8">
             Continue with {selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} Plan
           </Button>
+          
+          <div className="mt-4">
+            <Button 
+              variant="ghost" 
+              onClick={handleLogin}
+              className="text-primary hover:text-primary/80 flex items-center gap-2"
+            >
+              <LogIn className="h-4 w-4" />
+              Already have an account? Log in
+            </Button>
+          </div>
         </div>
         
         <p className="text-center text-sm text-muted-foreground mt-4">
