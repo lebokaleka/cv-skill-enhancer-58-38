@@ -5,12 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { useAuth } from '@/context/AuthContext';
-import { Mail, Lock, CheckCircle } from 'lucide-react';
+import { Mail, Lock } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import FormInputWithIcon from '../components/FormInputWithIcon';
 import GoogleAuthButton from '../components/GoogleAuthButton';
 import AuthDivider from '../components/AuthDivider';
+import ForgotPasswordLink from '../components/ForgotPasswordLink';
 
 const signInSchema = z.object({
   email: z.string().email({
@@ -54,24 +54,6 @@ const SignInForm = () => {
     setIsAuthModalOpen(false);
   };
 
-  const handleForgotPassword = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const email = form.getValues("email");
-    
-    toast({
-      title: "Password Reset Email Sent",
-      description: (
-        <Alert className="bg-amber-50 border border-amber-200 text-amber-800 animate-fade-in">
-          <CheckCircle className="h-4 w-4 mr-2 inline-block text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            Instructions have been sent to {email || "your email"}. Please check your inbox.
-          </AlertDescription>
-        </Alert>
-      ),
-      duration: 5000,
-    });
-  };
-
   const handleGoogleSignIn = () => {
     console.log('Sign in with Google');
     
@@ -112,15 +94,7 @@ const SignInForm = () => {
             icon={Lock}
           />
           
-          <div className="text-sm text-right">
-            <a 
-              href="#" 
-              className="text-primary hover:underline" 
-              onClick={handleForgotPassword}
-            >
-              Forgot Password?
-            </a>
-          </div>
+          <ForgotPasswordLink getEmail={() => form.getValues("email")} />
           
           <Button type="submit" className="w-full">Sign In</Button>
         </form>
