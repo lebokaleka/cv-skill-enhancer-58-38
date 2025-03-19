@@ -136,7 +136,7 @@ const CVSuggestions = ({
     return acc;
   }, {} as Record<string, Suggestion[]>);
   return <div className="px-6 pb-6">
-      <Card className="overflow-hidden animate-fade-in bg-white dark:bg-gray-800">
+      <Card className="overflow-hidden animate-fade-in bg-white dark:bg-gray-800 my-[26px]">
         <CardHeader className="border-b bg-white">
           <CardTitle className="flex items-center gap-2">
             <Lightbulb size={20} className="text-amber-500" />
@@ -146,7 +146,7 @@ const CVSuggestions = ({
             Actionable recommendations to improve your CV
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-6">
+        <CardContent className="pt-6 bg-white">
           <Tabs defaultValue="byPriority">
             <TabsList className="mb-6 w-full">
               <TabsTrigger value="byPriority" className="flex-1">
