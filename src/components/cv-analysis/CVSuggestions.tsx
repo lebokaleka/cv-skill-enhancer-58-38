@@ -1,8 +1,6 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle, AlertTriangle, FileText } from 'lucide-react';
-
 interface SuggestionProps {
   suggestions: {
     high: string[];
@@ -10,11 +8,11 @@ interface SuggestionProps {
     low: string[];
   };
 }
-
-const CVSuggestions = ({ suggestions }: SuggestionProps) => {
-  return (
-    <Card className="glass-card overflow-hidden animate-fade-in">
-      <CardHeader className="border-b bg-secondary/40">
+const CVSuggestions = ({
+  suggestions
+}: SuggestionProps) => {
+  return <Card className="glass-card overflow-hidden animate-fade-in mx-[23px]">
+      <CardHeader className="border-b bg-secondary/40 mx-0">
         <CardTitle>Improvement Suggestions</CardTitle>
         <CardDescription>
           Actionable recommendations to improve your CV
@@ -39,40 +37,32 @@ const CVSuggestions = ({ suggestions }: SuggestionProps) => {
           
           <TabsContent value="high" className="mt-0">
             <ul className="space-y-4">
-              {suggestions.high.map((suggestion, index) => (
-                <li key={index} className="flex gap-3 items-start p-3 rounded-lg bg-red-50 dark:bg-red-900/10">
+              {suggestions.high.map((suggestion, index) => <li key={index} className="flex gap-3 items-start p-3 rounded-lg bg-red-50 dark:bg-red-900/10">
                   <AlertCircle size={18} className="text-red-500 shrink-0 mt-0.5" />
                   <p>{suggestion}</p>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </TabsContent>
           
           <TabsContent value="medium" className="mt-0">
             <ul className="space-y-4">
-              {suggestions.medium.map((suggestion, index) => (
-                <li key={index} className="flex gap-3 items-start p-3 rounded-lg bg-amber-50 dark:bg-amber-900/10">
+              {suggestions.medium.map((suggestion, index) => <li key={index} className="flex gap-3 items-start p-3 rounded-lg bg-amber-50 dark:bg-amber-900/10">
                   <AlertTriangle size={18} className="text-amber-500 shrink-0 mt-0.5" />
                   <p>{suggestion}</p>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </TabsContent>
           
           <TabsContent value="low" className="mt-0">
             <ul className="space-y-4">
-              {suggestions.low.map((suggestion, index) => (
-                <li key={index} className="flex gap-3 items-start p-3 rounded-lg bg-blue-50 dark:bg-blue-900/10">
+              {suggestions.low.map((suggestion, index) => <li key={index} className="flex gap-3 items-start p-3 rounded-lg bg-blue-50 dark:bg-blue-900/10">
                   <FileText size={18} className="text-blue-500 shrink-0 mt-0.5" />
                   <p>{suggestion}</p>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </TabsContent>
         </Tabs>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default CVSuggestions;
