@@ -22,7 +22,7 @@ const signInSchema = z.object({
 type SignInFormValues = z.infer<typeof signInSchema>;
 
 const SignInForm = () => {
-  const { setUser } = useAuth();
+  const { setUser, setIsAuthModalOpen } = useAuth();
   const { toast } = useToast();
 
   const form = useForm<SignInFormValues>({
@@ -47,6 +47,9 @@ const SignInForm = () => {
       title: "Welcome back!",
       description: "You have successfully signed in to CVCoach."
     });
+
+    // Close the auth modal after successful sign-in
+    setIsAuthModalOpen(false);
   };
 
   const handleForgotPassword = (e: React.MouseEvent) => {
