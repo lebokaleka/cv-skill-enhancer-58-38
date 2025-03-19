@@ -40,6 +40,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
               key={index}
               suggestion={suggestion}
               categoryBgColor={categoryConfig.bgColor}
+              category={category}
             />
           ))}
         </ul>

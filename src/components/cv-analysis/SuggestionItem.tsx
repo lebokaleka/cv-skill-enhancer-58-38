@@ -2,15 +2,19 @@
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Search } from 'lucide-react';
 import type { Suggestion } from "@/types/cvAnalysis";
+import { useNavigate } from 'react-router-dom';
 
 interface SuggestionItemProps {
   suggestion: Suggestion;
   categoryBgColor: string;
+  category: string;
 }
 
-const SuggestionItem: React.FC<SuggestionItemProps> = ({ suggestion, categoryBgColor }) => {
+const SuggestionItem: React.FC<SuggestionItemProps> = ({ suggestion, categoryBgColor, category }) => {
+  const navigate = useNavigate();
+  
   const priorityConfig = {
     critical: {
       label: 'Critical',
@@ -25,6 +29,15 @@ const SuggestionItem: React.FC<SuggestionItemProps> = ({ suggestion, categoryBgC
       badgeColor: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300'
     }
   };
+
+  // Function to handle navigation to job matching page
+  const handleNavigateToJobMatching = () => {
+    navigate('/job-matching');
+  };
+
+  const isCustomizationCategory = category === 'customization';
+  const buttonText = isCustomizationCategory ? "Check for compatibility" : "Apply";
+  const buttonIcon = isCustomizationCategory ? <Search size={14} className="mr-1" /> : <CheckCircle2 size={14} className="mr-1" />;
 
   return (
     <li className={`flex flex-col gap-2 p-4 rounded-lg ${categoryBgColor}`}>
@@ -42,9 +55,14 @@ const SuggestionItem: React.FC<SuggestionItemProps> = ({ suggestion, categoryBgC
             </div>
           )}
         </div>
-        <Button variant="outline" size="sm" className="shrink-0">
-          <CheckCircle2 size={14} className="mr-1" />
-          Apply
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="shrink-0"
+          onClick={isCustomizationCategory ? handleNavigateToJobMatching : undefined}
+        >
+          {buttonIcon}
+          {buttonText}
         </Button>
       </div>
     </li>
