@@ -1,25 +1,17 @@
 
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { AlertCircle, AlertTriangle, FileText, Lightbulb, LayoutPanelTop, MessageSquareText, Search, Briefcase, Type, Target, CheckCircle2, ThumbsUp, Info } from 'lucide-react';
+import { Accordion } from "@/components/ui/accordion";
+import { Lightbulb, LayoutPanelTop, MessageSquareText, Search, Briefcase, Type, Target } from 'lucide-react';
+import type { Suggestion } from "@/types/cvAnalysis";
+import CategoryItem from './CategoryItem';
 
-// Update the interface to handle more structured suggestions
-interface Suggestion {
-  text: string;
-  category: 'formatting' | 'content' | 'ats' | 'skills' | 'grammar' | 'customization';
-  priority: 'critical' | 'recommended' | 'nice';
-  example?: string;
-}
 interface SuggestionProps {
   suggestions: {
     high: string[];
     medium: string[];
     low: string[];
   };
-  // This would be the new expected data structure
   structuredSuggestions?: Suggestion[];
   overallScore?: number;
 }
@@ -58,65 +50,52 @@ const categoryConfig = {
   }
 };
 
-// Map priority to icon and colors
-const priorityConfig = {
-  critical: {
-    icon: <AlertCircle size={14} />,
-    label: 'Critical',
-    badgeColor: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
-  },
-  recommended: {
-    icon: <ThumbsUp size={14} />,
-    label: 'Recommended',
-    badgeColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-300'
-  },
-  nice: {
-    icon: <Info size={14} />,
-    label: 'Nice to Have',
-    badgeColor: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300'
-  }
-};
-const CVSuggestions = ({
-  suggestions,
-  structuredSuggestions,
-  overallScore
-}: SuggestionProps) => {
+const CVSuggestions = ({ suggestions, structuredSuggestions, overallScore }: SuggestionProps) => {
   // Mock structured suggestions if not provided
-  const mockStructuredSuggestions: Suggestion[] = structuredSuggestions || [{
-    text: "Add more quantifiable achievements to demonstrate impact",
-    category: "content",
-    priority: "critical"
-  }, {
-    text: "Include relevant industry keywords throughout your CV",
-    category: "ats",
-    priority: "critical",
-    example: "Add keywords like 'data analysis', 'project management', and 'stakeholder communication'"
-  }, {
-    text: "Reduce the length of your professional summary",
-    category: "formatting",
-    priority: "recommended"
-  }, {
-    text: "Use more action verbs at the beginning of your bullet points",
-    category: "grammar",
-    priority: "recommended",
-    example: "Instead of 'Was responsible for managing...' use 'Managed...'"
-  }, {
-    text: "Consider using a more modern format",
-    category: "formatting",
-    priority: "nice"
-  }, {
-    text: "Add a skills section for better ATS compatibility",
-    category: "ats",
-    priority: "recommended"
-  }, {
-    text: "Highlight leadership experience more prominently",
-    category: "skills",
-    priority: "recommended"
-  }, {
-    text: "Tailor your CV to better match the job description",
-    category: "customization",
-    priority: "critical"
-  }];
+  const mockStructuredSuggestions: Suggestion[] = structuredSuggestions || [
+    {
+      text: "Add more quantifiable achievements to demonstrate impact",
+      category: "content",
+      priority: "critical"
+    }, 
+    {
+      text: "Include relevant industry keywords throughout your CV",
+      category: "ats",
+      priority: "critical",
+      example: "Add keywords like 'data analysis', 'project management', and 'stakeholder communication'"
+    }, 
+    {
+      text: "Reduce the length of your professional summary",
+      category: "formatting",
+      priority: "recommended"
+    }, 
+    {
+      text: "Use more action verbs at the beginning of your bullet points",
+      category: "grammar",
+      priority: "recommended",
+      example: "Instead of 'Was responsible for managing...' use 'Managed...'"
+    }, 
+    {
+      text: "Consider using a more modern format",
+      category: "formatting",
+      priority: "nice"
+    }, 
+    {
+      text: "Add a skills section for better ATS compatibility",
+      category: "ats",
+      priority: "recommended"
+    }, 
+    {
+      text: "Highlight leadership experience more prominently",
+      category: "skills",
+      priority: "recommended"
+    }, 
+    {
+      text: "Tailor your CV to better match the job description",
+      category: "customization",
+      priority: "critical"
+    }
+  ];
 
   // Group suggestions by category
   const categorizedSuggestions = mockStructuredSuggestions.reduce((acc, suggestion) => {
@@ -126,17 +105,9 @@ const CVSuggestions = ({
     acc[suggestion.category].push(suggestion);
     return acc;
   }, {} as Record<string, Suggestion[]>);
-
-  // Group suggestions by priority
-  const prioritizedSuggestions = mockStructuredSuggestions.reduce((acc, suggestion) => {
-    if (!acc[suggestion.priority]) {
-      acc[suggestion.priority] = [];
-    }
-    acc[suggestion.priority].push(suggestion);
-    return acc;
-  }, {} as Record<string, Suggestion[]>);
   
-  return <div className="px-6 pb-6">
+  return (
+    <div className="px-6 pb-6">
       <Card className="overflow-hidden animate-fade-in bg-white dark:bg-gray-800 my-[26px]">
         <CardHeader className="border-b bg-white">
           <CardTitle className="flex items-center gap-2">
@@ -149,41 +120,19 @@ const CVSuggestions = ({
         </CardHeader>
         <CardContent className="pt-6 bg-white">
           <Accordion type="single" collapsible className="w-full">
-            {Object.keys(categoryConfig).map(category => <AccordionItem key={category} value={category}>
-                <AccordionTrigger className="py-4">
-                  <div className="flex items-center gap-2">
-                    {categoryConfig[category as keyof typeof categoryConfig].icon}
-                    <span>{categoryConfig[category as keyof typeof categoryConfig].label}</span>
-                    {categorizedSuggestions[category]?.some(s => s.priority === 'critical') && <Badge className="ml-2 bg-red-500">Critical</Badge>}
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <ul className="space-y-4 pt-2">
-                    {categorizedSuggestions[category]?.map((suggestion, index) => <li key={index} className={`flex flex-col gap-2 p-4 rounded-lg ${categoryConfig[suggestion.category].bgColor}`}>
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <Badge variant="outline" className={priorityConfig[suggestion.priority].badgeColor}>
-                                {priorityConfig[suggestion.priority].label}
-                              </Badge>
-                            </div>
-                            <p className="font-medium">{suggestion.text}</p>
-                            {suggestion.example && <div className="mt-2 ml-2 pl-2 border-l-2 border-gray-300 text-sm text-muted-foreground">
-                                <span className="font-medium">Example:</span> {suggestion.example}
-                              </div>}
-                          </div>
-                          <Button variant="outline" size="sm" className="shrink-0">
-                            <CheckCircle2 size={14} className="mr-1" />
-                            Apply
-                          </Button>
-                        </div>
-                      </li>)}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>)}
+            {Object.keys(categoryConfig).map(category => (
+              <CategoryItem
+                key={category}
+                category={category}
+                categoryConfig={categoryConfig[category as keyof typeof categoryConfig]}
+                suggestions={categorizedSuggestions[category] || []}
+              />
+            ))}
           </Accordion>
         </CardContent>
       </Card>
-    </div>;
+    </div>
+  );
 };
+
 export default CVSuggestions;
