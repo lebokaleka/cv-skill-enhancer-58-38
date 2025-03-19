@@ -48,10 +48,11 @@ const CVAnalysis = () => {
       const mockData: CVScoreData = {
         overallScore: 73,
         sections: {
-          relevance: 65,
-          structure: 80,
-          clarity: 85,
-          impact: 62
+          formattingReadability: 78,
+          contentClarity: 85,
+          atsOptimization: 65,
+          skillsExperience: 72,
+          grammarLanguage: 82
         },
         suggestions: {
           high: [

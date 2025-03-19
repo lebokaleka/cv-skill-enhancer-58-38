@@ -9,10 +9,11 @@ export interface Suggestion {
 export interface CVScoreData {
   overallScore: number;
   sections: {
-    relevance: number;
-    structure: number;
-    clarity: number;
-    impact: number;
+    formattingReadability: number;
+    contentClarity: number;
+    atsOptimization: number;
+    skillsExperience: number;
+    grammarLanguage: number;
   };
   suggestions: {
     high: string[];

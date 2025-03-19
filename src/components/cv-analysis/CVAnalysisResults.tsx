@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, AlertCircle, BarChart, FileText, Award, Zap, BrainCircuit, Target } from 'lucide-react';
+import { CheckCircle, AlertCircle, BarChart, FileText, Award, Zap, BrainCircuit, Target, LayoutPanelTop, MessageSquareText, Search, Briefcase, Type } from 'lucide-react';
 import type { CVScoreData } from "@/types/cvAnalysis";
 
 interface CVAnalysisResultsProps {
@@ -57,62 +57,82 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
+              {/* Formatting & Readability */}
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <Target size={18} className="text-primary" />
+                  <LayoutPanelTop size={18} className="text-primary" />
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium">Relevance</span>
-                      <span className={`text-sm ${getScoreColor(scoreData.sections.relevance)}`}>
-                        {scoreData.sections.relevance}%
+                      <span className="text-sm font-medium">Formatting & Readability</span>
+                      <span className={`text-sm ${getScoreColor(scoreData.sections.formattingReadability)}`}>
+                        {scoreData.sections.formattingReadability}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.relevance} className={getProgressColor(scoreData.sections.relevance)} />
+                    <Progress value={scoreData.sections.formattingReadability} className={getProgressColor(scoreData.sections.formattingReadability)} />
                   </div>
                 </div>
               </div>
               
+              {/* Content & Clarity */}
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <FileText size={18} className="text-primary" />
+                  <MessageSquareText size={18} className="text-primary" />
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium">Structure</span>
-                      <span className={`text-sm ${getScoreColor(scoreData.sections.structure)}`}>
-                        {scoreData.sections.structure}%
+                      <span className="text-sm font-medium">Content & Clarity</span>
+                      <span className={`text-sm ${getScoreColor(scoreData.sections.contentClarity)}`}>
+                        {scoreData.sections.contentClarity}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.structure} className={getProgressColor(scoreData.sections.structure)} />
+                    <Progress value={scoreData.sections.contentClarity} className={getProgressColor(scoreData.sections.contentClarity)} />
                   </div>
                 </div>
               </div>
               
+              {/* ATS Optimization */}
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <Zap size={18} className="text-primary" />
+                  <Search size={18} className="text-primary" />
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium">Clarity</span>
-                      <span className={`text-sm ${getScoreColor(scoreData.sections.clarity)}`}>
-                        {scoreData.sections.clarity}%
+                      <span className="text-sm font-medium">ATS Optimization</span>
+                      <span className={`text-sm ${getScoreColor(scoreData.sections.atsOptimization)}`}>
+                        {scoreData.sections.atsOptimization}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.clarity} className={getProgressColor(scoreData.sections.clarity)} />
+                    <Progress value={scoreData.sections.atsOptimization} className={getProgressColor(scoreData.sections.atsOptimization)} />
                   </div>
                 </div>
               </div>
               
+              {/* Skills & Experience */}
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <Award size={18} className="text-primary" />
+                  <Briefcase size={18} className="text-primary" />
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium">Impact</span>
-                      <span className={`text-sm ${getScoreColor(scoreData.sections.impact)}`}>
-                        {scoreData.sections.impact}%
+                      <span className="text-sm font-medium">Skills & Experience</span>
+                      <span className={`text-sm ${getScoreColor(scoreData.sections.skillsExperience)}`}>
+                        {scoreData.sections.skillsExperience}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.impact} className={getProgressColor(scoreData.sections.impact)} />
+                    <Progress value={scoreData.sections.skillsExperience} className={getProgressColor(scoreData.sections.skillsExperience)} />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Grammar & Language */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <Type size={18} className="text-primary" />
+                  <div className="flex-1">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Grammar & Language</span>
+                      <span className={`text-sm ${getScoreColor(scoreData.sections.grammarLanguage)}`}>
+                        {scoreData.sections.grammarLanguage}%
+                      </span>
+                    </div>
+                    <Progress value={scoreData.sections.grammarLanguage} className={getProgressColor(scoreData.sections.grammarLanguage)} />
                   </div>
                 </div>
               </div>
