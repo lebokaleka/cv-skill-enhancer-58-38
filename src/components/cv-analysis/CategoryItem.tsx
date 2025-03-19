@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -15,14 +14,18 @@ interface CategoryItemProps {
   category: string;
   categoryConfig: CategoryConfig;
   suggestions: Suggestion[];
+  isCritical?: boolean;
 }
 
 const CategoryItem: React.FC<CategoryItemProps> = ({ 
   category, 
   categoryConfig, 
-  suggestions 
+  suggestions,
+  isCritical = false
 }) => {
-  const hasCriticalSuggestions = suggestions?.some(s => s.priority === 'critical');
+  // If isCritical flag is true, we show the Critical badge regardless of suggestion priorities
+  // Otherwise, check if there are any critical priority suggestions
+  const hasCriticalSuggestions = isCritical || suggestions?.some(s => s.priority === 'critical');
 
   return (
     <AccordionItem value={category}>

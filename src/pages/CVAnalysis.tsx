@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -117,7 +116,12 @@ const CVAnalysis = () => {
               {/* Container card for the results section */}
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm overflow-hidden pb-6">
                 <CVAnalysisResults scoreData={scoreData} fileName={fileName} />
-                <CVSuggestions suggestions={scoreData.suggestions} />
+                <CVSuggestions 
+                  suggestions={scoreData.suggestions} 
+                  structuredSuggestions={scoreData.structuredSuggestions}
+                  sectionScores={scoreData.sections}
+                  overallScore={scoreData.overallScore}
+                />
               </div>
             </div>
           )}

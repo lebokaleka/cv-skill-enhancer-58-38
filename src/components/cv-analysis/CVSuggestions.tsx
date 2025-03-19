@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Accordion } from "@/components/ui/accordion";
 import { Lightbulb, LayoutPanelTop, MessageSquareText, Search, Briefcase, Type, Target } from 'lucide-react';
-import type { Suggestion } from "@/types/cvAnalysis";
+import type { Suggestion, CVScoreData } from "@/types/cvAnalysis";
 import CategoryItem from './CategoryItem';
 
 interface SuggestionProps {
@@ -13,6 +13,13 @@ interface SuggestionProps {
     low: string[];
   };
   structuredSuggestions?: Suggestion[];
+  sectionScores?: {
+    formattingReadability: number;
+    contentClarity: number;
+    atsOptimization: number;
+    skillsExperience: number;
+    grammarLanguage: number;
+  };
   overallScore?: number;
 }
 
@@ -21,27 +28,32 @@ const categoryConfig = {
   formatting: {
     icon: <LayoutPanelTop size={18} className="text-indigo-500 shrink-0 mt-0.5" />,
     label: 'Formatting & Readability',
-    bgColor: 'bg-indigo-50 dark:bg-indigo-900/10'
+    bgColor: 'bg-indigo-50 dark:bg-indigo-900/10',
+    sectionKey: 'formattingReadability'
   },
   content: {
     icon: <MessageSquareText size={18} className="text-emerald-500 shrink-0 mt-0.5" />,
     label: 'Content & Clarity',
-    bgColor: 'bg-emerald-50 dark:bg-emerald-900/10'
+    bgColor: 'bg-emerald-50 dark:bg-emerald-900/10',
+    sectionKey: 'contentClarity'
   },
   ats: {
     icon: <Search size={18} className="text-cyan-500 shrink-0 mt-0.5" />,
     label: 'ATS Optimization',
-    bgColor: 'bg-cyan-50 dark:bg-cyan-900/10'
+    bgColor: 'bg-cyan-50 dark:bg-cyan-900/10',
+    sectionKey: 'atsOptimization'
   },
   skills: {
     icon: <Briefcase size={18} className="text-violet-500 shrink-0 mt-0.5" />,
     label: 'Skills & Experience',
-    bgColor: 'bg-violet-50 dark:bg-violet-900/10'
+    bgColor: 'bg-violet-50 dark:bg-violet-900/10',
+    sectionKey: 'skillsExperience'
   },
   grammar: {
     icon: <Type size={18} className="text-pink-500 shrink-0 mt-0.5" />,
     label: 'Grammar & Language',
-    bgColor: 'bg-pink-50 dark:bg-pink-900/10'
+    bgColor: 'bg-pink-50 dark:bg-pink-900/10',
+    sectionKey: 'grammarLanguage'
   },
   customization: {
     icon: <Target size={18} className="text-orange-500 shrink-0 mt-0.5" />,
@@ -50,7 +62,7 @@ const categoryConfig = {
   }
 };
 
-const CVSuggestions = ({ suggestions, structuredSuggestions, overallScore }: SuggestionProps) => {
+const CVSuggestions = ({ suggestions, structuredSuggestions, sectionScores, overallScore }: SuggestionProps) => {
   // Mock structured suggestions if not provided
   const mockStructuredSuggestions: Suggestion[] = structuredSuggestions || [
     {
@@ -120,14 +132,28 @@ const CVSuggestions = ({ suggestions, structuredSuggestions, overallScore }: Sug
         </CardHeader>
         <CardContent className="pt-6 bg-white">
           <Accordion type="single" collapsible className="w-full">
-            {Object.keys(categoryConfig).map(category => (
-              <CategoryItem
-                key={category}
-                category={category}
-                categoryConfig={categoryConfig[category as keyof typeof categoryConfig]}
-                suggestions={categorizedSuggestions[category] || []}
-              />
-            ))}
+            {Object.keys(categoryConfig).map(category => {
+              // Check if this category has a corresponding section score
+              let isCritical = false;
+              const configItem = categoryConfig[category as keyof typeof categoryConfig];
+              
+              if (sectionScores && 'sectionKey' in configItem) {
+                const sectionKey = configItem.sectionKey as keyof typeof sectionScores;
+                const score = sectionScores[sectionKey];
+                // Mark as critical if score is below 30%
+                isCritical = score < 30;
+              }
+              
+              return (
+                <CategoryItem
+                  key={category}
+                  category={category}
+                  categoryConfig={categoryConfig[category as keyof typeof categoryConfig]}
+                  suggestions={categorizedSuggestions[category] || []}
+                  isCritical={isCritical}
+                />
+              );
+            })}
           </Accordion>
         </CardContent>
       </Card>
