@@ -11,20 +11,20 @@ interface CVAnalysisResultsProps {
 
 const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-500";
-    if (score >= 60) return "text-amber-500";
+    if (score >= 71) return "text-green-500";
+    if (score >= 31) return "text-amber-500";
     return "text-red-500";
   };
 
   const getProgressColor = (score: number) => {
-    if (score >= 80) return "bg-green-500";
-    if (score >= 60) return "bg-amber-500";
+    if (score >= 71) return "bg-green-500";
+    if (score >= 31) return "bg-amber-500";
     return "bg-red-500";
   };
 
   const getBgColorClass = (score: number) => {
-    if (score >= 80) return "bg-green-50 dark:bg-green-900/10";
-    if (score >= 60) return "bg-amber-50 dark:bg-amber-900/10";
+    if (score >= 71) return "bg-green-50 dark:bg-green-900/10";
+    if (score >= 31) return "bg-amber-50 dark:bg-amber-900/10";
     return "bg-red-50 dark:bg-red-900/10";
   };
 
@@ -68,7 +68,12 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
                         {scoreData.sections.formattingReadability}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.formattingReadability} className={getProgressColor(scoreData.sections.formattingReadability)} />
+                    <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300">
+                      <div 
+                        className={`h-full transition-all ${getProgressColor(scoreData.sections.formattingReadability)}`}
+                        style={{ width: `${scoreData.sections.formattingReadability}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -84,7 +89,12 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
                         {scoreData.sections.contentClarity}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.contentClarity} className={getProgressColor(scoreData.sections.contentClarity)} />
+                    <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300">
+                      <div 
+                        className={`h-full transition-all ${getProgressColor(scoreData.sections.contentClarity)}`}
+                        style={{ width: `${scoreData.sections.contentClarity}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -100,7 +110,12 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
                         {scoreData.sections.atsOptimization}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.atsOptimization} className={getProgressColor(scoreData.sections.atsOptimization)} />
+                    <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300">
+                      <div 
+                        className={`h-full transition-all ${getProgressColor(scoreData.sections.atsOptimization)}`}
+                        style={{ width: `${scoreData.sections.atsOptimization}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -116,7 +131,12 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
                         {scoreData.sections.skillsExperience}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.skillsExperience} className={getProgressColor(scoreData.sections.skillsExperience)} />
+                    <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300">
+                      <div 
+                        className={`h-full transition-all ${getProgressColor(scoreData.sections.skillsExperience)}`}
+                        style={{ width: `${scoreData.sections.skillsExperience}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -132,7 +152,12 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
                         {scoreData.sections.grammarLanguage}%
                       </span>
                     </div>
-                    <Progress value={scoreData.sections.grammarLanguage} className={getProgressColor(scoreData.sections.grammarLanguage)} />
+                    <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300">
+                      <div 
+                        className={`h-full transition-all ${getProgressColor(scoreData.sections.grammarLanguage)}`}
+                        style={{ width: `${scoreData.sections.grammarLanguage}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
