@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from 'lucide-react';
 import type { Suggestion } from "@/types/cvAnalysis";
-import { useNavigate } from 'react-router-dom';
 
 interface SuggestionItemProps {
   suggestion: Suggestion;
@@ -12,8 +11,6 @@ interface SuggestionItemProps {
 }
 
 const SuggestionItem: React.FC<SuggestionItemProps> = ({ suggestion, categoryBgColor }) => {
-  const navigate = useNavigate();
-  
   const priorityConfig = {
     critical: {
       label: 'Critical',
@@ -27,10 +24,6 @@ const SuggestionItem: React.FC<SuggestionItemProps> = ({ suggestion, categoryBgC
       label: 'Nice to Have',
       badgeColor: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300'
     }
-  };
-
-  const handleApplySuggestion = () => {
-    navigate('/job-matching');
   };
 
   return (
@@ -49,12 +42,7 @@ const SuggestionItem: React.FC<SuggestionItemProps> = ({ suggestion, categoryBgC
             </div>
           )}
         </div>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="shrink-0"
-          onClick={handleApplySuggestion}
-        >
+        <Button variant="outline" size="sm" className="shrink-0">
           <CheckCircle2 size={14} className="mr-1" />
           Apply
         </Button>
