@@ -1,5 +1,5 @@
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -135,6 +135,7 @@ const CVSuggestions = ({
     acc[suggestion.priority].push(suggestion);
     return acc;
   }, {} as Record<string, Suggestion[]>);
+  
   return <div className="px-6 pb-6">
       <Card className="overflow-hidden animate-fade-in bg-white dark:bg-gray-800 my-[26px]">
         <CardHeader className="border-b bg-white">
@@ -147,42 +148,29 @@ const CVSuggestions = ({
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6 bg-white">
-          <Tabs defaultValue="byPriority">
-            <TabsList className="mb-6 w-full">
-              <TabsTrigger value="byPriority" className="flex-1">
-                By Priority
-              </TabsTrigger>
-              <TabsTrigger value="byCategory" className="flex-1">
-                By Category
-              </TabsTrigger>
-            </TabsList>
-            
-            {/* View By Priority */}
-            <TabsContent value="byPriority" className="mt-0 space-y-6">
-              {['critical', 'recommended', 'nice'].map(priority => <div key={priority} className="space-y-4">
+          <Accordion type="single" collapsible className="w-full">
+            {Object.keys(categoryConfig).map(category => <AccordionItem key={category} value={category}>
+                <AccordionTrigger className="py-4">
                   <div className="flex items-center gap-2">
-                    {priorityConfig[priority as keyof typeof priorityConfig].icon}
-                    <h3 className="font-semibold text-lg">
-                      {priorityConfig[priority as keyof typeof priorityConfig].label} Issues
-                    </h3>
+                    {categoryConfig[category as keyof typeof categoryConfig].icon}
+                    <span>{categoryConfig[category as keyof typeof categoryConfig].label}</span>
+                    {categorizedSuggestions[category]?.some(s => s.priority === 'critical') && <Badge className="ml-2 bg-red-500">Critical</Badge>}
                   </div>
-                  
-                  <ul className="space-y-4">
-                    {prioritizedSuggestions[priority]?.map((suggestion, index) => <li key={index} className={`flex flex-col gap-2 p-4 rounded-lg ${categoryConfig[suggestion.category].bgColor}`}>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <ul className="space-y-4 pt-2">
+                    {categorizedSuggestions[category]?.map((suggestion, index) => <li key={index} className={`flex flex-col gap-2 p-4 rounded-lg ${categoryConfig[suggestion.category].bgColor}`}>
                         <div className="flex justify-between items-start">
-                          <div className="flex gap-3 items-start">
-                            {categoryConfig[suggestion.category].icon}
-                            <div>
-                              <div className="flex items-center gap-2 mb-1">
-                                <Badge variant="outline" className={priorityConfig[suggestion.priority].badgeColor}>
-                                  {categoryConfig[suggestion.category].label}
-                                </Badge>
-                              </div>
-                              <p className="font-medium">{suggestion.text}</p>
-                              {suggestion.example && <div className="mt-2 ml-2 pl-2 border-l-2 border-gray-300 text-sm text-muted-foreground">
-                                  <span className="font-medium">Example:</span> {suggestion.example}
-                                </div>}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Badge variant="outline" className={priorityConfig[suggestion.priority].badgeColor}>
+                                {priorityConfig[suggestion.priority].label}
+                              </Badge>
                             </div>
+                            <p className="font-medium">{suggestion.text}</p>
+                            {suggestion.example && <div className="mt-2 ml-2 pl-2 border-l-2 border-gray-300 text-sm text-muted-foreground">
+                                <span className="font-medium">Example:</span> {suggestion.example}
+                              </div>}
                           </div>
                           <Button variant="outline" size="sm" className="shrink-0">
                             <CheckCircle2 size={14} className="mr-1" />
@@ -191,47 +179,9 @@ const CVSuggestions = ({
                         </div>
                       </li>)}
                   </ul>
-                </div>)}
-            </TabsContent>
-            
-            {/* View By Category */}
-            <TabsContent value="byCategory" className="mt-0">
-              <Accordion type="single" collapsible className="w-full">
-                {Object.keys(categoryConfig).map(category => <AccordionItem key={category} value={category}>
-                    <AccordionTrigger className="py-4">
-                      <div className="flex items-center gap-2">
-                        {categoryConfig[category as keyof typeof categoryConfig].icon}
-                        <span>{categoryConfig[category as keyof typeof categoryConfig].label}</span>
-                        {categorizedSuggestions[category]?.some(s => s.priority === 'critical') && <Badge className="ml-2 bg-red-500">Critical</Badge>}
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="space-y-4 pt-2">
-                        {categorizedSuggestions[category]?.map((suggestion, index) => <li key={index} className={`flex flex-col gap-2 p-4 rounded-lg ${categoryConfig[suggestion.category].bgColor}`}>
-                            <div className="flex justify-between items-start">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <Badge variant="outline" className={priorityConfig[suggestion.priority].badgeColor}>
-                                    {priorityConfig[suggestion.priority].label}
-                                  </Badge>
-                                </div>
-                                <p className="font-medium">{suggestion.text}</p>
-                                {suggestion.example && <div className="mt-2 ml-2 pl-2 border-l-2 border-gray-300 text-sm text-muted-foreground">
-                                    <span className="font-medium">Example:</span> {suggestion.example}
-                                  </div>}
-                              </div>
-                              <Button variant="outline" size="sm" className="shrink-0">
-                                <CheckCircle2 size={14} className="mr-1" />
-                                Apply
-                              </Button>
-                            </div>
-                          </li>)}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>)}
-              </Accordion>
-            </TabsContent>
-          </Tabs>
+                </AccordionContent>
+              </AccordionItem>)}
+          </Accordion>
         </CardContent>
       </Card>
     </div>;
