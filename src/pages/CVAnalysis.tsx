@@ -113,8 +113,11 @@ const CVAnalysis = () => {
           {scoreData && !isAnalyzing && (
             <div id="cv-analysis-results" className="space-y-8 animate-fade-in">
               <h2 className="text-2xl font-bold text-center mb-6">CV Analysis Results</h2>
-              <CVAnalysisResults scoreData={scoreData} fileName={fileName} />
-              <CVSuggestions suggestions={scoreData.suggestions} />
+              {/* Container card for the results section */}
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm overflow-hidden">
+                <CVAnalysisResults scoreData={scoreData} fileName={fileName} />
+                <CVSuggestions suggestions={scoreData.suggestions} />
+              </div>
             </div>
           )}
         </div>
