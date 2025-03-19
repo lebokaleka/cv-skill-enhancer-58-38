@@ -30,6 +30,8 @@ const SubscriptionModal = () => {
   };
 
   const handleLogin = () => {
+    // Clear the selected subscription to ensure it doesn't force the sign-up tab
+    setSelectedSubscription(null);
     setIsSubscriptionModalOpen(false);
     setIsAuthModalOpen(true);
   };

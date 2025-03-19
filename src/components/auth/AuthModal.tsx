@@ -12,6 +12,7 @@ const AuthModal = () => {
   } = useAuth();
 
   // Determine initial tab based on selected subscription
+  // If there's a selectedSubscription, show sign-up tab, otherwise show sign-in tab
   const initialTab = selectedSubscription ? 'sign-up' : 'sign-in';
 
   return (
