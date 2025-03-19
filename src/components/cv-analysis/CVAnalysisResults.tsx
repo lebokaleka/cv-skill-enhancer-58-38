@@ -32,7 +32,7 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
     <div className="px-6 pt-6 animate-fade-in">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
         {/* Overall Score Card */}
-        <Card className="md:col-span-4 glass-card overflow-hidden border-t-4 border-t-primary">
+        <Card className="md:col-span-4 border-t-4 border-t-primary bg-white dark:bg-gray-800">
           <div className="p-6 flex flex-col items-center justify-center text-center">
             <div className={`rounded-full w-28 h-28 flex items-center justify-center mb-4 ${getBgColorClass(scoreData.overallScore)}`}>
               <span className={`text-4xl font-bold ${getScoreColor(scoreData.overallScore)}`}>
@@ -47,7 +47,7 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
         </Card>
 
         {/* Section Scores */}
-        <Card className="md:col-span-8 glass-card overflow-hidden">
+        <Card className="md:col-span-8 bg-white dark:bg-gray-800">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BarChart size={20} className="text-primary" />
@@ -121,7 +121,7 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
         </Card>
 
         {/* ATS Compatibility */}
-        <Card className="md:col-span-12 glass-card overflow-hidden">
+        <Card className="md:col-span-12 bg-white dark:bg-gray-800">
           <CardHeader className={`border-b ${scoreData.atsCompatible ? 'bg-green-50 dark:bg-green-900/10' : 'bg-red-50 dark:bg-red-900/10'}`}>
             <CardTitle className="flex items-center gap-2">
               {scoreData.atsCompatible ? (

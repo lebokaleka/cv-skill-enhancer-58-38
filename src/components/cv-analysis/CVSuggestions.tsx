@@ -14,8 +14,8 @@ interface SuggestionProps {
 const CVSuggestions = ({ suggestions }: SuggestionProps) => {
   return (
     <div className="px-6 pb-6">
-      <Card className="glass-card overflow-hidden animate-fade-in">
-        <CardHeader className="border-b bg-secondary/40">
+      <Card className="overflow-hidden animate-fade-in bg-white dark:bg-gray-800">
+        <CardHeader className="border-b bg-secondary">
           <CardTitle className="flex items-center gap-2">
             <Lightbulb size={20} className="text-amber-500" />
             Improvement Suggestions
