@@ -38,9 +38,9 @@ const TemplateSelector = ({
                   : 'border-border hover:border-primary/30 hover:shadow-sm'
               }`}
             >
-              {/* Template Preview Image */}
+              {/* Template Preview Image - Made 10% larger by changing the aspect ratio */}
               <div 
-                className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer mb-3"
+                className="relative w-full aspect-[1/1.54] rounded-md overflow-hidden cursor-pointer mb-3"
                 onClick={() => onSelectTemplate(template.id)}
               >
                 {template.imageUrl ? (
