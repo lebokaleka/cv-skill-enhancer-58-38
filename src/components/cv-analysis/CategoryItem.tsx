@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -32,7 +33,9 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
       <AccordionTrigger className="py-4">
         <div className="flex items-center gap-2">
           {categoryConfig.icon}
-          <span>{categoryConfig.label}</span>
+          <span className="text-sm">
+            {categoryConfig.label}
+          </span>
           {hasCriticalSuggestions && <Badge className="ml-2 bg-red-500">Critical</Badge>}
         </div>
       </AccordionTrigger>
