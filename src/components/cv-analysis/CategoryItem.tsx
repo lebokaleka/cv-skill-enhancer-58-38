@@ -28,7 +28,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
       <AccordionTrigger className="py-4">
         <div className="flex items-center gap-2">
           {categoryConfig.icon}
-          <span className="font-normal" style={{ fontSize: '95%' }}>{categoryConfig.label}</span>
+          <span className="font-normal" style={{ fontSize: '85%' }}>{categoryConfig.label}</span>
           {hasCriticalSuggestions && <Badge className="ml-2 bg-red-500">Critical</Badge>}
         </div>
       </AccordionTrigger>
