@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, ArrowRight, File, FileType2, CheckCircle2 } from 'lucide-react';
+import { FileText, ArrowRight, File, FileType2 } from 'lucide-react';
 import { Card } from "@/components/ui/card";
 
 interface CVUploadSectionProps {
@@ -83,14 +83,14 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
     const extension = fileName.split('.').pop()?.toLowerCase();
     
     if (extension === 'pdf') {
-      return <FileText className="w-12 h-12 text-red-500" />;
+      return <FileText className="w-12 h-12 mb-4 text-red-500" />;
     } else if (extension === 'doc' || extension === 'docx') {
-      return <File className="w-12 h-12 text-blue-500" />;
+      return <File className="w-12 h-12 mb-4 text-blue-500" />;
     } else if (extension === 'txt') {
-      return <FileType2 className="w-12 h-12 text-gray-500" />;
+      return <FileType2 className="w-12 h-12 mb-4 text-gray-500" />;
     }
     
-    return <FileText className="w-12 h-12 text-gray-400" />;
+    return <FileText className="w-12 h-12 mb-4 text-gray-400" />;
   };
 
   return (
@@ -134,43 +134,33 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
                 onDrop={handleDrop}
               >
                 {file ? (
-                  <div className="flex flex-col items-center justify-center text-center w-full max-w-sm">
-                    <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-8 w-full">
-                      <div className="flex items-center justify-center mb-4">
-                        <div className="p-3 rounded-full bg-green-50 dark:bg-green-900/20">
-                          <CheckCircle2 className="w-6 h-6 text-green-500 dark:text-green-400" />
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-center mb-5">
-                        <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl inline-flex items-center justify-center">
-                          {getFileIcon()}
-                        </div>
-                      </div>
-                      
-                      <h3 className="text-lg font-medium mb-1">
-                        File Ready for Analysis
-                      </h3>
-                      
-                      <div className="bg-gray-50 dark:bg-gray-900 rounded-lg px-4 py-3 mb-5 border border-gray-100 dark:border-gray-800">
-                        <p className="font-medium truncate max-w-[240px] text-gray-800 dark:text-gray-200">{fileName}</p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {file.type === 'application/pdf' ? 'PDF Document' : 
-                           file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? 'Word Document' :
-                           file.type === 'text/plain' ? 'Text Document' : 'Document'}
-                        </p>
-                      </div>
-                      
+                  <div className="flex flex-col items-center justify-center text-center">
+                    {getFileIcon()}
+                    
+                    <h3 className="text-lg font-medium mb-1">
+                      File Selected
+                    </h3>
+                    
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2 mb-4">
+                      <p className="text-sm font-medium truncate max-w-[240px]">{fileName}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {file.type === 'application/pdf' ? 'PDF Document' : 
+                         file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? 'Word Document' :
+                         file.type === 'text/plain' ? 'Text Document' : 'Document'}
+                      </p>
+                    </div>
+                    
+                    <div>
                       <Button 
                         variant="outline" 
-                        className="w-full rounded-lg font-medium border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-[#46235C]" 
+                        className="cursor-pointer rounded-full px-6 font-medium border-gray-300 isolate hover:bg-[#46235C] hover:text-white hover:border-transparent" 
                         onClick={() => {
                           setFile(null);
                           setFileName('');
                           setUploadState('idle');
                         }}
                       >
-                        Choose Different File
+                        Change File
                       </Button>
                     </div>
                   </div>
