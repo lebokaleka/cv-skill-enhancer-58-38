@@ -1,23 +1,37 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, ArrowRight, File, FileType2 } from 'lucide-react';
+import { FileText, ArrowRight, File, FileType2, CheckCircle } from 'lucide-react';
 import { Card } from "@/components/ui/card";
 
 interface CVUploadSectionProps {
   onAnalyze: (cvText: string, fileName?: string) => void;
   isAnalyzing: boolean;
+  savedCvText?: string;
+  savedFileName?: string;
 }
 
-const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
-  const [cvText, setCvText] = useState('');
-  const [fileName, setFileName] = useState('');
+const CVUploadSection = ({ onAnalyze, isAnalyzing, savedCvText = '', savedFileName = '' }: CVUploadSectionProps) => {
+  const [cvText, setCvText] = useState(savedCvText);
+  const [fileName, setFileName] = useState(savedFileName);
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadState, setUploadState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [inputMethod, setInputMethod] = useState<'upload' | 'paste'>('upload');
+  const [inputMethod, setInputMethod] = useState<'upload' | 'paste'>(savedCvText && !savedFileName ? 'paste' : 'upload');
+
+  // Update initial state if saved data is passed in
+  useEffect(() => {
+    if (savedCvText) {
+      setCvText(savedCvText);
+    }
+    
+    if (savedFileName) {
+      setFileName(savedFileName);
+      setUploadState('success');
+    }
+  }, [savedCvText, savedFileName]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCvText(e.target.value);
@@ -78,7 +92,7 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
   };
 
   const getFileIcon = () => {
-    if (!file) return <FileText className="w-12 h-12 mb-4 text-gray-400" />;
+    if (!file && !fileName) return <FileText className="w-12 h-12 mb-4 text-gray-400" />;
     
     const extension = fileName.split('.').pop()?.toLowerCase();
     
@@ -104,7 +118,7 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
 
       <Card className="shadow-md overflow-hidden border">
         <div className="pt-6 px-6">
-          <Tabs defaultValue="upload" className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
+          <Tabs defaultValue={inputMethod} className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
             <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden">
               <TabsTrigger 
                 value="upload" 
@@ -125,7 +139,7 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
                 className={`border-2 border-dashed rounded-xl p-10 min-h-[400px] flex items-center justify-center transition-all duration-200 ${
                   isDragging 
                     ? 'border-gray-400 bg-gray-50 dark:bg-gray-800/30' 
-                    : file 
+                    : (file || fileName) 
                       ? 'border-green-400 bg-green-50 dark:bg-green-900/10' 
                       : 'border-gray-300 bg-transparent'
                 }`}
@@ -133,34 +147,38 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
-                {file ? (
+                {(file || fileName) ? (
                   <div className="flex flex-col items-center justify-center text-center">
-                    {getFileIcon()}
-                    
-                    <h3 className="text-lg font-medium mb-1">
-                      File Selected
-                    </h3>
-                    
-                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2 mb-4">
-                      <p className="text-sm font-medium truncate max-w-[240px]">{fileName}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {file.type === 'application/pdf' ? 'PDF Document' : 
-                         file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? 'Word Document' :
-                         file.type === 'text/plain' ? 'Text Document' : 'Document'}
-                      </p>
-                    </div>
-                    
-                    <div>
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-green-100 dark:border-green-800/30 p-8 max-w-md">
+                      <div className="rounded-full bg-green-50 dark:bg-green-900/20 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <CheckCircle className="h-8 w-8 text-green-500" />
+                      </div>
+                      
+                      {getFileIcon()}
+                      
+                      <h3 className="text-xl font-semibold mb-3">
+                        File Selected
+                      </h3>
+                      
+                      <div className="bg-gray-50 dark:bg-gray-800/60 rounded-lg px-6 py-3 mb-6 mx-auto inline-block">
+                        <p className="font-medium truncate max-w-[240px]">{fileName}</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {fileName.endsWith('.pdf') ? 'PDF Document' : 
+                           fileName.endsWith('.doc') || fileName.endsWith('.docx') ? 'Word Document' :
+                           fileName.endsWith('.txt') ? 'Text Document' : 'Document'}
+                        </p>
+                      </div>
+                      
                       <Button 
                         variant="outline" 
-                        className="cursor-pointer rounded-full px-6 font-medium border-gray-300 isolate hover:bg-[#46235C] hover:text-white hover:border-transparent" 
+                        className="rounded-full px-6 font-medium border-gray-300 isolate hover:bg-[#46235C] hover:text-white hover:border-transparent w-full" 
                         onClick={() => {
                           setFile(null);
                           setFileName('');
                           setUploadState('idle');
                         }}
                       >
-                        Change File
+                        Choose Different File
                       </Button>
                     </div>
                   </div>
@@ -219,9 +237,9 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
             <Button
               className="rounded-full px-6 py-2 bg-[#46235C] hover:bg-[#46235C]/80 active:bg-[#46235C]/60 text-white isolate transition-all duration-200"
               onClick={handleCVUpload}
-              disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file))}
+              disabled={isAnalyzing || ((inputMethod === 'paste' && cvText.trim() === '') || (inputMethod === 'upload' && !file && !fileName))}
             >
-              Analyze CV
+              {fileName || (inputMethod === 'paste' && cvText.trim() !== '') ? 'Analyze CV' : 'Upload & Analyze'}
               <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           </div>
