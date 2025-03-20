@@ -35,7 +35,7 @@ const TemplateCard = ({ template, isSelected, onSelect }: TemplateCardProps) => 
           <Image 
             src={template.imageUrl} 
             alt={template.name} 
-            className="object-cover w-full h-full transition-opacity duration-200" 
+            className="transition-opacity duration-200" 
             fallback="/placeholder.svg" 
           />
         ) : (
@@ -82,9 +82,6 @@ const TemplateSelector = ({
   selectedTemplate,
   onSelectTemplate
 }: TemplateSelectorProps) => {
-  // Show all available templates in the display
-  const displayTemplates = templates;
-  
   return (
     <Card className="glass-card border-dashed">
       <CardHeader className="py-4">
@@ -94,8 +91,8 @@ const TemplateSelector = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pb-2 px-[15px] my-0 py-[16px]">
-          {displayTemplates.map(template => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {templates.map(template => (
             <TemplateCard
               key={template.id}
               template={template}

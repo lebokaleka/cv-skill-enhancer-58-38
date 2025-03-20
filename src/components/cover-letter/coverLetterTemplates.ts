@@ -1,3 +1,4 @@
+
 export interface CoverLetterTemplate {
   id: string;
   name: string;
@@ -41,7 +42,7 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     name: 'Tech Professional',
     description: 'Modern template with hexagon pattern for tech industry roles',
     style: 'Professional with geometric design',
-    imageUrl: '/lovable-uploads/40be15db-f883-42ef-a2a9-881b1aaed3cb.png'
+    imageUrl: '/lovable-uploads/610a7df1-7077-40c0-9311-89b73e170ec6.png'
   },
   {
     id: 'professional-corner',
