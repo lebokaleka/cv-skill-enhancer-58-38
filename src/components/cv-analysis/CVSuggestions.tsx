@@ -111,7 +111,7 @@ const CVSuggestions = ({
     return acc;
   }, {} as Record<string, Suggestion[]>);
   return <div className="px-6 pb-6">
-      <Card className="overflow-hidden animate-fade-in bg-white dark:bg-gray-800 my-[26px]">
+      <Card className="overflow-hidden animate-fade-in bg-white dark:bg-gray-800 my-0">
         <CardHeader className="border-b bg-white">
           <CardTitle className="flex items-center gap-2">
             <Lightbulb size={20} className="text-amber-500" />
