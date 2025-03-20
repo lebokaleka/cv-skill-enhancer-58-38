@@ -1,11 +1,9 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Accordion } from "@/components/ui/accordion";
 import { Lightbulb, LayoutPanelTop, MessageSquareText, Search, Briefcase, Type, Target } from 'lucide-react';
 import type { Suggestion, CVScoreData } from "@/types/cvAnalysis";
 import CategoryItem from './CategoryItem';
-
 interface SuggestionProps {
   suggestions: {
     high: string[];
@@ -61,53 +59,48 @@ const categoryConfig = {
     bgColor: 'bg-orange-50 dark:bg-orange-900/10'
   }
 };
-
-const CVSuggestions = ({ suggestions, structuredSuggestions, sectionScores, overallScore }: SuggestionProps) => {
+const CVSuggestions = ({
+  suggestions,
+  structuredSuggestions,
+  sectionScores,
+  overallScore
+}: SuggestionProps) => {
   // Mock structured suggestions if not provided
-  const mockStructuredSuggestions: Suggestion[] = structuredSuggestions || [
-    {
-      text: "Add more quantifiable achievements to demonstrate impact",
-      category: "content",
-      priority: "critical"
-    }, 
-    {
-      text: "Include relevant industry keywords throughout your CV",
-      category: "ats",
-      priority: "critical",
-      example: "Add keywords like 'data analysis', 'project management', and 'stakeholder communication'"
-    }, 
-    {
-      text: "Reduce the length of your professional summary",
-      category: "formatting",
-      priority: "recommended"
-    }, 
-    {
-      text: "Use more action verbs at the beginning of your bullet points",
-      category: "grammar",
-      priority: "recommended",
-      example: "Instead of 'Was responsible for managing...' use 'Managed...'"
-    }, 
-    {
-      text: "Consider using a more modern format",
-      category: "formatting",
-      priority: "nice"
-    }, 
-    {
-      text: "Add a skills section for better ATS compatibility",
-      category: "ats",
-      priority: "recommended"
-    }, 
-    {
-      text: "Highlight leadership experience more prominently",
-      category: "skills",
-      priority: "recommended"
-    }, 
-    {
-      text: "Tailor your CV to better match the job description",
-      category: "customization",
-      priority: "critical"
-    }
-  ];
+  const mockStructuredSuggestions: Suggestion[] = structuredSuggestions || [{
+    text: "Add more quantifiable achievements to demonstrate impact",
+    category: "content",
+    priority: "critical"
+  }, {
+    text: "Include relevant industry keywords throughout your CV",
+    category: "ats",
+    priority: "critical",
+    example: "Add keywords like 'data analysis', 'project management', and 'stakeholder communication'"
+  }, {
+    text: "Reduce the length of your professional summary",
+    category: "formatting",
+    priority: "recommended"
+  }, {
+    text: "Use more action verbs at the beginning of your bullet points",
+    category: "grammar",
+    priority: "recommended",
+    example: "Instead of 'Was responsible for managing...' use 'Managed...'"
+  }, {
+    text: "Consider using a more modern format",
+    category: "formatting",
+    priority: "nice"
+  }, {
+    text: "Add a skills section for better ATS compatibility",
+    category: "ats",
+    priority: "recommended"
+  }, {
+    text: "Highlight leadership experience more prominently",
+    category: "skills",
+    priority: "recommended"
+  }, {
+    text: "Tailor your CV to better match the job description",
+    category: "customization",
+    priority: "critical"
+  }];
 
   // Group suggestions by category
   const categorizedSuggestions = mockStructuredSuggestions.reduce((acc, suggestion) => {
@@ -117,9 +110,7 @@ const CVSuggestions = ({ suggestions, structuredSuggestions, sectionScores, over
     acc[suggestion.category].push(suggestion);
     return acc;
   }, {} as Record<string, Suggestion[]>);
-  
-  return (
-    <div className="px-6 pb-6">
+  return <div className="px-6 pb-6">
       <Card className="overflow-hidden animate-fade-in bg-white dark:bg-gray-800 my-[26px]">
         <CardHeader className="border-b bg-white">
           <CardTitle className="flex items-center gap-2">
@@ -130,35 +121,23 @@ const CVSuggestions = ({ suggestions, structuredSuggestions, sectionScores, over
             Actionable recommendations to improve your CV
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-6 bg-white">
+        <CardContent className="pt-6 bg-white py-0">
           <Accordion type="single" collapsible className="w-full">
             {Object.keys(categoryConfig).map(category => {
-              // Check if this category has a corresponding section score
-              let isCritical = false;
-              const configItem = categoryConfig[category as keyof typeof categoryConfig];
-              
-              if (sectionScores && 'sectionKey' in configItem) {
-                const sectionKey = configItem.sectionKey as keyof typeof sectionScores;
-                const score = sectionScores[sectionKey];
-                // Mark as critical if score is below 30%
-                isCritical = score < 30;
-              }
-              
-              return (
-                <CategoryItem
-                  key={category}
-                  category={category}
-                  categoryConfig={categoryConfig[category as keyof typeof categoryConfig]}
-                  suggestions={categorizedSuggestions[category] || []}
-                  isCritical={isCritical}
-                />
-              );
-            })}
+            // Check if this category has a corresponding section score
+            let isCritical = false;
+            const configItem = categoryConfig[category as keyof typeof categoryConfig];
+            if (sectionScores && 'sectionKey' in configItem) {
+              const sectionKey = configItem.sectionKey as keyof typeof sectionScores;
+              const score = sectionScores[sectionKey];
+              // Mark as critical if score is below 30%
+              isCritical = score < 30;
+            }
+            return <CategoryItem key={category} category={category} categoryConfig={categoryConfig[category as keyof typeof categoryConfig]} suggestions={categorizedSuggestions[category] || []} isCritical={isCritical} />;
+          })}
           </Accordion>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };
-
 export default CVSuggestions;
