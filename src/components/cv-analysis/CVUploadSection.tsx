@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, ArrowRight } from 'lucide-react';
+import { FileText, ArrowRight, File, FileType2 } from 'lucide-react';
 import { Card } from "@/components/ui/card";
 
 interface CVUploadSectionProps {
@@ -77,6 +77,22 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
     onAnalyze(cvText, fileName);
   };
 
+  const getFileIcon = () => {
+    if (!file) return <FileText className="w-12 h-12 mb-4 text-gray-400" />;
+    
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    
+    if (extension === 'pdf') {
+      return <FileText className="w-12 h-12 mb-4 text-red-500" />;
+    } else if (extension === 'doc' || extension === 'docx') {
+      return <File className="w-12 h-12 mb-4 text-blue-500" />;
+    } else if (extension === 'txt') {
+      return <FileType2 className="w-12 h-12 mb-4 text-gray-500" />;
+    }
+    
+    return <FileText className="w-12 h-12 mb-4 text-gray-400" />;
+  };
+
   return (
     <div className="animate-scale-in">
       <div className="text-center mb-8">
@@ -117,40 +133,73 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
-                <div className="flex flex-col items-center justify-center text-center">
-                  <FileText className="w-12 h-12 mb-4 text-gray-400" />
-                  
-                  <h3 className="text-lg font-medium mb-1">
-                    Upload your CV
-                  </h3>
-                  
-                  <p className="text-muted-foreground text-sm mb-6">
-                    Drag and drop your CV or click to browse
-                  </p>
-                  
-                  <div>
-                    <input
-                      type="file"
-                      id="cv-upload"
-                      className="hidden"
-                      accept=".pdf,.doc,.docx,.txt"
-                      onChange={handleFileInputChange}
-                    />
-                    <label htmlFor="cv-upload">
+                {file ? (
+                  <div className="flex flex-col items-center justify-center text-center">
+                    {getFileIcon()}
+                    
+                    <h3 className="text-lg font-medium mb-1">
+                      File Selected
+                    </h3>
+                    
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2 mb-4">
+                      <p className="text-sm font-medium truncate max-w-[240px]">{fileName}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {file.type === 'application/pdf' ? 'PDF Document' : 
+                         file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? 'Word Document' :
+                         file.type === 'text/plain' ? 'Text Document' : 'Document'}
+                      </p>
+                    </div>
+                    
+                    <div>
                       <Button 
                         variant="outline" 
                         className="cursor-pointer rounded-full px-6 font-medium border-gray-300 isolate hover:bg-[#46235C] hover:text-white hover:border-transparent" 
-                        asChild
+                        onClick={() => {
+                          setFile(null);
+                          setFileName('');
+                          setUploadState('idle');
+                        }}
                       >
-                        <span>Choose File</span>
+                        Change File
                       </Button>
-                    </label>
+                    </div>
                   </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <FileText className="w-12 h-12 mb-4 text-gray-400" />
+                    
+                    <h3 className="text-lg font-medium mb-1">
+                      Upload your CV
+                    </h3>
+                    
+                    <p className="text-muted-foreground text-sm mb-6">
+                      Drag and drop your CV or click to browse
+                    </p>
+                    
+                    <div>
+                      <input
+                        type="file"
+                        id="cv-upload"
+                        className="hidden"
+                        accept=".pdf,.doc,.docx,.txt"
+                        onChange={handleFileInputChange}
+                      />
+                      <label htmlFor="cv-upload">
+                        <Button 
+                          variant="outline" 
+                          className="cursor-pointer rounded-full px-6 font-medium border-gray-300 isolate hover:bg-[#46235C] hover:text-white hover:border-transparent" 
+                          asChild
+                        >
+                          <span>Choose File</span>
+                        </Button>
+                      </label>
+                    </div>
 
-                  <p className="text-xs text-muted-foreground mt-4">
-                    Supported formats: PDF, Word, TXT
-                  </p>
-                </div>
+                    <p className="text-xs text-muted-foreground mt-4">
+                      Supported formats: PDF, Word, TXT
+                    </p>
+                  </div>
+                )}
               </div>
             </TabsContent>
             
