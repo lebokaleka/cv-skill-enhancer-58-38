@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, File, Upload, FileInput, X } from 'lucide-react';
+import { FileText, File, Upload, FileInput, X, ArrowRight } from 'lucide-react';
 import { Card } from "@/components/ui/card";
 import { getFileTypeIcon } from '@/lib/utils';
 
@@ -82,6 +82,12 @@ const CVUploadSection = ({ onAnalyze, isAnalyzing }: CVUploadSectionProps) => {
     setFile(null);
     setFileName('');
     setUploadState('idle');
+  };
+
+  const handleCVUpload = () => {
+    if (inputMethod === 'paste') {
+      onAnalyze(cvText);
+    }
   };
 
   return (
