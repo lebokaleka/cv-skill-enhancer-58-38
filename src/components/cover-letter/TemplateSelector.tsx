@@ -23,7 +23,7 @@ const TemplateSelector = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex justify-between gap-4 overflow-x-auto pb-2 px-[15px] my-0 py-[15px]">
+        <div className="flex justify-between gap-4 overflow-x-auto pb-2 px-[15px] my-0 py-[16px]">
           {displayTemplates.map(template => <div key={template.id} className={`relative flex-1 min-w-[120px] border rounded-lg p-2 transition-all duration-300 ${selectedTemplate === template.id ? 'border-primary ring-2 ring-primary/20 shadow-md transform scale-105' : 'border-border hover:border-primary/30 hover:shadow-sm'}`}>
               {/* Template Preview Image */}
               <div className="relative w-full aspect-[1/1.4] rounded-md overflow-hidden cursor-pointer mb-3" onClick={() => onSelectTemplate(template.id)}>
