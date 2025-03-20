@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { ReactNode } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { coverLetterTemplates } from "@/components/cover-letter/coverLetterTemplates";
 import CoverLetterInput from "@/components/cover-letter/CoverLetterInput";
@@ -10,38 +10,42 @@ import CoverLetterStateProvider, { CoverLetterState } from "@/components/cover-l
 const CoverLetter = () => {
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
 
+  const renderContent = (state: CoverLetterState): ReactNode => {
+    if (state.step === 'input') {
+      return (
+        <CoverLetterInput 
+          cvText={state.cvText} 
+          jobDescription={state.jobDescription} 
+          selectedTemplate={state.selectedTemplate} 
+          templates={coverLetterTemplates.slice(0, 5)} 
+          isGenerating={state.isGenerating} 
+          onCVUpload={state.handleCVUpload} 
+          onJobDescriptionChange={state.handleJobDescriptionChange} 
+          onTemplateSelect={state.handleTemplateSelect} 
+          onGenerate={state.handleGenerate} 
+        />
+      );
+    }
+    
+    return (
+      <CoverLetterPreview 
+        coverLetter={state.coverLetter} 
+        selectedTemplate={state.selectedTemplate} 
+        templates={coverLetterTemplates} 
+        isGenerating={state.isGenerating} 
+        onRegenerate={state.handleRegenerate} 
+        onBack={() => state.setStep('input')} 
+      />
+    );
+  };
+
   return (
     <CoverLetterLayout>
       <CoverLetterStateProvider 
         isAuthenticated={isAuthenticated} 
         setIsAuthModalOpen={setIsAuthModalOpen}
       >
-        {(state: CoverLetterState) => (
-          <>
-            {state.step === 'input' ? (
-              <CoverLetterInput 
-                cvText={state.cvText} 
-                jobDescription={state.jobDescription} 
-                selectedTemplate={state.selectedTemplate} 
-                templates={coverLetterTemplates.slice(0, 5)} 
-                isGenerating={state.isGenerating} 
-                onCVUpload={state.handleCVUpload} 
-                onJobDescriptionChange={state.handleJobDescriptionChange} 
-                onTemplateSelect={state.handleTemplateSelect} 
-                onGenerate={state.handleGenerate} 
-              />
-            ) : (
-              <CoverLetterPreview 
-                coverLetter={state.coverLetter} 
-                selectedTemplate={state.selectedTemplate} 
-                templates={coverLetterTemplates} 
-                isGenerating={state.isGenerating} 
-                onRegenerate={state.handleRegenerate} 
-                onBack={() => state.setStep('input')} 
-              />
-            )}
-          </>
-        )}
+        {renderContent}
       </CoverLetterStateProvider>
     </CoverLetterLayout>
   );

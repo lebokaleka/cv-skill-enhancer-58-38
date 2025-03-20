@@ -18,7 +18,7 @@ export interface CoverLetterState {
 }
 
 interface CoverLetterStateProviderProps {
-  children: ReactNode;
+  children: (state: CoverLetterState) => ReactNode;
   isAuthenticated: boolean;
   setIsAuthModalOpen: (isOpen: boolean) => void;
 }
@@ -217,7 +217,7 @@ const CoverLetterStateProvider = ({ children, isAuthenticated, setIsAuthModalOpe
   
   return (
     <>
-      {typeof children === 'function' ? children(state) : children}
+      {children(state)}
     </>
   );
 };
