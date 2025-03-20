@@ -36,7 +36,7 @@ const SuggestionItem: React.FC<SuggestionItemProps> = ({ suggestion, categoryBgC
   };
 
   const isCustomizationCategory = category === 'customization';
-  const buttonText = isCustomizationCategory ? "Check for compatibility" : "Apply";
+  const buttonText = isCustomizationCategory ? "Customize your CV" : "Apply";
   const buttonIcon = isCustomizationCategory ? <Search size={14} className="mr-1" /> : <CheckCircle2 size={14} className="mr-1" />;
 
   return (
