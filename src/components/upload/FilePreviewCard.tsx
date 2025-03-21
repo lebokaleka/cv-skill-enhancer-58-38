@@ -15,7 +15,7 @@ const FilePreviewCard: React.FC<FilePreviewCardProps> = ({ file, onSelectDiffere
   const fileName = formatFileName(file);
 
   return (
-    <div className="p-6 border-2 border-dashed border-green-300 rounded-lg bg-green-50 dark:border-green-600 dark:bg-green-900/10 flex flex-col items-center text-center">
+    <div className="p-6 border border-dashed border-gray-300 rounded-lg bg-green-50 dark:border-green-600 dark:bg-green-900/10 flex flex-col items-center text-center">
       {/* Success icon */}
       <div className="mb-4">
         <CheckCircle className="h-8 w-8 text-green-500" />
