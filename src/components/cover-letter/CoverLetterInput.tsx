@@ -61,15 +61,13 @@ const CoverLetterInput = ({
               Paste the job description you want to apply for
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <Textarea
-                value={jobDescription}
-                onChange={onJobDescriptionChange}
-                placeholder="Paste job description here..."
-                className="min-h-[200px] resize-none"
-              />
-            </div>
+          <CardContent className="flex flex-col h-[calc(100%-76px)]"> {/* Adjusted to fill remaining height */}
+            <Textarea
+              value={jobDescription}
+              onChange={onJobDescriptionChange}
+              placeholder="Paste job description here..."
+              className="flex-grow min-h-[200px] resize-none"
+            />
           </CardContent>
         </Card>
       </div>
