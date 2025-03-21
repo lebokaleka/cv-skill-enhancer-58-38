@@ -1,7 +1,7 @@
 
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { FileText } from 'lucide-react';
+import { FileText, File, FileType2, CheckCircle } from 'lucide-react';
 
 interface CVUploaderProps {
   onUpload: (text: string, fileName?: string) => void;
@@ -12,6 +12,8 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadState, setUploadState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [isButtonAnimating, setIsButtonAnimating] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -42,6 +44,35 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
     setTimeout(() => {
       setIsButtonAnimating(false);
     }, 500);
+    fileInputRef.current?.click();
+  };
+
+  const getFileIcon = () => {
+    if (!file) return <FileText className="w-10 h-10 mb-3 text-gray-400" />;
+    
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (extension === 'pdf') {
+      return <File className="w-10 h-10 text-red-500" />;
+    } else if (extension === 'doc' || extension === 'docx') {
+      return <File className="w-10 h-10 text-blue-500" />;
+    } else if (extension === 'txt') {
+      return <FileType2 className="w-10 h-10 text-gray-500" />;
+    }
+    return <FileText className="w-10 h-10 text-gray-400" />;
+  };
+
+  const getFileType = () => {
+    if (!file) return '';
+    
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (extension === 'pdf') {
+      return 'PDF Document';
+    } else if (extension === 'doc' || extension === 'docx') {
+      return 'Word Document';
+    } else if (extension === 'txt') {
+      return 'Text Document';
+    }
+    return 'Document';
   };
 
   const handleFileSelect = (selectedFile: File) => {
@@ -75,6 +106,78 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
     setUploadState('success');
   };
 
+  const displayFileName = file?.name && file.name.length > 25 
+    ? file.name.substring(0, 22) + '...' 
+    : file?.name || '';
+
+  // If a file is uploaded successfully, show the success state design
+  if (uploadState === 'success' && file) {
+    return (
+      <div
+        className="border border-dashed border-green-300 rounded-lg p-8 bg-green-50 dark:bg-green-900/10"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <div className="flex flex-col items-center justify-center text-center">
+          <div className="rounded-full bg-green-50 dark:bg-green-900/20 w-12 h-12 mx-auto mb-4 flex items-center justify-center">
+            <CheckCircle className="h-8 w-8 text-green-500" />
+          </div>
+          
+          <h3 className="text-lg font-medium mb-1">
+            Upload your CV
+          </h3>
+          
+          <div 
+            className="rounded-lg p-3 mb-4 flex items-center gap-3 mx-auto" 
+            onMouseEnter={() => setIsHovering(true)} 
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            <div className="bg-white dark:bg-gray-700 rounded-full p-2 shadow-sm">
+              {getFileIcon()}
+            </div>
+            <div className="text-left flex-1 min-w-0">
+              <p className="font-medium truncate" title={file.name}>
+                {displayFileName}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {getFileType()}
+              </p>
+            </div>
+            {isHovering && file.name.length > 25 && (
+              <div className="absolute mt-10 z-10 bg-black/80 text-white text-xs p-2 rounded shadow">
+                {file.name}
+              </div>
+            )}
+          </div>
+          
+          <div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              id="new-cv-upload"
+              className="hidden"
+              accept=".pdf,.doc,.docx,.txt"
+              onChange={handleFileInputChange}
+            />
+            <Button 
+              variant="outline" 
+              className="rounded-full px-6 font-medium border-gray-300 isolate hover:bg-[#46235C] hover:text-white hover:border-transparent" 
+              onClick={handleButtonClick}
+            >
+              Choose Different File
+            </Button>
+          </div>
+
+          <p className="text-xs text-muted-foreground mt-4">
+            Supported formats: PDF, Word, TXT
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Default state (no file uploaded yet)
   return (
     <div
       className={`border border-dashed rounded-lg p-5 transition-all duration-200 ${
@@ -102,6 +205,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
             type="file"
             id="cv-upload"
             className="hidden"
+            ref={fileInputRef}
             accept=".pdf,.doc,.docx,.txt"
             onChange={handleFileInputChange}
           />

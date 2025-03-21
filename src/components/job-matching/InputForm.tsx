@@ -14,13 +14,15 @@ interface InputFormProps {
 const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   const [cvText, setCvText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
+  const [fileName, setFileName] = useState('');
   const [showUploader, setShowUploader] = useState(true);
 
-  const handleCVUpload = (text: string) => {
+  const handleCVUpload = (text: string, name?: string) => {
     setCvText(text);
-    if (text) {
-      setShowUploader(false);
+    if (name) {
+      setFileName(name);
     }
+    setShowUploader(false);
   };
 
   const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -54,26 +56,9 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
           <FileText size={16} />
           <span>Your CV</span>
         </h3>
-        {showUploader ? (
-          <CVUploader onUpload={handleCVUpload} />
-        ) : (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">CV Uploaded</span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => setShowUploader(true)}
-                className="isolate hover:bg-[#46235C] hover:text-white h-7 text-xs px-3"
-              >
-                Change
-              </Button>
-            </div>
-            <div className="bg-secondary/50 p-4 rounded-md h-[160px] overflow-auto">
-              <p className="text-sm whitespace-pre-wrap">{cvText}</p>
-            </div>
-          </div>
-        )}
+        
+        {/* CV Uploader */}
+        <CVUploader onUpload={handleCVUpload} />
       </div>
 
       {/* Analyze Button */}
