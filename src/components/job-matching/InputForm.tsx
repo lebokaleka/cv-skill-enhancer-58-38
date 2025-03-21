@@ -1,11 +1,10 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CVUploader from "@/components/upload/CVUploader";
 import { CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { FileText, Briefcase, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { getJobMatchingData, setJobMatchingData } from '@/utils/localStorage';
 
 interface InputFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -17,35 +16,6 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   const [jobDescription, setJobDescription] = useState('');
   const [fileName, setFileName] = useState('');
   const [showUploader, setShowUploader] = useState(true);
-
-  // Load saved data on component mount
-  useEffect(() => {
-    const savedData = getJobMatchingData();
-    if (savedData) {
-      if (savedData.jobDescription) {
-        setJobDescription(savedData.jobDescription);
-      }
-      if (savedData.cvText) {
-        setCvText(savedData.cvText);
-        if (savedData.fileName) {
-          setFileName(savedData.fileName);
-          setShowUploader(false);
-        }
-      }
-    }
-  }, []);
-
-  // Save data when it changes
-  useEffect(() => {
-    if (cvText || jobDescription) {
-      const dataToSave = {
-        cvText,
-        jobDescription,
-        fileName
-      };
-      setJobMatchingData(dataToSave);
-    }
-  }, [cvText, jobDescription, fileName]);
 
   const handleCVUpload = (text: string, name?: string) => {
     setCvText(text);
@@ -88,25 +58,7 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
         </h3>
         
         {/* CV Uploader */}
-        {showUploader ? (
-          <CVUploader onUpload={handleCVUpload} />
-        ) : (
-          <div className="mb-4">
-            <div className="border rounded-lg p-4 bg-green-50 dark:bg-green-900/10">
-              <p className="text-sm font-medium flex items-center gap-2">
-                <FileText size={16} className="text-green-600" />
-                {fileName || "CV uploaded"}
-              </p>
-              <Button 
-                variant="link" 
-                className="text-xs p-0 h-auto mt-1" 
-                onClick={() => setShowUploader(true)}
-              >
-                Change CV
-              </Button>
-            </div>
-          </div>
-        )}
+        <CVUploader onUpload={handleCVUpload} />
       </div>
 
       {/* Analyze Button */}
