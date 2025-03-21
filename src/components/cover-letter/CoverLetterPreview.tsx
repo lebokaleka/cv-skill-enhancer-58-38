@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +11,6 @@ import CreativeAccentTemplate from './templates/CreativeAccentTemplate';
 import ExecutiveElegantTemplate from './templates/ExecutiveElegantTemplate';
 import ProfessionalCornerTemplate from './templates/ProfessionalCornerTemplate';
 import ProfessionalBurgundyTemplate from './templates/ProfessionalBurgundyTemplate';
-
 interface CoverLetterPreviewProps {
   coverLetter: string;
   selectedTemplate: string;
@@ -21,7 +19,6 @@ interface CoverLetterPreviewProps {
   onRegenerate: () => void;
   onBack: () => void;
 }
-
 const CoverLetterPreview = ({
   coverLetter,
   selectedTemplate,
@@ -31,13 +28,11 @@ const CoverLetterPreview = ({
   onBack
 }: CoverLetterPreviewProps) => {
   const [copied, setCopied] = useState(false);
-
   const handleCopy = () => {
     navigator.clipboard.writeText(coverLetter);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-
   const renderTemplate = () => {
     switch (selectedTemplate) {
       case 'classic-professional':
@@ -58,57 +53,34 @@ const CoverLetterPreview = ({
         return <ProfessionalBurgundyTemplate content={coverLetter} />;
       default:
         // Fallback to simple display for other templates
-        return (
-          <div className="bg-white dark:bg-background border rounded-md p-6 shadow-sm min-h-[60vh]">
+        return <div className="bg-white dark:bg-background border rounded-md p-6 shadow-sm min-h-[60vh]">
             <pre className="font-sans whitespace-pre-wrap text-foreground">
               {coverLetter}
             </pre>
-          </div>
-        );
+          </div>;
     }
   };
-
-  return (
-    <div className="space-y-8 animate-fade-in-up">
+  return <div className="space-y-8 animate-fade-in-up">
       {/* Cover Letter Preview */}
-      <Card className="glass-card">
+      <Card className="glass-card border-dashed">
         <CardHeader className="border-b bg-secondary/40">
           <div className="flex justify-between items-center">
             <CardTitle>Your Cover Letter</CardTitle>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-1"
-                onClick={handleCopy}
-              >
-                {copied ? (
-                  <>
+              <Button variant="outline" size="sm" className="gap-1" onClick={handleCopy}>
+                {copied ? <>
                     <Check size={14} />
                     <span>Copied</span>
-                  </>
-                ) : (
-                  <>
+                  </> : <>
                     <Copy size={14} />
                     <span>Copy</span>
-                  </>
-                )}
+                  </>}
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-1"
-                onClick={onRegenerate}
-                disabled={isGenerating}
-              >
+              <Button variant="outline" size="sm" className="gap-1" onClick={onRegenerate} disabled={isGenerating}>
                 <RefreshCw size={14} className={isGenerating ? 'animate-spin' : ''} />
                 <span>Regenerate</span>
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-1"
-              >
+              <Button variant="outline" size="sm" className="gap-1">
                 <Download size={14} />
                 <span>Download</span>
               </Button>
@@ -122,8 +94,6 @@ const CoverLetterPreview = ({
           {renderTemplate()}
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };
-
 export default CoverLetterPreview;
