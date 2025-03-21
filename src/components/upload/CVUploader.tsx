@@ -39,11 +39,16 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
     }
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (e: React.MouseEvent) => {
+    // Prevent default to avoid any bubbling that might cause double triggers
+    e.preventDefault();
+    
     setIsButtonAnimating(true);
     setTimeout(() => {
       setIsButtonAnimating(false);
     }, 500);
+    
+    // Directly click the file input
     fileInputRef.current?.click();
   };
 
@@ -209,19 +214,18 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
             accept=".pdf,.doc,.docx,.txt"
             onChange={handleFileInputChange}
           />
-          <label htmlFor="cv-upload" onClick={handleButtonClick}>
-            <Button 
-              variant="outline" 
-              className={`cursor-pointer rounded-full px-6 font-medium border-gray-300 isolate transition-all duration-200 ${
-                isButtonAnimating 
-                  ? 'bg-[#46235C] text-white border-[#46235C]' 
-                  : 'hover:bg-[#46235C] hover:text-white hover:border-transparent'
-              }`}
-              asChild
-            >
-              <span>Choose File</span>
-            </Button>
-          </label>
+          {/* Remove the htmlFor attribute and use the onClick handler instead */}
+          <Button 
+            variant="outline" 
+            className={`cursor-pointer rounded-full px-6 font-medium border-gray-300 isolate transition-all duration-200 ${
+              isButtonAnimating 
+                ? 'bg-[#46235C] text-white border-[#46235C]' 
+                : 'hover:bg-[#46235C] hover:text-white hover:border-transparent'
+            }`}
+            onClick={handleButtonClick}
+          >
+            Choose File
+          </Button>
         </div>
         
         <p className="text-xs text-muted-foreground">
