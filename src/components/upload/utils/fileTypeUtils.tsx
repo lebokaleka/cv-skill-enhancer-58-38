@@ -7,7 +7,7 @@ export const getFileIcon = (file: File | null) => {
   
   const extension = file.name.split('.').pop()?.toLowerCase();
   if (extension === 'pdf') {
-    return <FileIcon className="w-10 h-10 text-red-500" />;
+    return <FileText className="w-10 h-10 text-red-500" />;
   } else if (extension === 'doc' || extension === 'docx') {
     return <FileIcon className="w-10 h-10 text-blue-500" />;
   } else if (extension === 'txt') {
