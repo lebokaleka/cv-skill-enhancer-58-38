@@ -42,11 +42,11 @@ const FileUploadArea = ({ onFileSelect }: FileUploadAreaProps) => {
         Upload your CV
       </h3>
       
-      <p className="text-muted-foreground text-sm mb-6">
+      <p className="text-muted-foreground text-sm mb-4">
         Drag and drop your CV or click to browse
       </p>
       
-      <div>
+      <div className="mb-4">
         <input
           type="file"
           id="cv-upload"
@@ -65,7 +65,7 @@ const FileUploadArea = ({ onFileSelect }: FileUploadAreaProps) => {
         </label>
       </div>
 
-      <p className="text-xs text-muted-foreground mt-4">
+      <p className="text-xs text-muted-foreground">
         Supported formats: PDF, Word, TXT
       </p>
     </div>
