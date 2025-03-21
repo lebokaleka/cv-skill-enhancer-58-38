@@ -8,7 +8,6 @@ import AnalysisResults from './AnalysisResults';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useJobMatchingState } from '@/hooks/useJobMatchingState';
 
 interface JobMatchingFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -19,7 +18,6 @@ interface JobMatchingFormProps {
 const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFormProps) => {
   const [showInterviewPreview, setShowInterviewPreview] = useState(false);
   const [isInterviewOptionsOpen, setIsInterviewOptionsOpen] = useState(false);
-  const { cvText, jobDescription } = useJobMatchingState();
 
   useEffect(() => {
     console.log('JobMatchingForm mounted');
@@ -56,12 +54,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
               Enter job details and your CV to analyze match
             </CardDescription>
           </CardHeader>
-          <InputForm 
-            onAnalyze={onAnalyze} 
-            isAnalyzing={isAnalyzing} 
-            initialCvText={cvText}
-            initialJobDescription={jobDescription}
-          />
+          <InputForm onAnalyze={onAnalyze} isAnalyzing={isAnalyzing} />
         </Card>
       </div>
 

@@ -7,25 +7,15 @@ import JobMatchingForm from '@/components/job-matching/JobMatchingForm';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from "@/components/ui/use-toast";
-import { useJobMatchingState } from '@/hooks/useJobMatchingState';
-import { getAppState, setAppState } from '@/utils/localStorage';
 
 const JobMatching = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
   const { toast } = useToast();
-  const { cvText, jobDescription, clearJobMatchingData } = useJobMatchingState();
 
-  // Load saved analysis results if available
   useEffect(() => {
-    console.log('JobMatching page mounted, checking for saved analysis');
-    const appState = getAppState();
-    
-    if (appState && appState.jobMatching && appState.jobMatching.analysisResult) {
-      console.log('Found saved analysis results, restoring state');
-      setMatchResult(appState.jobMatching.analysisResult);
-    }
+    console.log('JobMatching page mounted');
     
     return () => {
       console.log('JobMatching page unmounted');
@@ -124,17 +114,6 @@ const JobMatching = () => {
 
           setMatchResult(mockResult);
           console.log('Match result set to state');
-          
-          // Save the analysis results to localStorage
-          const currentState = getAppState() || {};
-          setAppState({
-            ...currentState,
-            jobMatching: {
-              ...currentState.jobMatching,
-              analysisResult: mockResult
-            }
-          });
-          console.log('Analysis results saved to localStorage');
         } catch (error) {
           console.error('Error in analysis timeout callback:', error);
           toast({
@@ -161,17 +140,6 @@ const JobMatching = () => {
   const handleNewComparison = () => {
     console.log('Starting new comparison');
     setMatchResult(null);
-    clearJobMatchingData();
-    
-    // Also clear the analysis results from localStorage
-    const appState = getAppState();
-    if (appState && appState.jobMatching) {
-      const { analysisResult, ...remainingJobMatching } = appState.jobMatching;
-      setAppState({
-        ...appState,
-        jobMatching: remainingJobMatching
-      });
-    }
   };
 
   return (

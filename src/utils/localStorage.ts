@@ -31,13 +31,3 @@ export const clearCVData = () => {
     setAppState(remainingState);
   }
 };
-
-// Job Matching Data specific methods
-export const clearJobMatchingData = () => {
-  const appState = getAppState();
-  if (appState) {
-    // Remove only job matching data while preserving other app state
-    const { jobMatching, ...remainingState } = appState;
-    setAppState(remainingState);
-  }
-};
