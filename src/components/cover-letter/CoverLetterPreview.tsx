@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -68,7 +69,7 @@ const CoverLetterPreview = ({
   };
 
   return (
-    <div className="space-y-8 animate-scale-in">
+    <div className="space-y-8 animate-fade-in-up">
       {/* Cover Letter Preview */}
       <Card className="glass-card">
         <CardHeader className="border-b bg-secondary/40">
@@ -121,19 +122,6 @@ const CoverLetterPreview = ({
           {renderTemplate()}
         </CardContent>
       </Card>
-
-      {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between">
-        <Button 
-          variant="outline" 
-          onClick={onBack}
-        >
-          Back to Editor
-        </Button>
-        <Button>
-          Finalize Cover Letter
-        </Button>
-      </div>
     </div>
   );
 };

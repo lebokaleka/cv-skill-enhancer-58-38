@@ -11,8 +11,8 @@ const CoverLetter = () => {
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
 
   const renderContent = (state: CoverLetterState): ReactNode => {
-    if (state.step === 'input') {
-      return (
+    return (
+      <div className="space-y-8">
         <CoverLetterInput 
           cvText={state.cvText} 
           jobDescription={state.jobDescription} 
@@ -24,18 +24,18 @@ const CoverLetter = () => {
           onTemplateSelect={state.handleTemplateSelect} 
           onGenerate={state.handleGenerate} 
         />
-      );
-    }
-    
-    return (
-      <CoverLetterPreview 
-        coverLetter={state.coverLetter} 
-        selectedTemplate={state.selectedTemplate} 
-        templates={coverLetterTemplates} 
-        isGenerating={state.isGenerating} 
-        onRegenerate={state.handleRegenerate} 
-        onBack={() => state.setStep('input')} 
-      />
+        
+        {state.coverLetter && (
+          <CoverLetterPreview 
+            coverLetter={state.coverLetter} 
+            selectedTemplate={state.selectedTemplate} 
+            templates={coverLetterTemplates} 
+            isGenerating={state.isGenerating} 
+            onRegenerate={state.handleRegenerate} 
+            onBack={() => state.setStep('input')} 
+          />
+        )}
+      </div>
     );
   };
 

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { coverLetterTemplates } from './coverLetterTemplates';
 import { CoverLetterState } from './types';
@@ -52,7 +51,7 @@ I am writing to express my interest in the Frontend Developer position at Acme C
 • My experience aligns perfectly with the requirements outlined in your job description, particularly in building responsive interfaces and implementing complex UI components.
 • I have successfully led the frontend development of a customer portal that decreased support requests by 35% and increased user engagement by 28%.
 
-In my current role at XYZ Technologies, I collaborated closely with UX designers and backend developers to ensure seamless integration and optimal performance. I am particularly drawn to Acme Corporation because of your commitment to innovation and your focus on creating products that solve real-world problems.
+In my current role at XYZ Technologies, I collaborated closely with UX designers and backend developers to ensure seamless integration and optimal performance. I am particularly drawn to Acme Corporation's commitment to innovation and your focus on creating products that solve real-world problems.
 
 I am excited about the possibility of bringing my technical expertise and creative problem-solving skills to your team. Thank you for considering my application. I look forward to the opportunity to discuss how my skills and experience can contribute to Acme Corporation's continued success.
 
@@ -151,7 +150,6 @@ Sincerely,
       }
       setCoverLetter(mockCoverLetter);
       setIsGenerating(false);
-      setStep('result');
     }, 2500);
   };
 
