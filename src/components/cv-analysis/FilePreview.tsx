@@ -51,7 +51,7 @@ const FilePreview = ({
       </h3>
       
       <div 
-        className="bg-gray-50 dark:bg-gray-800/60 rounded-lg p-3 mb-4 flex items-center gap-3 mx-auto" 
+        className="rounded-lg p-3 mb-4 flex items-center gap-3 mx-auto" 
         onMouseEnter={() => setIsHovering(true)} 
         onMouseLeave={() => setIsHovering(false)}
       >
