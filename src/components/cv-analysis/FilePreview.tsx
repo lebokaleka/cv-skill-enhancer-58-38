@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { FileText, File, FileType2, CheckCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -9,18 +9,20 @@ interface FilePreviewProps {
 }
 
 const FilePreview = ({ fileName, onReset }: FilePreviewProps) => {
+  const [isHovering, setIsHovering] = useState(false);
+  
   const getFileIcon = () => {
     const extension = fileName.split('.').pop()?.toLowerCase();
     
     if (extension === 'pdf') {
-      return <FileText className="w-12 h-12 mb-4 text-red-500" />;
+      return <FileText className="w-10 h-10 text-red-500" />;
     } else if (extension === 'doc' || extension === 'docx') {
-      return <File className="w-12 h-12 mb-4 text-blue-500" />;
+      return <File className="w-10 h-10 text-blue-500" />;
     } else if (extension === 'txt') {
-      return <FileType2 className="w-12 h-12 mb-4 text-gray-500" />;
+      return <FileType2 className="w-10 h-10 text-gray-500" />;
     }
     
-    return <FileText className="w-12 h-12 mb-4 text-gray-400" />;
+    return <FileText className="w-10 h-10 text-gray-400" />;
   };
 
   const getFileType = () => {
@@ -37,24 +39,40 @@ const FilePreview = ({ fileName, onReset }: FilePreviewProps) => {
     return 'Document';
   };
 
+  const displayFileName = fileName.length > 25 ? fileName.substring(0, 22) + '...' : fileName;
+
   return (
-    <div className="flex flex-col items-center justify-center text-center">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-green-100 dark:border-green-800/30 p-8 max-w-md">
-        <div className="rounded-full bg-green-50 dark:bg-green-900/20 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+    <div className="flex flex-col items-center justify-center text-center w-full">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-green-100 dark:border-green-800/30 p-8 max-w-md w-full">
+        <div className="rounded-full bg-green-50 dark:bg-green-900/20 w-16 h-16 mx-auto mb-5 flex items-center justify-center">
           <CheckCircle className="h-8 w-8 text-green-500" />
         </div>
         
-        {getFileIcon()}
-        
-        <h3 className="text-xl font-semibold mb-3">
+        <h3 className="text-xl font-semibold mb-5">
           File Selected
         </h3>
         
-        <div className="bg-gray-50 dark:bg-gray-800/60 rounded-lg px-6 py-3 mb-6 mx-auto inline-block">
-          <p className="font-medium truncate max-w-[240px]">{fileName}</p>
-          <p className="text-xs text-muted-foreground mt-1">
-            {getFileType()}
-          </p>
+        <div 
+          className="bg-gray-50 dark:bg-gray-800/60 rounded-lg p-4 mb-6 flex items-center gap-4 mx-auto"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          <div className="bg-white dark:bg-gray-700 rounded-full p-3 shadow-sm">
+            {getFileIcon()}
+          </div>
+          <div className="text-left flex-1 min-w-0">
+            <p className="font-medium truncate" title={fileName}>
+              {displayFileName}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {getFileType()}
+            </p>
+          </div>
+          {isHovering && fileName.length > 25 && (
+            <div className="absolute mt-10 z-10 bg-black/80 text-white text-xs p-2 rounded shadow">
+              {fileName}
+            </div>
+          )}
         </div>
         
         <Button 
