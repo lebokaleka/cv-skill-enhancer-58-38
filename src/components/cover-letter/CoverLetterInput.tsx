@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,6 @@ import { FileText, Briefcase } from 'lucide-react';
 import CVUploader from "@/components/upload/CVUploader";
 import TemplateSelector from "./TemplateSelector";
 import { CoverLetterTemplate } from "./coverLetterTemplates";
-
 interface CoverLetterInputProps {
   cvText: string;
   jobDescription: string;
@@ -19,7 +17,6 @@ interface CoverLetterInputProps {
   onTemplateSelect: (template: string) => void;
   onGenerate: () => void;
 }
-
 const CoverLetterInput = ({
   cvText,
   jobDescription,
@@ -31,8 +28,7 @@ const CoverLetterInput = ({
   onTemplateSelect,
   onGenerate
 }: CoverLetterInputProps) => {
-  return (
-    <div className="space-y-8 animate-scale-in">
+  return <div className="space-y-8 animate-scale-in">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* CV Upload Section */}
         <Card className="glass-card border-dashed h-full">
@@ -61,37 +57,21 @@ const CoverLetterInput = ({
               Paste the job description you want to apply for
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col h-[calc(100%-76px)]"> {/* Adjusted to fill remaining height */}
-            <Textarea
-              value={jobDescription}
-              onChange={onJobDescriptionChange}
-              placeholder="Paste job description here..."
-              className="flex-grow min-h-[200px] resize-none"
-            />
+          <CardContent className="flex flex-col h-[calc(100%-76px)] py-[19px] my-[-21px]"> {/* Adjusted to fill remaining height */}
+            <Textarea value={jobDescription} onChange={onJobDescriptionChange} placeholder="Paste job description here..." className="flex-grow min-h-[200px] resize-none" />
           </CardContent>
         </Card>
       </div>
 
       {/* Template Selection */}
-      <TemplateSelector 
-        templates={templates}
-        selectedTemplate={selectedTemplate}
-        onSelectTemplate={onTemplateSelect}
-      />
+      <TemplateSelector templates={templates} selectedTemplate={selectedTemplate} onSelectTemplate={onTemplateSelect} />
 
       {/* Generate Button */}
       <div className="flex justify-end">
-        <Button
-          size="lg"
-          className="px-8"
-          onClick={onGenerate}
-          disabled={!cvText || !jobDescription || isGenerating}
-        >
+        <Button size="lg" className="px-8" onClick={onGenerate} disabled={!cvText || !jobDescription || isGenerating}>
           {isGenerating ? 'Generating...' : 'Generate Cover Letter'}
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CoverLetterInput;
