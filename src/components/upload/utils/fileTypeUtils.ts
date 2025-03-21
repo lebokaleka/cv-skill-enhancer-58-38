@@ -1,5 +1,5 @@
 
-import { File, FileText, FileType2 } from 'lucide-react';
+import { File as FileIcon, FileText, FileType2 } from 'lucide-react';
 import React from 'react';
 
 export const getFileIcon = (file: File | null) => {
@@ -7,9 +7,9 @@ export const getFileIcon = (file: File | null) => {
   
   const extension = file.name.split('.').pop()?.toLowerCase();
   if (extension === 'pdf') {
-    return <File className="w-10 h-10 text-red-500" />;
+    return <FileIcon className="w-10 h-10 text-red-500" />;
   } else if (extension === 'doc' || extension === 'docx') {
-    return <File className="w-10 h-10 text-blue-500" />;
+    return <FileIcon className="w-10 h-10 text-blue-500" />;
   } else if (extension === 'txt') {
     return <FileType2 className="w-10 h-10 text-gray-500" />;
   }
