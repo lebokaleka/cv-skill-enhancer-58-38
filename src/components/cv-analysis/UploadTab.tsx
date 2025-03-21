@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import FileUploadArea from './FileUploadArea';
 import FilePreview from './FilePreview';
 
@@ -14,14 +14,6 @@ const UploadTab = ({ onFileSelect, fileName = '' }: UploadTabProps) => {
   const [uploadState, setUploadState] = useState<'idle' | 'loading' | 'success' | 'error'>(
     fileName ? 'success' : 'idle'
   );
-
-  // Add useEffect to update the component state when the fileName prop changes
-  useEffect(() => {
-    if (fileName) {
-      setSelectedFileName(fileName);
-      setUploadState('success');
-    }
-  }, [fileName]);
 
   const handleFileSelect = (selectedFile: File) => {
     const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
