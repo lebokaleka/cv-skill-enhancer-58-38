@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PenTool, Briefcase, FileText, Mic, BrainCircuit, Target } from 'lucide-react';
 import { MatchResult } from "@/types/jobMatching";
@@ -19,7 +19,20 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
   const [showInterviewPreview, setShowInterviewPreview] = useState(false);
   const [isInterviewOptionsOpen, setIsInterviewOptionsOpen] = useState(false);
 
+  useEffect(() => {
+    console.log('JobMatchingForm mounted');
+    
+    return () => {
+      console.log('JobMatchingForm unmounted');
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log('matchResult updated:', matchResult ? 'has value' : 'null');
+  }, [matchResult]);
+
   const toggleInterviewPreview = () => {
+    console.log('Toggling interview preview');
     setShowInterviewPreview(!showInterviewPreview);
     // Reset interview options when switching back to analysis
     if (showInterviewPreview) {
@@ -104,6 +117,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
                       <Card 
                         className="border border-primary/20 hover:border-primary/50 transition-all cursor-pointer hover:shadow-md"
                         onClick={() => {
+                          console.log('General Interview Questions clicked');
                           setIsInterviewOptionsOpen(true);
                         }}
                       >
@@ -123,6 +137,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
                       <Card 
                         className="border border-primary/20 hover:border-primary/50 transition-all cursor-pointer hover:shadow-md"
                         onClick={() => {
+                          console.log('Job-Specific Questions clicked');
                           setIsInterviewOptionsOpen(true);
                         }}
                       >
