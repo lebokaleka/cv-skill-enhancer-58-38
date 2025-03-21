@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +11,7 @@ import CreativeAccentTemplate from './templates/CreativeAccentTemplate';
 import ExecutiveElegantTemplate from './templates/ExecutiveElegantTemplate';
 import ProfessionalCornerTemplate from './templates/ProfessionalCornerTemplate';
 import ProfessionalBurgundyTemplate from './templates/ProfessionalBurgundyTemplate';
+
 interface CoverLetterPreviewProps {
   coverLetter: string;
   selectedTemplate: string;
@@ -20,6 +20,7 @@ interface CoverLetterPreviewProps {
   onRegenerate: () => void;
   onBack: () => void;
 }
+
 const CoverLetterPreview = ({
   coverLetter,
   selectedTemplate,
@@ -29,11 +30,13 @@ const CoverLetterPreview = ({
   onBack
 }: CoverLetterPreviewProps) => {
   const [copied, setCopied] = useState(false);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(coverLetter);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
   const renderTemplate = () => {
     switch (selectedTemplate) {
       case 'classic-professional':
@@ -60,10 +63,11 @@ const CoverLetterPreview = ({
           </div>;
     }
   };
+
   return <div className="space-y-8 animate-fade-in-up">
       {/* Cover Letter Preview */}
       <Card className="bg-white border border-gray-200 border-dashed rounded-xl shadow-sm">
-        <CardHeader className="border-b bg-gray-50/30 rounded-t-xl py-6">
+        <CardHeader className="border-b border-dashed bg-gray-50/30 rounded-t-xl py-6">
           <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
             <div>
               <CardTitle>Your Cover Letter</CardTitle>
@@ -98,4 +102,5 @@ const CoverLetterPreview = ({
       </Card>
     </div>;
 };
+
 export default CoverLetterPreview;
