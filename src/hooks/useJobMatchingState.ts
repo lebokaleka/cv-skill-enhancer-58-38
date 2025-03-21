@@ -48,9 +48,12 @@ export const useJobMatchingState = () => {
   useEffect(() => {
     if (cvText || jobDescription || fileName) {
       const currentState = getAppState() || {};
+      const currentJobMatching = currentState.jobMatching || {};
+      
       setAppState({
         ...currentState,
         jobMatching: {
+          ...currentJobMatching,
           cvText,
           jobDescription,
           fileName
