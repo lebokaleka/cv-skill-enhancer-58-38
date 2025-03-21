@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -62,9 +63,14 @@ const CoverLetterPreview = ({
   return <div className="space-y-8 animate-fade-in-up">
       {/* Cover Letter Preview */}
       <Card className="bg-white border border-gray-200 border-dashed rounded-xl shadow-sm">
-        <CardHeader className="border-b bg-gray-50/30 rounded-t-xl">
-          <div className="flex justify-between items-center">
-            <CardTitle>Your Cover Letter</CardTitle>
+        <CardHeader className="border-b bg-gray-50/30 rounded-t-xl py-6">
+          <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+            <div>
+              <CardTitle>Your Cover Letter</CardTitle>
+              <CardDescription className="mt-1">
+                {templates.find(t => t.id === selectedTemplate)?.name} template
+              </CardDescription>
+            </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" className="gap-1" onClick={handleCopy}>
                 {copied ? <>
@@ -85,9 +91,6 @@ const CoverLetterPreview = ({
               </Button>
             </div>
           </div>
-          <CardDescription>
-            {templates.find(t => t.id === selectedTemplate)?.name} template
-          </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
           {renderTemplate()}
