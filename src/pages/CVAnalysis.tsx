@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -11,41 +10,103 @@ import type { CVScoreData } from "@/types/cvAnalysis";
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from "@/components/ui/use-toast";
 
-// Session storage keys
-const SESSION_CV_TEXT = 'cvAnalysis_cvText';
-const SESSION_FILE_NAME = 'cvAnalysis_fileName';
-const SESSION_SCORE_DATA = 'cvAnalysis_scoreData';
+// In-memory storage key for app state
+const APP_STATE_KEY = 'appState';
+
+// Global state management (memory only, not persistent)
+const getAppState = () => {
+  const stateString = window.localStorage.getItem(APP_STATE_KEY);
+  if (!stateString) return null;
+  try {
+    return JSON.parse(stateString);
+  } catch (e) {
+    console.error('Failed to parse app state', e);
+    return null;
+  }
+};
+
+const setAppState = (state) => {
+  window.localStorage.setItem(APP_STATE_KEY, JSON.stringify(state));
+};
 
 const CVAnalysis = () => {
   const [cvText, setCvText] = useState('');
   const [fileName, setFileName] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scoreData, setScoreData] = useState<CVScoreData | null>(null);
-  const { isAuthenticated, setIsSubscriptionModalOpen, user } = useAuth();
+  const { isAuthenticated, setIsSubscriptionModalOpen, user, logout } = useAuth();
   const { toast } = useToast();
 
-  // Load data from session storage on initial render
+  // Load data from localStorage on initial render
   useEffect(() => {
-    const savedCvText = sessionStorage.getItem(SESSION_CV_TEXT);
-    const savedFileName = sessionStorage.getItem(SESSION_FILE_NAME);
-    const savedScoreData = sessionStorage.getItem(SESSION_SCORE_DATA);
+    const appState = getAppState();
     
-    if (savedCvText) setCvText(savedCvText);
-    if (savedFileName) setFileName(savedFileName);
-    if (savedScoreData) {
-      try {
-        setScoreData(JSON.parse(savedScoreData));
-      } catch (error) {
-        console.error('Error parsing saved score data:', error);
+    if (appState && appState.cvAnalysis) {
+      const { cvText: savedCvText, fileName: savedFileName, scoreData: savedScoreData } = appState.cvAnalysis;
+      
+      if (savedCvText) setCvText(savedCvText);
+      if (savedFileName) setFileName(savedFileName);
+      if (savedScoreData) {
+        try {
+          setScoreData(savedScoreData);
+        } catch (error) {
+          console.error('Error parsing saved score data:', error);
+        }
       }
     }
-  }, []);
+    
+    // Add event listener for before unload (page refresh/close)
+    const handleBeforeUnload = () => {
+      localStorage.removeItem(APP_STATE_KEY);
+    };
+    
+    // Add event listener for page visibility change
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        // User is navigating away or minimizing
+        // We keep the data in this case, as it's likely still the same session
+      }
+    };
+    
+    // Listen for auth state changes to clear data on logout
+    const originalLogout = logout;
+    if (originalLogout) {
+      useAuth().logout = function() {
+        // Clear app state before logout
+        localStorage.removeItem(APP_STATE_KEY);
+        return originalLogout.apply(this, arguments);
+      };
+    }
+    
+    // Add event listeners
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Clean up event listeners on component unmount
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      
+      // Restore original logout function
+      if (originalLogout) {
+        useAuth().logout = originalLogout;
+      }
+    };
+  }, [logout]);
 
-  // Save data to session storage whenever it changes
+  // Save data to localStorage whenever it changes
   useEffect(() => {
-    if (cvText) sessionStorage.setItem(SESSION_CV_TEXT, cvText);
-    if (fileName) sessionStorage.setItem(SESSION_FILE_NAME, fileName);
-    if (scoreData) sessionStorage.setItem(SESSION_SCORE_DATA, JSON.stringify(scoreData));
+    if (cvText || fileName || scoreData) {
+      const currentState = getAppState() || {};
+      setAppState({
+        ...currentState,
+        cvAnalysis: {
+          cvText,
+          fileName,
+          scoreData
+        }
+      });
+    }
   }, [cvText, fileName, scoreData]);
 
   const handleCVUpload = (text: string, name?: string) => {
@@ -70,9 +131,8 @@ const CVAnalysis = () => {
     if (name) setFileName(name);
     setIsAnalyzing(true);
 
-    // Clear previous session data when starting a new analysis
+    // Clear previous data when starting a new analysis
     setScoreData(null);
-    sessionStorage.removeItem(SESSION_SCORE_DATA);
 
     // Scroll to the top for better UX when analysis starts
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -127,9 +187,7 @@ const CVAnalysis = () => {
     setCvText('');
     setFileName('');
     setScoreData(null);
-    sessionStorage.removeItem(SESSION_CV_TEXT);
-    sessionStorage.removeItem(SESSION_FILE_NAME);
-    sessionStorage.removeItem(SESSION_SCORE_DATA);
+    localStorage.removeItem(APP_STATE_KEY);
     
     toast({
       title: "Session cleared",
