@@ -1,18 +1,29 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { getFileIcon, getFileType, formatFileName } from './utils/fileTypeUtils';
 import { CheckCircle } from 'lucide-react';
 
 interface FilePreviewCardProps {
   file: File;
-  onSelectDifferentFile: () => void;
+  onSelectDifferentFile: (newFile?: File) => void;
 }
 
 const FilePreviewCard: React.FC<FilePreviewCardProps> = ({ file, onSelectDifferentFile }) => {
   const fileIcon = getFileIcon(file);
   const fileType = getFileType(file);
   const fileName = formatFileName(file);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      onSelectDifferentFile(e.target.files[0]);
+    }
+  };
 
   return (
     <div className="p-6 border border-dashed border-gray-300 rounded-lg bg-green-50 dark:border-green-600 dark:bg-green-900/10 flex flex-col items-center text-center min-h-[260px] justify-center">
@@ -34,11 +45,20 @@ const FilePreviewCard: React.FC<FilePreviewCardProps> = ({ file, onSelectDiffere
         </div>
       </div>
       
+      {/* Hidden file input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept=".pdf,.doc,.docx,.txt"
+        onChange={handleFileChange}
+      />
+      
       {/* Button */}
       <Button
         variant="outline"
         size="default"
-        onClick={onSelectDifferentFile}
+        onClick={handleButtonClick}
         className="rounded-full px-6 mb-4"
       >
         Choose Different File

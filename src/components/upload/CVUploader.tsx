@@ -11,7 +11,7 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploadState, setUploadState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const handleFileSelect = (selectedFile: File) => {
+  const processFile = (selectedFile: File) => {
     // Check if file is PDF, DOC, DOCX, or TXT
     const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
     
@@ -42,10 +42,19 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
     setUploadState('success');
   };
 
-  const handleDifferentFileSelect = () => {
-    // Reset state to trigger re-render but maintain 'success' state
-    setUploadState('idle');
-    setFile(null);
+  const handleFileSelect = (selectedFile: File) => {
+    processFile(selectedFile);
+  };
+
+  const handleDifferentFileSelect = (newFile?: File) => {
+    if (newFile) {
+      // Process the new file directly
+      processFile(newFile);
+    } else {
+      // Only if explicitly reset (should not happen with new implementation)
+      setUploadState('idle');
+      setFile(null);
+    }
   };
 
   // If a file is uploaded successfully, show the success state design
