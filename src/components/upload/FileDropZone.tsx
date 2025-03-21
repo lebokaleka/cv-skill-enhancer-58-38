@@ -51,7 +51,7 @@ const FileDropZone = ({ onFileSelect }: FileDropZoneProps) => {
 
   return (
     <div
-      className={`border border-dashed rounded-lg p-5 transition-all duration-200 ${
+      className={`border border-dashed rounded-lg p-5 transition-all duration-200 min-h-[260px] flex items-center ${
         isDragging 
           ? 'border-gray-400 bg-gray-50 dark:bg-gray-800/30' 
           : 'border-gray-300'
@@ -60,7 +60,7 @@ const FileDropZone = ({ onFileSelect }: FileDropZoneProps) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="flex flex-col items-center justify-center text-center py-4">
+      <div className="flex flex-col items-center justify-center text-center py-4 w-full">
         <FileText className="w-10 h-10 mb-3 text-gray-400" />
         
         <h3 className="text-base font-medium mb-1">
