@@ -59,7 +59,7 @@ const FilePreviewCard: React.FC<FilePreviewCardProps> = ({ file, onSelectDiffere
         variant="outline"
         size="default"
         onClick={handleButtonClick}
-        className="rounded-full px-6 mb-4"
+        className="rounded-full px-6 mb-4 hover:bg-[#46235C] hover:text-white hover:border-transparent"
       >
         Choose Different File
       </Button>
