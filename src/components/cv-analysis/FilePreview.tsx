@@ -34,7 +34,7 @@ const FilePreview = ({
   };
   const displayFileName = fileName.length > 25 ? fileName.substring(0, 22) + '...' : fileName;
   return <div className="flex flex-col items-center justify-center text-center w-full">
-      <div className="bg-white dark:bg-gray-200/50 rounded-2xl shadow-sm border border-green-100 dark:border-green-800/10 p-8 max-w-md w-full py-[32px] px-[73px]">
+      <div className="bg-white dark:bg-gray-200/50 rounded-2xl shadow-sm border-dashed border-green-100 dark:border-green-800/10 p-8 max-w-md w-full py-[32px] px-[73px]">
         <div className="rounded-full bg-green-50 dark:bg-green-900/20 w-16 h-16 mx-auto mb-5 flex items-center justify-center">
           <CheckCircle className="h-8 w-8 text-green-500" />
         </div>
