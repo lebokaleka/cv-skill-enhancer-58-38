@@ -47,11 +47,7 @@ const CVAnalysis = () => {
       if (savedCvText) setCvText(savedCvText);
       if (savedFileName) setFileName(savedFileName);
       if (savedScoreData) {
-        try {
-          setScoreData(savedScoreData);
-        } catch (error) {
-          console.error('Error parsing saved score data:', error);
-        }
+        setScoreData(savedScoreData);
       }
     }
     
@@ -68,28 +64,27 @@ const CVAnalysis = () => {
       }
     };
     
-    // Listen for auth state changes to clear data on logout
-    const originalLogout = logout;
-    if (originalLogout) {
-      useAuth().logout = function() {
-        // Clear app state before logout
-        localStorage.removeItem(APP_STATE_KEY);
-        return originalLogout.apply(this, arguments);
-      };
-    }
+    // Clear data on logout
+    const handleLogout = () => {
+      localStorage.removeItem(APP_STATE_KEY);
+    };
     
     // Add event listeners
     window.addEventListener('beforeunload', handleBeforeUnload);
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Add logout listener if logout function exists
+    if (logout) {
+      document.addEventListener('logout-event', handleLogout);
+    }
     
     // Clean up event listeners on component unmount
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       
-      // Restore original logout function
-      if (originalLogout) {
-        useAuth().logout = originalLogout;
+      if (logout) {
+        document.removeEventListener('logout-event', handleLogout);
       }
     };
   }, [logout]);
