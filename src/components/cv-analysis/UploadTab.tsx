@@ -69,7 +69,11 @@ const UploadTab = ({ onFileSelect, fileName = '' }: UploadTabProps) => {
       }}
     >
       {uploadState === 'success' ? (
-        <FilePreview fileName={selectedFileName} onReset={handleReset} />
+        <FilePreview 
+          fileName={selectedFileName} 
+          onReset={handleReset} 
+          onFileSelect={handleFileSelect}
+        />
       ) : (
         <FileUploadArea onFileSelect={handleFileSelect} />
       )}

@@ -1,18 +1,20 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FileText, File, FileType2, CheckCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 interface FilePreviewProps {
   fileName: string;
   onReset: () => void;
+  onFileSelect?: (file: File) => void;
 }
 
 const FilePreview = ({
   fileName,
-  onReset
+  onReset,
+  onFileSelect
 }: FilePreviewProps) => {
   const [isHovering, setIsHovering] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const getFileIcon = () => {
     const extension = fileName.split('.').pop()?.toLowerCase();
@@ -36,6 +38,20 @@ const FilePreview = ({
       return 'Text Document';
     }
     return 'Document';
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      if (onFileSelect) {
+        onFileSelect(e.target.files[0]);
+      } else {
+        onReset();
+      }
+    }
   };
 
   const displayFileName = fileName.length > 25 ? fileName.substring(0, 22) + '...' : fileName;
@@ -74,10 +90,18 @@ const FilePreview = ({
       </div>
       
       <div>
+        <input
+          type="file"
+          ref={fileInputRef}
+          id="new-cv-upload"
+          className="hidden"
+          accept=".pdf,.doc,.docx,.txt"
+          onChange={handleFileChange}
+        />
         <Button 
           variant="outline" 
           className="rounded-full px-6 font-medium border-gray-300 isolate hover:bg-[#46235C] hover:text-white hover:border-transparent" 
-          onClick={onReset}
+          onClick={handleButtonClick}
         >
           Choose Different File
         </Button>
