@@ -1,21 +1,34 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CVUploader from "@/components/upload/CVUploader";
 import { CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { FileText, Briefcase, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { useJobMatchingState } from '@/hooks/useJobMatchingState';
 
 interface InputFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
   isAnalyzing: boolean;
+  initialCvText?: string;
+  initialJobDescription?: string;
 }
 
-const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
-  const [cvText, setCvText] = useState('');
-  const [jobDescription, setJobDescription] = useState('');
-  const [fileName, setFileName] = useState('');
+const InputForm = ({ onAnalyze, isAnalyzing, initialCvText = '', initialJobDescription = '' }: InputFormProps) => {
+  const { cvText, setCvText, jobDescription, setJobDescription, fileName, setFileName } = useJobMatchingState();
   const [showUploader, setShowUploader] = useState(true);
+
+  // Initialize with saved values if available
+  useEffect(() => {
+    if (initialCvText) {
+      setCvText(initialCvText);
+      setShowUploader(false);
+    }
+    
+    if (initialJobDescription) {
+      setJobDescription(initialJobDescription);
+    }
+  }, [initialCvText, initialJobDescription]);
 
   const handleCVUpload = (text: string, name?: string) => {
     setCvText(text);

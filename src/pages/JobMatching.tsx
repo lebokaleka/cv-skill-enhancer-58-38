@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -7,12 +6,14 @@ import JobMatchingForm from '@/components/job-matching/JobMatchingForm';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from "@/components/ui/use-toast";
+import { useJobMatchingState } from '@/hooks/useJobMatchingState';
 
 const JobMatching = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
   const { toast } = useToast();
+  const { cvText, jobDescription, clearJobMatchingData } = useJobMatchingState();
 
   useEffect(() => {
     console.log('JobMatching page mounted');
@@ -140,6 +141,7 @@ const JobMatching = () => {
   const handleNewComparison = () => {
     console.log('Starting new comparison');
     setMatchResult(null);
+    clearJobMatchingData();
   };
 
   return (
