@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -7,6 +6,7 @@ import JobMatchingForm from '@/components/job-matching/JobMatchingForm';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from "@/components/ui/use-toast";
+import { getJobMatchingData, setJobMatchingData } from '@/utils/localStorage';
 
 const JobMatching = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -17,10 +17,27 @@ const JobMatching = () => {
   useEffect(() => {
     console.log('JobMatching page mounted');
     
+    // Load saved match result on component mount
+    const savedData = getJobMatchingData();
+    if (savedData && savedData.matchResult) {
+      setMatchResult(savedData.matchResult);
+    }
+    
     return () => {
       console.log('JobMatching page unmounted');
     };
   }, []);
+
+  // Save match result when it changes
+  useEffect(() => {
+    if (matchResult) {
+      const savedData = getJobMatchingData() || {};
+      setJobMatchingData({
+        ...savedData,
+        matchResult
+      });
+    }
+  }, [matchResult]);
 
   const handleAnalyze = (cvText: string, jobDescription: string) => {
     try {
@@ -140,6 +157,11 @@ const JobMatching = () => {
   const handleNewComparison = () => {
     console.log('Starting new comparison');
     setMatchResult(null);
+    
+    // Clear match result from storage but keep CV and job description
+    const savedData = getJobMatchingData() || {};
+    const { matchResult, ...remainingData } = savedData;
+    setJobMatchingData(remainingData);
   };
 
   return (
