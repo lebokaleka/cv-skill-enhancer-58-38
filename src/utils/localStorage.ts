@@ -2,7 +2,7 @@
 // In-memory storage key for app state
 export const APP_STATE_KEY = 'appState';
 
-// Global state management (memory only, not persistent)
+// Global state management
 export const getAppState = () => {
   const stateString = window.localStorage.getItem(APP_STATE_KEY);
   if (!stateString) return null;
@@ -20,4 +20,14 @@ export const setAppState = (state: any) => {
 
 export const clearAppState = () => {
   window.localStorage.removeItem(APP_STATE_KEY);
+};
+
+// CV Data specific methods
+export const clearCVData = () => {
+  const appState = getAppState();
+  if (appState) {
+    // Remove only CV analysis data while preserving other app state
+    const { cvAnalysis, ...remainingState } = appState;
+    setAppState(remainingState);
+  }
 };

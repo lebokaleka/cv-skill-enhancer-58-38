@@ -55,6 +55,11 @@ const Navbar = () => {
     }
   };
 
+  const handleLogout = () => {
+    document.dispatchEvent(new Event('logout'));
+    logout();
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -113,7 +118,7 @@ const Navbar = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="flex items-center cursor-pointer"
-                  onClick={logout}
+                  onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
@@ -163,7 +168,7 @@ const Navbar = () => {
                   variant="ghost" 
                   size="sm" 
                   className="ml-2"
-                  onClick={logout}
+                  onClick={handleLogout}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   Log out

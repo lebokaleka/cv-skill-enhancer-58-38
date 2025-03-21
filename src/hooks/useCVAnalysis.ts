@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAppState, setAppState, clearAppState, APP_STATE_KEY } from '@/utils/localStorage';
+import { getAppState, setAppState, clearAppState, clearCVData, APP_STATE_KEY } from '@/utils/localStorage';
 import type { CVScoreData } from "@/types/cvAnalysis";
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from "@/components/ui/use-toast";
@@ -26,43 +26,29 @@ export const useCVAnalysis = () => {
       }
     }
     
-    // Add event listener for before unload (page refresh/close)
+    // Set up event listeners for page refresh, tab close, etc.
     const handleBeforeUnload = () => {
-      localStorage.removeItem(APP_STATE_KEY);
+      // Clear CV data when the page is refreshed or closed
+      clearCVData();
     };
     
-    // Add event listener for page visibility change
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        // User is navigating away or minimizing
-        // We keep the data in this case, as it's likely still the same session
-      }
-    };
-    
-    // Clear data on logout
+    // Listen for auth changes - clear CV data on logout
     const handleLogout = () => {
-      localStorage.removeItem(APP_STATE_KEY);
+      clearCVData();
     };
     
     // Add event listeners
     window.addEventListener('beforeunload', handleBeforeUnload);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
     
-    // Add logout listener if logout function exists
-    if (logout) {
-      document.addEventListener('logout-event', handleLogout);
-    }
+    // Create a custom event listener for logout
+    document.addEventListener('logout', handleLogout);
     
     // Clean up event listeners on component unmount
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      
-      if (logout) {
-        document.removeEventListener('logout-event', handleLogout);
-      }
+      document.removeEventListener('logout', handleLogout);
     };
-  }, [logout]);
+  }, []);
 
   // Save data to localStorage whenever it changes
   useEffect(() => {
@@ -157,7 +143,7 @@ export const useCVAnalysis = () => {
     setCvText('');
     setFileName('');
     setScoreData(null);
-    localStorage.removeItem(APP_STATE_KEY);
+    clearCVData();
     
     toast({
       title: "Session cleared",
