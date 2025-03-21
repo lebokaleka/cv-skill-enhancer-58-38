@@ -2,7 +2,6 @@
 import type { CVScoreData } from "@/types/cvAnalysis";
 import OverallScoreCard from "./OverallScoreCard";
 import SectionBreakdown from "./SectionBreakdown";
-import ATSCompatibility from "./ATSCompatibility";
 
 interface CVAnalysisResultsProps {
   scoreData: CVScoreData;
@@ -22,12 +21,6 @@ const CVAnalysisResults = ({ scoreData, fileName }: CVAnalysisResultsProps) => {
         {/* Section Scores */}
         <SectionBreakdown 
           sections={scoreData.sections} 
-        />
-
-        {/* ATS Compatibility */}
-        <ATSCompatibility 
-          atsCompatible={scoreData.atsCompatible} 
-          missingKeywords={scoreData.missingKeywords} 
         />
       </div>
     </div>
