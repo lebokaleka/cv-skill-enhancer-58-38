@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { SubscriptionTier } from '@/types/subscription';
+import { clearCoverLetterData } from '@/utils/coverLetterStorage';
 
 type User = {
   id: string;
@@ -58,6 +59,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     // Trigger the logout event before clearing user data
     document.dispatchEvent(new Event('logout'));
+    
+    // Clear cover letter data when user logs out
+    clearCoverLetterData();
+    
     setUser(null);
   };
 

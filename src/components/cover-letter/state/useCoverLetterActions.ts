@@ -16,11 +16,6 @@ export const useCoverLetterActions = (
     setIsSubscriptionModalOpen
   );
 
-  // No longer need to update generation capability as button is always enabled
-  const updateAuthenticationStatus = useCallback((newAuthStatus: boolean) => {
-    // This was previously used to update button state, but no longer needed
-  }, []);
-
   const handleCVUpload = (text: string) => {
     // Allow CV upload for non-authenticated users
     stateData._setCvText(text);
@@ -44,7 +39,6 @@ export const useCoverLetterActions = (
     handleTemplateSelect,
     handleGenerate,
     handleRegenerate,
-    setStep,
-    updateAuthenticationStatus
+    setStep
   };
 };

@@ -8,7 +8,6 @@ export interface CoverLetterStateActions {
   handleGenerate: () => void;
   handleRegenerate: () => void;
   setStep: (step: 'input' | 'result') => void;
-  updateAuthenticationStatus: (isAuthenticated: boolean) => void;
 }
 
 export interface CoverLetterStateData {

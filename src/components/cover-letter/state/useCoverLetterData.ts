@@ -1,15 +1,52 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { CoverLetterStateData } from './types';
+import { getCoverLetterData, saveCoverLetterData } from '@/utils/coverLetterStorage';
 
 export const useCoverLetterData = (): CoverLetterStateData => {
-  const [cvText, setCvText] = useState('');
-  const [jobDescription, setJobDescription] = useState('');
-  const [coverLetter, setCoverLetter] = useState('');
+  // Initialize state with stored data (if available) or defaults
+  const storedData = getCoverLetterData();
+  
+  const [cvText, setCvText] = useState(storedData?.cvText || '');
+  const [jobDescription, setJobDescription] = useState(storedData?.jobDescription || '');
+  const [coverLetter, setCoverLetter] = useState(storedData?.coverLetter || '');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState('classic-professional');
-  const [step, setStep] = useState<'input' | 'result'>('input');
+  const [selectedTemplate, setSelectedTemplate] = useState(storedData?.selectedTemplate || 'classic-professional');
+  const [step, setStep] = useState<'input' | 'result'>(storedData?.step || 'input');
   const [canGenerateLetter, setCanGenerateLetter] = useState(false); // Kept for type compatibility but no longer used
+
+  // Persist data to localStorage when state changes
+  useEffect(() => {
+    if (cvText || jobDescription || coverLetter) {
+      saveCoverLetterData({
+        cvText,
+        jobDescription,
+        coverLetter,
+        selectedTemplate,
+        step
+      });
+    }
+  }, [cvText, jobDescription, coverLetter, selectedTemplate, step]);
+
+  const setCvTextWithStorage = (text: string) => {
+    setCvText(text);
+  };
+
+  const setJobDescriptionWithStorage = (description: string) => {
+    setJobDescription(description);
+  };
+
+  const setCoverLetterWithStorage = (letter: string) => {
+    setCoverLetter(letter);
+  };
+
+  const setSelectedTemplateWithStorage = (template: string) => {
+    setSelectedTemplate(template);
+  };
+
+  const setStepWithStorage = (newStep: 'input' | 'result') => {
+    setStep(newStep);
+  };
 
   return {
     cvText,
@@ -19,12 +56,12 @@ export const useCoverLetterData = (): CoverLetterStateData => {
     selectedTemplate,
     step,
     _canGenerateLetter: canGenerateLetter,
-    _setCvText: setCvText,
-    _setJobDescription: setJobDescription,
-    _setCoverLetter: setCoverLetter,
+    _setCvText: setCvTextWithStorage,
+    _setJobDescription: setJobDescriptionWithStorage,
+    _setCoverLetter: setCoverLetterWithStorage,
     _setIsGenerating: setIsGenerating,
-    _setSelectedTemplate: setSelectedTemplate,
-    _setStep: setStep,
+    _setSelectedTemplate: setSelectedTemplateWithStorage,
+    _setStep: setStepWithStorage,
     _setCanGenerateLetter: setCanGenerateLetter
   };
 };
