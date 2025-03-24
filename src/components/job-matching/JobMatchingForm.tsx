@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PenTool, Briefcase, FileText, Mic, BrainCircuit, Target } from 'lucide-react';
@@ -8,7 +7,6 @@ import AnalysisResults from './AnalysisResults';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import ContentIndicator from './ContentIndicator';
 
 interface JobMatchingFormProps {
@@ -21,6 +19,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
   const [showInterviewPreview, setShowInterviewPreview] = useState(false);
   const [isInterviewOptionsOpen, setIsInterviewOptionsOpen] = useState(false);
   const [showContentIndicator, setShowContentIndicator] = useState(true);
+  const [expandContent, setExpandContent] = useState(false);
 
   useEffect(() => {
     console.log('JobMatchingForm mounted');
@@ -32,20 +31,29 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
 
   useEffect(() => {
     console.log('matchResult updated:', matchResult ? 'has value' : 'null');
+    if (matchResult) {
+      setExpandContent(false);
+      setShowContentIndicator(true);
+    }
   }, [matchResult]);
 
   const toggleInterviewPreview = () => {
     console.log('Toggling interview preview');
     setShowInterviewPreview(!showInterviewPreview);
-    // Reset interview options when switching back to analysis
     if (showInterviewPreview) {
       setIsInterviewOptionsOpen(false);
+      setExpandContent(false);
+      setShowContentIndicator(true);
     }
+  };
+
+  const handleExpandContent = () => {
+    setExpandContent(true);
+    setShowContentIndicator(false);
   };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Left side: Job Description and CV container */}
       <div>
         <Card className="glass-card border-dashed border animate-fade-in h-full">
           <CardHeader>
@@ -61,7 +69,6 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
         </Card>
       </div>
 
-      {/* Right side: AI analysis preview section */}
       <div>
         <Card className="glass-card border-dashed animate-fade-in h-full">
           <CardHeader>
@@ -94,11 +101,11 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="flex flex-col h-[650px] relative">
-            <div className="h-full overflow-y-auto relative">
+          <CardContent className="flex flex-col relative">
+            <div className={`relative ${expandContent ? 'h-auto' : 'h-[450px] overflow-hidden'}`}>
               {!showInterviewPreview ? (
                 !matchResult ? (
-                  <div className="flex flex-col items-center justify-center h-full text-center">
+                  <div className="flex flex-col items-center justify-center h-[450px] text-center">
                     <div className="p-6 rounded-lg bg-secondary/10 max-w-sm mx-auto">
                       <p className="text-muted-foreground">
                         Upload your CV and paste a job description, then click 'Analyze CV' to get AI-powered insights and suggestions.
@@ -108,15 +115,15 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
                 ) : (
                   <>
                     <AnalysisResults matchResult={matchResult} />
-                    {showContentIndicator && (
+                    {showContentIndicator && !expandContent && (
                       <ContentIndicator 
-                        onClick={() => setShowContentIndicator(false)} 
+                        onClick={handleExpandContent} 
                       />
                     )}
                   </>
                 )
               ) : (
-                <div className="flex flex-col items-center justify-center h-full animate-fade-in">
+                <div className="flex flex-col items-center justify-center h-[450px] animate-fade-in">
                   <div className="space-y-6 max-w-md w-full p-4">
                     <div className="text-center mb-6">
                       <h3 className="text-xl font-semibold mb-2">Interview Practice</h3>
@@ -167,7 +174,6 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
                       </div>
                     </Collapsible>
                     
-                    {/* Interview options - appears with animation when an interview type is selected */}
                     {isInterviewOptionsOpen && (
                       <div className="animate-fade-in mt-4">
                         <Card className="border border-primary/20">
