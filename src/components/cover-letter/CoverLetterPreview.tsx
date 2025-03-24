@@ -1,8 +1,11 @@
-import { useState } from 'react';
+
+import { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, Copy, Check, RefreshCw } from 'lucide-react';
 import { CoverLetterTemplate } from "./coverLetterTemplates";
+import html2pdf from 'html2pdf.js';
+import { useToast } from "@/hooks/use-toast";
 import ModernProfessionalTemplate from './templates/ModernProfessionalTemplate';
 import TechProfessionalTemplate from './templates/TechProfessionalTemplate';
 import ClassicProfessionalTemplate from './templates/ClassicProfessionalTemplate';
@@ -30,11 +33,49 @@ const CoverLetterPreview = ({
   onBack
 }: CoverLetterPreviewProps) => {
   const [copied, setCopied] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const templateRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(coverLetter);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = async () => {
+    if (!templateRef.current) return;
+    
+    try {
+      setIsDownloading(true);
+      
+      const templateName = templates.find(t => t.id === selectedTemplate)?.name || 'Cover_Letter';
+      const fileName = `Cover_Letter_${templateName.replace(/\s+/g, '_')}.pdf`;
+      
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: fileName,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      await html2pdf().from(templateRef.current).set(opt).save();
+      
+      toast({
+        title: "Success!",
+        description: "Your cover letter has been downloaded",
+      });
+    } catch (error) {
+      toast({
+        title: "Download failed",
+        description: "There was an error downloading your cover letter",
+        variant: "destructive",
+      });
+      console.error("PDF download error:", error);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const renderTemplate = () => {
@@ -89,15 +130,23 @@ const CoverLetterPreview = ({
                 <RefreshCw size={14} className={isGenerating ? 'animate-spin' : ''} />
                 <span>Regenerate</span>
               </Button>
-              <Button variant="outline" size="sm" className="gap-1">
-                <Download size={14} />
-                <span>Download</span>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-1" 
+                onClick={handleDownload}
+                disabled={isDownloading}
+              >
+                <Download size={14} className={isDownloading ? 'animate-spin' : ''} />
+                <span>{isDownloading ? 'Downloading...' : 'Download'}</span>
               </Button>
             </div>
           </div>
         </CardHeader>
         <CardContent className="pt-6">
-          {renderTemplate()}
+          <div ref={templateRef}>
+            {renderTemplate()}
+          </div>
         </CardContent>
       </Card>
     </div>;
