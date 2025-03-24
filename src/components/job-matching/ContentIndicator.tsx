@@ -12,7 +12,7 @@ const ContentIndicator = ({ onClick, isExpanded }: ContentIndicatorProps) => {
   
   return (
     <div 
-      className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent flex items-end justify-center pb-2 cursor-pointer transition-opacity z-10"
+      className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent flex items-end justify-center pb-6 cursor-pointer transition-opacity z-10"
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
