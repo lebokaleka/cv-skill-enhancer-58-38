@@ -66,8 +66,8 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
               toggleInterviewPreview={toggleInterviewPreview}
             />
           </CardHeader>
-          <CardContent className="flex flex-col relative">
-            <div className={`relative ${expandContent ? 'h-auto' : 'h-[450px] overflow-hidden'}`}>
+          <CardContent className="flex flex-col relative h-[calc(100%-76px)]">
+            <div className={`relative ${expandContent ? 'h-auto' : 'h-full overflow-hidden'}`}>
               {!showInterviewPreview ? (
                 <AnalysisPreview 
                   matchResult={matchResult}

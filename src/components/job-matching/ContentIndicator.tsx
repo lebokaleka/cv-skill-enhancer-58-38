@@ -11,7 +11,7 @@ const ContentIndicator = ({ onClick }: ContentIndicatorProps) => {
   
   return (
     <div 
-      className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent flex items-end justify-center pb-3 cursor-pointer transition-opacity z-20"
+      className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent flex items-end justify-center pb-4 cursor-pointer transition-opacity z-20"
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
