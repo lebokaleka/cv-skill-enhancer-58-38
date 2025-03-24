@@ -1,6 +1,8 @@
-import { useState } from 'react';
+
+import { useState, useCallback } from 'react';
 import { coverLetterTemplates } from './coverLetterTemplates';
 import { CoverLetterState } from './types';
+import { toast } from "@/hooks/use-toast";
 
 export const useCoverLetterState = (
   isAuthenticated: boolean,
@@ -12,6 +14,18 @@ export const useCoverLetterState = (
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('classic-professional');
   const [step, setStep] = useState<'input' | 'result'>('input');
+  const [canGenerateLetter, setCanGenerateLetter] = useState(false);
+
+  // Update generation capability when CV or job description changes
+  const updateGenerationCapability = useCallback(() => {
+    setCanGenerateLetter(isAuthenticated && !!cvText && !!jobDescription);
+  }, [isAuthenticated, cvText, jobDescription]);
+
+  // Update auth status from parent component
+  const updateAuthenticationStatus = useCallback((newAuthStatus: boolean) => {
+    // When auth status changes, update capability to generate letter
+    updateGenerationCapability();
+  }, [updateGenerationCapability]);
 
   const handleCVUpload = (text: string) => {
     if (!isAuthenticated) {
@@ -19,10 +33,12 @@ export const useCoverLetterState = (
       return;
     }
     setCvText(text);
+    updateGenerationCapability();
   };
 
   const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDescription(e.target.value);
+    updateGenerationCapability();
   };
 
   const handleTemplateSelect = (template: string) => {
@@ -35,7 +51,15 @@ export const useCoverLetterState = (
       return;
     }
     
-    if (!cvText || !jobDescription) return;
+    if (!cvText || !jobDescription) {
+      toast({
+        title: "Missing information",
+        description: "Please upload your CV and add a job description",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsGenerating(true);
 
     setTimeout(() => {
@@ -150,6 +174,7 @@ Sincerely,
       }
       setCoverLetter(mockCoverLetter);
       setIsGenerating(false);
+      setStep('result');
     }, 2500);
   };
 
@@ -186,6 +211,7 @@ Sincerely,
     handleTemplateSelect,
     handleGenerate,
     handleRegenerate,
-    setStep
+    setStep,
+    updateAuthenticationStatus
   };
 };
