@@ -22,11 +22,7 @@ export const useCoverLetterActions = (
   }, []);
 
   const handleCVUpload = (text: string) => {
-    if (!isAuthenticated) {
-      // Show subscription modal instead of auth modal
-      setIsSubscriptionModalOpen(true);
-      return;
-    }
+    // Allow CV upload for non-authenticated users
     stateData._setCvText(text);
   };
 

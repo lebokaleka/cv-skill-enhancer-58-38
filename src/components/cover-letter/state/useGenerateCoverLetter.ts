@@ -18,13 +18,7 @@ export const useGenerateCoverLetter = (
   } = stateData;
 
   const generateCoverLetter = () => {
-    // If not authenticated, show subscription modal
-    if (!isAuthenticated) {
-      setIsSubscriptionModalOpen(true);
-      return;
-    }
-    
-    // Validate inputs
+    // Validate inputs first
     if (!cvText) {
       toast({
         title: "Missing information",
@@ -40,6 +34,12 @@ export const useGenerateCoverLetter = (
         description: "Please add a job description",
         variant: "destructive",
       });
+      return;
+    }
+    
+    // If not authenticated, show subscription modal only after input validation
+    if (!isAuthenticated) {
+      setIsSubscriptionModalOpen(true);
       return;
     }
     
