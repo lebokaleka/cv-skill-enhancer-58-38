@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -151,5 +152,11 @@
   .focus-visible {
     @apply outline-none ring-0 border-primary;
     box-shadow: none;
+  }
+  
+  /* Toast styles to ensure solid background and readable text */
+  [role="status"][data-state="open"] {
+    @apply bg-white dark:bg-gray-900 shadow-xl;
+    opacity: 1 !important;
   }
 }
