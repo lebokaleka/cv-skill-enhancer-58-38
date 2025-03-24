@@ -21,15 +21,6 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
   const [expandContent, setExpandContent] = useState(false);
 
   useEffect(() => {
-    console.log('JobMatchingForm mounted');
-    
-    return () => {
-      console.log('JobMatchingForm unmounted');
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log('matchResult updated:', matchResult ? 'has value' : 'null');
     if (matchResult) {
       setExpandContent(false);
       setShowContentIndicator(true);
@@ -37,7 +28,6 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
   }, [matchResult]);
 
   const toggleInterviewPreview = () => {
-    console.log('Toggling interview preview');
     setShowInterviewPreview(!showInterviewPreview);
     if (showInterviewPreview) {
       setIsInterviewOptionsOpen(false);
