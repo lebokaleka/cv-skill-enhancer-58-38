@@ -11,8 +11,8 @@ const CoverLetter = () => {
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
 
   const renderContent = (state: CoverLetterState): ReactNode => {
-    return (
-      <div className="space-y-8">
+    if (state.step === 'input' || !state.coverLetter) {
+      return (
         <CoverLetterInput 
           cvText={state.cvText} 
           jobDescription={state.jobDescription} 
@@ -24,17 +24,30 @@ const CoverLetter = () => {
           onTemplateSelect={state.handleTemplateSelect} 
           onGenerate={state.handleGenerate} 
         />
+      );
+    }
+    
+    return (
+      <div className="space-y-8">
+        <CoverLetterPreview 
+          coverLetter={state.coverLetter} 
+          selectedTemplate={state.selectedTemplate} 
+          templates={coverLetterTemplates} 
+          isGenerating={state.isGenerating} 
+          onRegenerate={state.handleRegenerate} 
+          onBack={() => state.setStep('input')} 
+        />
         
-        {state.coverLetter && (
-          <CoverLetterPreview 
-            coverLetter={state.coverLetter} 
-            selectedTemplate={state.selectedTemplate} 
-            templates={coverLetterTemplates} 
-            isGenerating={state.isGenerating} 
-            onRegenerate={state.handleRegenerate} 
-            onBack={() => state.setStep('input')} 
-          />
-        )}
+        <div className="flex justify-start">
+          <Button 
+            variant="outline" 
+            onClick={() => state.setStep('input')}
+            className="gap-2"
+          >
+            <ArrowLeft size={16} />
+            <span>Back to Editor</span>
+          </Button>
+        </div>
       </div>
     );
   };
@@ -50,5 +63,9 @@ const CoverLetter = () => {
     </CoverLetterLayout>
   );
 };
+
+// Need to import these components
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 export default CoverLetter;
