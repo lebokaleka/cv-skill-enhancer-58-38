@@ -16,22 +16,22 @@ export const useCoverLetterActions = (
     setIsSubscriptionModalOpen
   );
 
-  const handleCVUpload = (text: string) => {
-    // Allow CV upload for non-authenticated users
+  const handleCVUpload = useCallback((text: string) => {
+    // Save CV text to state
     stateData._setCvText(text);
-  };
+  }, [stateData]);
 
-  const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleJobDescriptionChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     stateData._setJobDescription(e.target.value);
-  };
+  }, [stateData]);
 
-  const handleTemplateSelect = (template: string) => {
+  const handleTemplateSelect = useCallback((template: string) => {
     stateData._setSelectedTemplate(template);
-  };
+  }, [stateData]);
 
-  const setStep = (step: 'input' | 'result') => {
+  const setStep = useCallback((step: 'input' | 'result') => {
     stateData._setStep(step);
-  };
+  }, [stateData]);
 
   return {
     handleCVUpload,

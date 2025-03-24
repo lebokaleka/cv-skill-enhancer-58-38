@@ -36,7 +36,8 @@ const CVUploader = ({ onUpload }: CVUploaderProps) => {
       reader.readAsText(selectedFile);
     } else {
       // For non-text files, just pass the file name
-      onUpload("File uploaded: " + selectedFile.name, selectedFile.name);
+      const fileContent = "File uploaded: " + selectedFile.name;
+      onUpload(fileContent, selectedFile.name);
     }
     
     setUploadState('success');

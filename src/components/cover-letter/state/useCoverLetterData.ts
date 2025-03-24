@@ -17,15 +17,13 @@ export const useCoverLetterData = (): CoverLetterStateData => {
 
   // Persist data to localStorage when state changes
   useEffect(() => {
-    if (cvText || jobDescription || coverLetter) {
-      saveCoverLetterData({
-        cvText,
-        jobDescription,
-        coverLetter,
-        selectedTemplate,
-        step
-      });
-    }
+    saveCoverLetterData({
+      cvText,
+      jobDescription,
+      coverLetter,
+      selectedTemplate,
+      step
+    });
   }, [cvText, jobDescription, coverLetter, selectedTemplate, step]);
 
   const setCvTextWithStorage = (text: string) => {
