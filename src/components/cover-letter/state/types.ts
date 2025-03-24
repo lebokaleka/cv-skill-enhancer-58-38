@@ -11,7 +11,23 @@ export interface CoverLetterStateActions {
   updateAuthenticationStatus: (isAuthenticated: boolean) => void;
 }
 
-export type CoverLetterStateData = Omit<BaseCoverLetterState, keyof CoverLetterStateActions>;
+export interface CoverLetterStateData {
+  cvText: string;
+  jobDescription: string;
+  coverLetter: string;
+  isGenerating: boolean;
+  selectedTemplate: string;
+  step: 'input' | 'result';
+  _canGenerateLetter: boolean;
+  // Internal state setters
+  _setCvText: (text: string) => void;
+  _setJobDescription: (text: string) => void;
+  _setCoverLetter: (text: string) => void;
+  _setIsGenerating: (isGenerating: boolean) => void;
+  _setSelectedTemplate: (template: string) => void;
+  _setStep: (step: 'input' | 'result') => void;
+  _setCanGenerateLetter: (canGenerate: boolean) => void;
+}
 
 export interface AuthenticationHandlers {
   isAuthenticated: boolean;

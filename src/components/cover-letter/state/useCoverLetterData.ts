@@ -18,14 +18,13 @@ export const useCoverLetterData = (): CoverLetterStateData => {
     isGenerating,
     selectedTemplate,
     step,
-    // Internal state setters exported for use by actions
+    _canGenerateLetter: canGenerateLetter,
     _setCvText: setCvText,
     _setJobDescription: setJobDescription,
     _setCoverLetter: setCoverLetter,
     _setIsGenerating: setIsGenerating,
     _setSelectedTemplate: setSelectedTemplate,
     _setStep: setStep,
-    _setCanGenerateLetter: setCanGenerateLetter,
-    _canGenerateLetter: canGenerateLetter
+    _setCanGenerateLetter: setCanGenerateLetter
   };
 };
