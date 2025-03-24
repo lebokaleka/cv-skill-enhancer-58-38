@@ -30,14 +30,13 @@ const AnalysisPreview = ({
 
   return (
     <div className="relative">
-      <div className={expandContent ? "pb-4" : "h-[450px] overflow-hidden"}>
+      <div className={expandContent ? "pb-4" : ""}>
         <AnalysisResults matchResult={matchResult} />
       </div>
       {showContentIndicator && (
         <ContentIndicator 
           onClick={onExpandContent} 
           isExpanded={expandContent} 
-          className={expandContent ? "" : "absolute bottom-0 left-0 right-0"}
         />
       )}
     </div>

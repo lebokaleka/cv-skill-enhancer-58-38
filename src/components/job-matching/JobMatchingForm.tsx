@@ -56,7 +56,7 @@ const JobMatchingForm = ({
       </div>
 
       <div className="relative">
-        <Card className={`glass-card border-dashed animate-fade-in ${expandContent ? 'h-auto' : 'h-[calc(100%+0.5px)]'}`}>
+        <Card className={`glass-card border-dashed animate-fade-in ${expandContent ? 'h-auto' : 'h-[650px]'}`}>
           <CardHeader>
             <PreviewHeader 
               showInterviewPreview={showInterviewPreview} 
