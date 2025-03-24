@@ -5,9 +5,16 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 interface ContentIndicatorProps {
   onClick: () => void;
   isExpanded: boolean;
+  expandedText?: string;
+  collapsedText?: string;
 }
 
-const ContentIndicator = ({ onClick, isExpanded }: ContentIndicatorProps) => {
+const ContentIndicator = ({ 
+  onClick, 
+  isExpanded, 
+  expandedText = "Less content", 
+  collapsedText = "More content" 
+}: ContentIndicatorProps) => {
   const [isHovered, setIsHovered] = useState(false);
   
   return (
@@ -18,7 +25,7 @@ const ContentIndicator = ({ onClick, isExpanded }: ContentIndicatorProps) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className={`flex items-center gap-1 text-sm text-muted-foreground transition-all ${isHovered ? 'font-semibold' : 'font-normal'}`}>
-        <span>{isExpanded ? "Less content" : "More content"}</span>
+        <span>{isExpanded ? expandedText : collapsedText}</span>
         {isExpanded ? (
           <ChevronUp size={16} className={`transition-transform ${isHovered ? 'translate-y-0.5' : ''}`} />
         ) : (
