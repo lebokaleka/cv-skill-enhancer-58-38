@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from 'react';
 import { coverLetterTemplates } from './coverLetterTemplates';
 import { CoverLetterState } from './types';
@@ -6,7 +5,8 @@ import { toast } from "@/hooks/use-toast";
 
 export const useCoverLetterState = (
   isAuthenticated: boolean,
-  setIsAuthModalOpen: (isOpen: boolean) => void
+  setIsAuthModalOpen: (isOpen: boolean) => void,
+  setIsSubscriptionModalOpen: (isOpen: boolean) => void
 ): CoverLetterState => {
   const [cvText, setCvText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
@@ -29,7 +29,8 @@ export const useCoverLetterState = (
 
   const handleCVUpload = (text: string) => {
     if (!isAuthenticated) {
-      setIsAuthModalOpen(true);
+      // Change from auth modal to subscription modal
+      setIsSubscriptionModalOpen(true);
       return;
     }
     setCvText(text);
@@ -47,7 +48,8 @@ export const useCoverLetterState = (
 
   const handleGenerate = () => {
     if (!isAuthenticated) {
-      setIsAuthModalOpen(true);
+      // Change from auth modal to subscription modal
+      setIsSubscriptionModalOpen(true);
       return;
     }
     
@@ -180,7 +182,8 @@ Sincerely,
 
   const handleRegenerate = () => {
     if (!isAuthenticated) {
-      setIsAuthModalOpen(true);
+      // Change from auth modal to subscription modal
+      setIsSubscriptionModalOpen(true);
       return;
     }
     

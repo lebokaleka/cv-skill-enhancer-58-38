@@ -19,4 +19,5 @@ export interface CoverLetterStateProviderProps {
   children: (state: CoverLetterState) => React.ReactNode;
   isAuthenticated: boolean;
   setIsAuthModalOpen: (isOpen: boolean) => void;
+  setIsSubscriptionModalOpen: (isOpen: boolean) => void;
 }

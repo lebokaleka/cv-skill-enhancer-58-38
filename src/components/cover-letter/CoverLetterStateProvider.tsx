@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { useCoverLetterState } from './useCoverLetterState';
 import { CoverLetterStateProviderProps } from './types';
 
-const CoverLetterStateProvider = ({ children, isAuthenticated, setIsAuthModalOpen }: CoverLetterStateProviderProps) => {
-  const state = useCoverLetterState(isAuthenticated, setIsAuthModalOpen);
+const CoverLetterStateProvider = ({ children, isAuthenticated, setIsAuthModalOpen, setIsSubscriptionModalOpen }: CoverLetterStateProviderProps) => {
+  const state = useCoverLetterState(isAuthenticated, setIsAuthModalOpen, setIsSubscriptionModalOpen);
   
   // Update the state when authentication status changes
   useEffect(() => {

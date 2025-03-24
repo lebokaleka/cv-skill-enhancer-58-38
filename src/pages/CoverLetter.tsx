@@ -8,7 +8,7 @@ import CoverLetterLayout from "@/components/cover-letter/CoverLetterLayout";
 import CoverLetterStateProvider, { CoverLetterState } from "@/components/cover-letter/CoverLetterStateProvider";
 
 const CoverLetter = () => {
-  const { isAuthenticated, setIsAuthModalOpen } = useAuth();
+  const { isAuthenticated, setIsAuthModalOpen, setIsSubscriptionModalOpen } = useAuth();
 
   const renderContent = (state: CoverLetterState): ReactNode => {
     return (
@@ -44,6 +44,7 @@ const CoverLetter = () => {
       <CoverLetterStateProvider 
         isAuthenticated={isAuthenticated} 
         setIsAuthModalOpen={setIsAuthModalOpen}
+        setIsSubscriptionModalOpen={setIsSubscriptionModalOpen}
       >
         {renderContent}
       </CoverLetterStateProvider>
