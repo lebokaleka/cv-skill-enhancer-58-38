@@ -8,6 +8,8 @@ import AnalysisResults from './AnalysisResults';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import ContentIndicator from './ContentIndicator';
 
 interface JobMatchingFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -18,6 +20,7 @@ interface JobMatchingFormProps {
 const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFormProps) => {
   const [showInterviewPreview, setShowInterviewPreview] = useState(false);
   const [isInterviewOptionsOpen, setIsInterviewOptionsOpen] = useState(false);
+  const [showContentIndicator, setShowContentIndicator] = useState(true);
 
   useEffect(() => {
     console.log('JobMatchingForm mounted');
@@ -91,136 +94,145 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="flex flex-col h-[650px] overflow-y-auto">
-            {!showInterviewPreview ? (
-              !matchResult ? (
-                <div className="flex flex-col items-center justify-center h-full text-center">
-                  <div className="p-6 rounded-lg bg-secondary/10 max-w-sm mx-auto">
-                    <p className="text-muted-foreground">
-                      Upload your CV and paste a job description, then click 'Analyze CV' to get AI-powered insights and suggestions.
-                    </p>
+          <CardContent className="flex flex-col h-[650px] relative">
+            <div className="h-full overflow-y-auto relative">
+              {!showInterviewPreview ? (
+                !matchResult ? (
+                  <div className="flex flex-col items-center justify-center h-full text-center">
+                    <div className="p-6 rounded-lg bg-secondary/10 max-w-sm mx-auto">
+                      <p className="text-muted-foreground">
+                        Upload your CV and paste a job description, then click 'Analyze CV' to get AI-powered insights and suggestions.
+                      </p>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    <AnalysisResults matchResult={matchResult} />
+                    {showContentIndicator && (
+                      <ContentIndicator 
+                        onClick={() => setShowContentIndicator(false)} 
+                      />
+                    )}
+                  </>
+                )
               ) : (
-                <AnalysisResults matchResult={matchResult} />
-              )
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full animate-fade-in">
-                <div className="space-y-6 max-w-md w-full p-4">
-                  <div className="text-center mb-6">
-                    <h3 className="text-xl font-semibold mb-2">Interview Practice</h3>
-                    <p className="text-muted-foreground">Choose your interview mode to begin practicing</p>
-                  </div>
-                  
-                  <Collapsible open={true} className="w-full">
-                    <div className="grid grid-cols-1 gap-4">
-                      <Card 
-                        className="border border-primary/20 hover:border-primary/50 transition-all cursor-pointer hover:shadow-md"
-                        onClick={() => {
-                          console.log('General Interview Questions clicked');
-                          setIsInterviewOptionsOpen(true);
-                        }}
-                      >
-                        <CardContent className="p-6">
-                          <h4 className="font-medium mb-2 flex items-center gap-2">
-                            <span className="bg-primary/10 text-primary p-1 rounded-full">
-                              <BrainCircuit size={16} />
-                            </span>
-                            General Interview Questions
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            Practice with common interview questions across all industries
-                          </p>
-                        </CardContent>
-                      </Card>
-                      
-                      <Card 
-                        className="border border-primary/20 hover:border-primary/50 transition-all cursor-pointer hover:shadow-md"
-                        onClick={() => {
-                          console.log('Job-Specific Questions clicked');
-                          setIsInterviewOptionsOpen(true);
-                        }}
-                      >
-                        <CardContent className="p-6">
-                          <h4 className="font-medium mb-2 flex items-center gap-2">
-                            <span className="bg-primary/10 text-primary p-1 rounded-full">
-                              <Target size={16} />
-                            </span>
-                            Job-Specific Questions
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            Get questions tailored to your specific job application
-                          </p>
-                        </CardContent>
-                      </Card>
+                <div className="flex flex-col items-center justify-center h-full animate-fade-in">
+                  <div className="space-y-6 max-w-md w-full p-4">
+                    <div className="text-center mb-6">
+                      <h3 className="text-xl font-semibold mb-2">Interview Practice</h3>
+                      <p className="text-muted-foreground">Choose your interview mode to begin practicing</p>
                     </div>
-                  </Collapsible>
-                  
-                  {/* Interview options - appears with animation when an interview type is selected */}
-                  {isInterviewOptionsOpen && (
-                    <div className="animate-fade-in mt-4">
-                      <Card className="border border-primary/20">
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-lg">Interview Setup</CardTitle>
-                          <CardDescription>Configure your practice session</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4 pb-6">
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <h5 className="font-medium text-sm mb-2">Difficulty</h5>
-                              <div className="flex flex-col gap-2">
-                                <Button variant="outline" size="sm" className="justify-start">
-                                  Basic
-                                </Button>
-                                <Button variant="outline" size="sm" className="justify-start">
-                                  Intermediate
-                                </Button>
-                                <Button variant="outline" size="sm" className="justify-start">
-                                  Advanced
-                                </Button>
-                              </div>
-                            </div>
-                            <div>
-                              <h5 className="font-medium text-sm mb-2">Questions</h5>
-                              <div className="flex flex-col gap-2">
-                                <Button variant="outline" size="sm" className="justify-start">
-                                  5 Questions
-                                </Button>
-                                <Button variant="outline" size="sm" className="justify-start">
-                                  10 Questions
-                                </Button>
-                                <Button variant="outline" size="sm" className="justify-start">
-                                  15 Questions
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      
-                      <div className="flex justify-center mt-4">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button className="rounded-full">Start Practicing</Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Coming Soon!</DialogTitle>
-                              <DialogDescription>
-                                The Interview Coach feature is still under development. Check back soon for this exciting new feature!
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div className="flex justify-end">
-                              <Button variant="outline" className="rounded-full">Close</Button>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
+                    
+                    <Collapsible open={true} className="w-full">
+                      <div className="grid grid-cols-1 gap-4">
+                        <Card 
+                          className="border border-primary/20 hover:border-primary/50 transition-all cursor-pointer hover:shadow-md"
+                          onClick={() => {
+                            console.log('General Interview Questions clicked');
+                            setIsInterviewOptionsOpen(true);
+                          }}
+                        >
+                          <CardContent className="p-6">
+                            <h4 className="font-medium mb-2 flex items-center gap-2">
+                              <span className="bg-primary/10 text-primary p-1 rounded-full">
+                                <BrainCircuit size={16} />
+                              </span>
+                              General Interview Questions
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              Practice with common interview questions across all industries
+                            </p>
+                          </CardContent>
+                        </Card>
+                        
+                        <Card 
+                          className="border border-primary/20 hover:border-primary/50 transition-all cursor-pointer hover:shadow-md"
+                          onClick={() => {
+                            console.log('Job-Specific Questions clicked');
+                            setIsInterviewOptionsOpen(true);
+                          }}
+                        >
+                          <CardContent className="p-6">
+                            <h4 className="font-medium mb-2 flex items-center gap-2">
+                              <span className="bg-primary/10 text-primary p-1 rounded-full">
+                                <Target size={16} />
+                              </span>
+                              Job-Specific Questions
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              Get questions tailored to your specific job application
+                            </p>
+                          </CardContent>
+                        </Card>
                       </div>
-                    </div>
-                  )}
+                    </Collapsible>
+                    
+                    {/* Interview options - appears with animation when an interview type is selected */}
+                    {isInterviewOptionsOpen && (
+                      <div className="animate-fade-in mt-4">
+                        <Card className="border border-primary/20">
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-lg">Interview Setup</CardTitle>
+                            <CardDescription>Configure your practice session</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-4 pb-6">
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <h5 className="font-medium text-sm mb-2">Difficulty</h5>
+                                <div className="flex flex-col gap-2">
+                                  <Button variant="outline" size="sm" className="justify-start">
+                                    Basic
+                                  </Button>
+                                  <Button variant="outline" size="sm" className="justify-start">
+                                    Intermediate
+                                  </Button>
+                                  <Button variant="outline" size="sm" className="justify-start">
+                                    Advanced
+                                  </Button>
+                                </div>
+                              </div>
+                              <div>
+                                <h5 className="font-medium text-sm mb-2">Questions</h5>
+                                <div className="flex flex-col gap-2">
+                                  <Button variant="outline" size="sm" className="justify-start">
+                                    5 Questions
+                                  </Button>
+                                  <Button variant="outline" size="sm" className="justify-start">
+                                    10 Questions
+                                  </Button>
+                                  <Button variant="outline" size="sm" className="justify-start">
+                                    15 Questions
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        
+                        <div className="flex justify-center mt-4">
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button className="rounded-full">Start Practicing</Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Coming Soon!</DialogTitle>
+                                <DialogDescription>
+                                  The Interview Coach feature is still under development. Check back soon for this exciting new feature!
+                                </DialogDescription>
+                              </DialogHeader>
+                              <div className="flex justify-end">
+                                <Button variant="outline" className="rounded-full">Close</Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>
