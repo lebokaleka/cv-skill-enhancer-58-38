@@ -7,19 +7,21 @@ interface ContentIndicatorProps {
   isExpanded: boolean;
   expandedText?: string;
   collapsedText?: string;
+  className?: string;
 }
 
 const ContentIndicator = ({ 
   onClick, 
   isExpanded, 
   expandedText = "Less content", 
-  collapsedText = "More content" 
+  collapsedText = "More content",
+  className = ""
 }: ContentIndicatorProps) => {
   const [isHovered, setIsHovered] = useState(false);
   
   return (
     <div 
-      className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent flex items-end justify-center pb-2 cursor-pointer transition-opacity z-10"
+      className={`absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent flex items-end justify-center pb-2 cursor-pointer transition-opacity z-10 ${className}`}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

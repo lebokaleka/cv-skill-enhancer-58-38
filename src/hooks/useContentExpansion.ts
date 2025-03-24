@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 interface UseContentExpansionProps {
   initialExpanded?: boolean;
-  onResultChange?: any;
+  onResultChange?: unknown;
 }
 
 export function useContentExpansion({ initialExpanded = false, onResultChange }: UseContentExpansionProps = {}) {

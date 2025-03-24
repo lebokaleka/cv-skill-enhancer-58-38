@@ -29,7 +29,7 @@ const AnalysisPreview = ({
   }
 
   return (
-    <>
+    <div className="relative">
       <div className={expandContent ? "pb-4" : ""}>
         <AnalysisResults matchResult={matchResult} />
       </div>
@@ -39,7 +39,7 @@ const AnalysisPreview = ({
           isExpanded={expandContent} 
         />
       )}
-    </>
+    </div>
   );
 };
 
