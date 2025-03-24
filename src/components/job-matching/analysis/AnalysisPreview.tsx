@@ -30,7 +30,7 @@ const AnalysisPreview = ({
 
   return (
     <>
-      <div className={expandContent ? "pb-6" : ""}>
+      <div className={expandContent ? "pb-4" : ""}>
         <AnalysisResults matchResult={matchResult} />
       </div>
       {showContentIndicator && !expandContent && (

@@ -59,7 +59,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
       </div>
 
       <div className="relative">
-        <Card className={`glass-card border-dashed animate-fade-in ${expandContent ? 'h-auto min-h-[650px]' : 'h-[650px]'}`}>
+        <Card className={`glass-card border-dashed animate-fade-in ${expandContent ? 'h-auto' : 'h-[650px]'}`}>
           <CardHeader>
             <PreviewHeader 
               showInterviewPreview={showInterviewPreview}
