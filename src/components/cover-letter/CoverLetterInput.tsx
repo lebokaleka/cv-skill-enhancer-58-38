@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { FileText, Briefcase } from 'lucide-react';
 import CVUploader from "@/components/upload/CVUploader";
 import TemplateSelector from "./TemplateSelector";
 import { CoverLetterTemplate } from "./coverLetterTemplates";
+
 interface CoverLetterInputProps {
   cvText: string;
   jobDescription: string;
@@ -17,6 +19,7 @@ interface CoverLetterInputProps {
   onTemplateSelect: (template: string) => void;
   onGenerate: () => void;
 }
+
 const CoverLetterInput = ({
   cvText,
   jobDescription,
@@ -68,10 +71,11 @@ const CoverLetterInput = ({
 
       {/* Generate Button */}
       <div className="flex justify-end">
-        <Button size="lg" className="px-8" onClick={onGenerate} disabled={!cvText || !jobDescription || isGenerating}>
+        <Button size="lg" className="px-8" onClick={onGenerate}>
           {isGenerating ? 'Generating...' : 'Generate Cover Letter'}
         </Button>
       </div>
     </div>;
 };
+
 export default CoverLetterInput;

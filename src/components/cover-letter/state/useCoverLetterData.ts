@@ -9,7 +9,7 @@ export const useCoverLetterData = (): CoverLetterStateData => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('classic-professional');
   const [step, setStep] = useState<'input' | 'result'>('input');
-  const [canGenerateLetter, setCanGenerateLetter] = useState(false);
+  const [canGenerateLetter, setCanGenerateLetter] = useState(false); // Kept for type compatibility but no longer used
 
   return {
     cvText,

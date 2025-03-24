@@ -18,15 +18,26 @@ export const useGenerateCoverLetter = (
   } = stateData;
 
   const generateCoverLetter = () => {
+    // If not authenticated, show subscription modal
     if (!isAuthenticated) {
       setIsSubscriptionModalOpen(true);
       return;
     }
     
-    if (!cvText || !jobDescription) {
+    // Validate inputs
+    if (!cvText) {
       toast({
         title: "Missing information",
-        description: "Please upload your CV and add a job description",
+        description: "Please upload your CV",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (!jobDescription) {
+      toast({
+        title: "Missing information",
+        description: "Please add a job description",
         variant: "destructive",
       });
       return;
@@ -151,6 +162,7 @@ Sincerely,
   };
 
   const regenerateCoverLetter = () => {
+    // If not authenticated, show subscription modal
     if (!isAuthenticated) {
       setIsSubscriptionModalOpen(true);
       return;
