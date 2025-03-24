@@ -1,8 +1,6 @@
-
 import { useState } from 'react';
 import { coverLetterTemplates } from './coverLetterTemplates';
 import { CoverLetterState } from './types';
-import { useToast } from '@/components/ui/use-toast';
 
 export const useCoverLetterState = (
   isAuthenticated: boolean,
@@ -14,7 +12,6 @@ export const useCoverLetterState = (
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('classic-professional');
   const [step, setStep] = useState<'input' | 'result'>('input');
-  const { toast } = useToast();
 
   const handleCVUpload = (text: string) => {
     if (!isAuthenticated) {
@@ -38,15 +35,7 @@ export const useCoverLetterState = (
       return;
     }
     
-    if (!cvText || !jobDescription) {
-      toast({
-        title: "Missing information",
-        description: "Please upload your CV and add a job description.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
+    if (!cvText || !jobDescription) return;
     setIsGenerating(true);
 
     setTimeout(() => {
@@ -67,7 +56,7 @@ In my current role at XYZ Technologies, I collaborated closely with UX designers
 I am excited about the possibility of bringing my technical expertise and creative problem-solving skills to your team. Thank you for considering my application. I look forward to the opportunity to discuss how my skills and experience can contribute to Acme Corporation's continued success.
 
 Kind regards,`;
-      } else if (template?.id === 'classic-professional') {
+      } else if (template?.id === 'classic-elegant') {
         mockCoverLetter = `Dear Hiring Manager,
 
 I am writing to apply for the Frontend Developer position at Acme Corporation. With a Bachelor's degree in Computer Science and 5+ years of experience in frontend development, I offer a strong technical foundation in the exact technologies your job description requires.
@@ -90,6 +79,61 @@ I would welcome the opportunity to discuss how my technical expertise can contri
 
 Sincerely,
 [Your Name]`;
+      } else if (template?.id === 'creative-distinctive') {
+        mockCoverLetter = `Dear Acme Creative Team,
+
+When I discovered your job posting for a Frontend Developer, I couldn't help but feel that this role was made for me. As someone who lives and breathes web development, with a passion for creating beautiful, functional interfaces, I'm thrilled at the possibility of bringing my skills to your innovative team.
+
+My journey in web development began five years ago, and since then, I've had the privilege of turning complex problems into elegant solutions. Whether I'm building responsive layouts with modern CSS techniques or crafting interactive experiences with React, I approach each project as an opportunity to blend technical expertise with creative thinking.
+
+What excites me most about Acme Corporation is your commitment to pushing boundaries. Your recent project launching an interactive product visualization tool particularly caught my attention – I'd love to contribute to similarly impactful initiatives.
+
+In my current role, I revitalized an outdated user interface, transforming it into an intuitive experience that users actually enjoy. By introducing modern JavaScript frameworks and thoughtful animations, I helped increase user retention by 40%. This experience taught me that small details can make a massive difference in how people interact with technology.
+
+I believe great products come from collaboration between diverse perspectives, and I'm eager to bring my unique approach to your team. I'd love to discuss how my blend of technical skill and creative problem-solving could help Acme continue to create exceptional digital experiences.
+
+Looking forward to potentially creating something amazing together,
+
+[Your Name]`;
+      } else if (template?.id === 'modern-minimalist') {
+        mockCoverLetter = `Dear Hiring Manager,
+
+I am writing to express my interest in the UX Designer position at Acme Corporation as advertised on your career page. With my background in user-centered design and experience creating intuitive digital experiences, I believe I would be a valuable addition to your team.
+
+Throughout my career, I have focused on combining aesthetic design with functional usability to create products that users genuinely enjoy interacting with. My work on the recent redesign of XYZ App resulted in a 45% increase in user engagement and a significant reduction in customer support inquiries.
+
+I am particularly drawn to Acme Corporation because of your commitment to innovation and your user-first approach to product development. These values align perfectly with my own professional philosophy, and I am excited about the possibility of contributing to your continued success.
+
+Thank you for considering my application. I look forward to the opportunity to discuss how my skills and experience could benefit your team.
+
+Sincerely,
+ALEX MORGAN`;
+      } else if (template?.id === 'creative-accent') {
+        mockCoverLetter = `Dear Creative Team,
+
+I am excited to apply for the Graphic Designer position at Studio Creative. As a passionate designer with five years of experience creating compelling visual identities and marketing materials, I believe my creative approach would be a perfect fit for your innovative team.
+
+My portfolio showcases a diverse range of projects, from branding for startups to campaign materials for established corporations. I pride myself on delivering designs that not only look beautiful but also effectively communicate my clients' messages and values.
+
+I've been following Studio Creative's work for several years and have been particularly impressed by your recent campaign for Eco Essentials. Your ability to blend aesthetic appeal with meaningful storytelling is exactly the kind of work I aspire to create.
+
+I would welcome the opportunity to bring my creativity, technical skills, and collaborative spirit to your studio. Thank you for considering my application.
+
+Creatively yours,
+Jordan Rivers`;
+      } else if (template?.id === 'executive-elegant') {
+        mockCoverLetter = `Dear Hiring Committee,
+
+I am writing to express my interest in the Chief Operations Officer position at Global Enterprises, as advertised in the Wall Street Journal. With over 15 years of senior leadership experience and a proven track record of organizational transformation, I am confident in my ability to contribute significantly to your executive team.
+
+Throughout my career, I have successfully led cross-functional teams through periods of substantial growth and change. At Visionary Corp, I oversaw a comprehensive operational restructuring that resulted in a 30% increase in efficiency and $4.5M in annual cost savings. My approach combines strategic vision with meticulous execution, ensuring that ambitious goals translate into measurable results.
+
+I am particularly drawn to Global Enterprises' commitment to sustainability alongside profitability. This balanced approach aligns perfectly with my leadership philosophy, and I would welcome the opportunity to advance these dual priorities in the COO role.
+
+Thank you for your consideration. I look forward to discussing how my experience and leadership style could benefit Global Enterprises during this pivotal growth period.
+
+Respectfully,
+Morgan Reynolds`;
       } else {
         mockCoverLetter = `Dear Hiring Manager,
 
@@ -106,7 +150,6 @@ Sincerely,
       }
       setCoverLetter(mockCoverLetter);
       setIsGenerating(false);
-      setStep('result');
     }, 2500);
   };
 

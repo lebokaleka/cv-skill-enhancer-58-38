@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +11,6 @@ import CreativeAccentTemplate from './templates/CreativeAccentTemplate';
 import ExecutiveElegantTemplate from './templates/ExecutiveElegantTemplate';
 import ProfessionalCornerTemplate from './templates/ProfessionalCornerTemplate';
 import ProfessionalBurgundyTemplate from './templates/ProfessionalBurgundyTemplate';
-import { useToast } from '@/components/ui/use-toast';
 
 interface CoverLetterPreviewProps {
   coverLetter: string;
@@ -32,39 +30,11 @@ const CoverLetterPreview = ({
   onBack
 }: CoverLetterPreviewProps) => {
   const [copied, setCopied] = useState(false);
-  const { toast } = useToast();
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(coverLetter).then(() => {
-      setCopied(true);
-      toast({
-        title: "Copied to clipboard",
-        description: "Cover letter has been copied to your clipboard.",
-      });
-      setTimeout(() => setCopied(false), 2000);
-    }).catch(err => {
-      toast({
-        title: "Failed to copy",
-        description: "Please try again or copy manually.",
-        variant: "destructive"
-      });
-    });
-  };
-
-  const handleDownload = () => {
-    const templateName = templates.find(t => t.id === selectedTemplate)?.name || 'Cover Letter';
-    const element = document.createElement('a');
-    const file = new Blob([coverLetter], {type: 'text/plain'});
-    element.href = URL.createObjectURL(file);
-    element.download = `${templateName}.txt`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-    
-    toast({
-      title: "Download started",
-      description: "Your cover letter is being downloaded.",
-    });
+    navigator.clipboard.writeText(coverLetter);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const renderTemplate = () => {
@@ -87,7 +57,7 @@ const CoverLetterPreview = ({
         return <ProfessionalBurgundyTemplate content={coverLetter} />;
       default:
         return <div className="bg-white border border-gray-200 border-dashed rounded-xl shadow-sm">
-            <pre className="font-sans whitespace-pre-wrap text-foreground p-6">
+            <pre className="font-sans whitespace-pre-wrap text-foreground">
               {coverLetter}
             </pre>
           </div>;
@@ -119,7 +89,7 @@ const CoverLetterPreview = ({
                 <RefreshCw size={14} className={isGenerating ? 'animate-spin' : ''} />
                 <span>Regenerate</span>
               </Button>
-              <Button variant="outline" size="sm" className="gap-1" onClick={handleDownload}>
+              <Button variant="outline" size="sm" className="gap-1">
                 <Download size={14} />
                 <span>Download</span>
               </Button>
