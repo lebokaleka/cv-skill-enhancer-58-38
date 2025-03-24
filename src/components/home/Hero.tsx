@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -58,11 +57,7 @@ const Hero = () => {
   };
 
   const handleFeatureClick = (path: string) => {
-    if (!isAuthenticated) {
-      setIsSubscriptionModalOpen(true);
-    } else {
-      navigate(path);
-    }
+    navigate(path);
   };
 
   return (
