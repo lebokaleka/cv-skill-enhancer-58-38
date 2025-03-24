@@ -45,7 +45,7 @@ const CoverLetterInput = ({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <CVUploader onUpload={onCVUpload} />
+            <CVUploader onUpload={onCVUpload} initialText={cvText} />
           </CardContent>
         </Card>
 

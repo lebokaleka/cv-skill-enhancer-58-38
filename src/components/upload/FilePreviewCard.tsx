@@ -5,14 +5,17 @@ import { getFileIcon, getFileType, formatFileName } from './utils/fileTypeUtils'
 import { CheckCircle } from 'lucide-react';
 
 interface FilePreviewCardProps {
-  file: File;
+  file: File | null;
+  fileName?: string;
   onSelectDifferentFile: (newFile?: File) => void;
 }
 
-const FilePreviewCard: React.FC<FilePreviewCardProps> = ({ file, onSelectDifferentFile }) => {
-  const fileIcon = getFileIcon(file);
-  const fileType = getFileType(file);
-  const fileName = formatFileName(file);
+const FilePreviewCard: React.FC<FilePreviewCardProps> = ({ file, fileName = '', onSelectDifferentFile }) => {
+  // Use provided fileName or get it from the file object
+  const displayFileName = fileName || (file ? file.name : '');
+  const fileIcon = getFileIcon(file, displayFileName);
+  const fileType = getFileType(file, displayFileName);
+  const formattedFileName = formatFileName(file, displayFileName);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = () => {
@@ -40,7 +43,7 @@ const FilePreviewCard: React.FC<FilePreviewCardProps> = ({ file, onSelectDiffere
           {fileIcon}
         </div>
         <div className="text-left">
-          <p className="font-medium text-gray-900 dark:text-white">{fileName}</p>
+          <p className="font-medium text-gray-900 dark:text-white">{formattedFileName}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">{fileType}</p>
         </div>
       </div>

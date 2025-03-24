@@ -16,7 +16,7 @@ export const useCoverLetterActions = (
     setIsSubscriptionModalOpen
   );
 
-  const handleCVUpload = useCallback((text: string) => {
+  const handleCVUpload = useCallback((text: string, fileName?: string) => {
     // Save CV text to state
     stateData._setCvText(text);
   }, [stateData]);
