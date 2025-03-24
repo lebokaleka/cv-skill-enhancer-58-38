@@ -36,9 +36,16 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
     }
   };
 
-  const handleExpandContent = () => {
-    setExpandContent(true);
-    setShowContentIndicator(false);
+  const handleContentToggle = () => {
+    if (expandContent) {
+      // If expanded, collapse
+      setExpandContent(false);
+    } else {
+      // If collapsed, expand
+      setExpandContent(true);
+    }
+    // Always show the indicator - now we'll use it for both expand/collapse
+    setShowContentIndicator(true);
   };
 
   return (
@@ -73,7 +80,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
                   matchResult={matchResult}
                   showContentIndicator={showContentIndicator}
                   expandContent={expandContent}
-                  onExpandContent={handleExpandContent}
+                  onExpandContent={handleContentToggle}
                 />
               ) : (
                 <InterviewPreview 
