@@ -1,54 +1,24 @@
-import { useState, useCallback } from 'react';
-import { coverLetterTemplates } from './coverLetterTemplates';
-import { CoverLetterState } from './types';
+
+import { CoverLetterStateData } from './types';
+import { coverLetterTemplates } from '../coverLetterTemplates';
 import { toast } from "@/hooks/use-toast";
 
-export const useCoverLetterState = (
+export const useGenerateCoverLetter = (
+  stateData: CoverLetterStateData,
   isAuthenticated: boolean,
-  setIsAuthModalOpen: (isOpen: boolean) => void,
   setIsSubscriptionModalOpen: (isOpen: boolean) => void
-): CoverLetterState => {
-  const [cvText, setCvText] = useState('');
-  const [jobDescription, setJobDescription] = useState('');
-  const [coverLetter, setCoverLetter] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState('classic-professional');
-  const [step, setStep] = useState<'input' | 'result'>('input');
-  const [canGenerateLetter, setCanGenerateLetter] = useState(false);
+) => {
+  const {
+    cvText,
+    jobDescription,
+    selectedTemplate,
+    _setCoverLetter,
+    _setIsGenerating,
+    _setStep
+  } = stateData;
 
-  // Update generation capability when CV or job description changes
-  const updateGenerationCapability = useCallback(() => {
-    setCanGenerateLetter(isAuthenticated && !!cvText && !!jobDescription);
-  }, [isAuthenticated, cvText, jobDescription]);
-
-  // Update auth status from parent component
-  const updateAuthenticationStatus = useCallback((newAuthStatus: boolean) => {
-    // When auth status changes, update capability to generate letter
-    updateGenerationCapability();
-  }, [updateGenerationCapability]);
-
-  const handleCVUpload = (text: string) => {
+  const generateCoverLetter = () => {
     if (!isAuthenticated) {
-      // Change from auth modal to subscription modal
-      setIsSubscriptionModalOpen(true);
-      return;
-    }
-    setCvText(text);
-    updateGenerationCapability();
-  };
-
-  const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setJobDescription(e.target.value);
-    updateGenerationCapability();
-  };
-
-  const handleTemplateSelect = (template: string) => {
-    setSelectedTemplate(template);
-  };
-
-  const handleGenerate = () => {
-    if (!isAuthenticated) {
-      // Change from auth modal to subscription modal
       setIsSubscriptionModalOpen(true);
       return;
     }
@@ -62,7 +32,7 @@ export const useCoverLetterState = (
       return;
     }
     
-    setIsGenerating(true);
+    _setIsGenerating(true);
 
     setTimeout(() => {
       const template = coverLetterTemplates.find(t => t.id === selectedTemplate);
@@ -174,47 +144,35 @@ I would welcome the opportunity to discuss how my skills and experience can bene
 Sincerely,
 [Your Name]`;
       }
-      setCoverLetter(mockCoverLetter);
-      setIsGenerating(false);
-      setStep('result');
+      _setCoverLetter(mockCoverLetter);
+      _setIsGenerating(false);
+      _setStep('result');
     }, 2500);
   };
 
-  const handleRegenerate = () => {
+  const regenerateCoverLetter = () => {
     if (!isAuthenticated) {
-      // Change from auth modal to subscription modal
       setIsSubscriptionModalOpen(true);
       return;
     }
     
-    setIsGenerating(true);
+    _setIsGenerating(true);
 
     setTimeout(() => {
-      const currentLetter = coverLetter;
+      const currentLetter = stateData.coverLetter;
 
       const paragraphs = currentLetter.split('\n\n');
 
       if (paragraphs.length > 1) {
         paragraphs[1] = `With a strong background in web development and expertise in modern frontend technologies including React and TypeScript, I am confident in my ability to make significant contributions to your team. My experience has focused on creating exceptional user experiences through clean, efficient code and thoughtful UI design.`;
       }
-      setCoverLetter(paragraphs.join('\n\n'));
-      setIsGenerating(false);
+      _setCoverLetter(paragraphs.join('\n\n'));
+      _setIsGenerating(false);
     }, 1500);
   };
 
   return {
-    cvText,
-    jobDescription,
-    coverLetter,
-    isGenerating,
-    selectedTemplate,
-    step,
-    handleCVUpload,
-    handleJobDescriptionChange,
-    handleTemplateSelect,
-    handleGenerate,
-    handleRegenerate,
-    setStep,
-    updateAuthenticationStatus
+    handleGenerate: generateCoverLetter,
+    handleRegenerate: regenerateCoverLetter
   };
 };

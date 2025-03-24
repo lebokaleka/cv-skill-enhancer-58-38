@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { useCoverLetterState } from './useCoverLetterState';
+import { useCoverLetterState } from './state';
 import { CoverLetterStateProviderProps } from './types';
 
 const CoverLetterStateProvider = ({ children, isAuthenticated, setIsAuthModalOpen, setIsSubscriptionModalOpen }: CoverLetterStateProviderProps) => {
