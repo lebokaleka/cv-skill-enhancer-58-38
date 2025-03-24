@@ -24,16 +24,16 @@ const FeaturesSection = () => {
       path: "/cv-analysis"
     },
     {
-      icon: <FileSearch size={20} />,
-      title: "Job Matching",
-      description: "Compare your CV to job descriptions and identify missing skills or keywords.",
-      path: "/job-matching"
-    },
-    {
       icon: <FileEdit size={20} />,
       title: "Cover Letter Generator",
       description: "Create tailored cover letters from your CV and target job descriptions.",
       path: "/cover-letter"
+    },
+    {
+      icon: <FileSearch size={20} />,
+      title: "Job Matching",
+      description: "Compare your CV to job descriptions and identify missing skills or keywords.",
+      path: "/job-matching"
     },
     {
       icon: <Mic size={20} />,
