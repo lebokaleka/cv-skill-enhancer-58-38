@@ -156,7 +156,21 @@
   
   /* Toast styles to ensure solid background and readable text */
   [role="status"][data-state="open"] {
-    @apply bg-white dark:bg-gray-900 shadow-xl;
+    @apply bg-white dark:bg-gray-900 shadow-xl !important;
     opacity: 1 !important;
+    background-color: white !important;
+    backdrop-filter: none !important;
+  }
+  
+  /* Additional specific override for toast backgrounds */
+  [role="status"] {
+    background-color: white !important;
+    --tw-bg-opacity: 1 !important;
+  }
+  
+  /* For dark mode */
+  .dark [role="status"] {
+    background-color: rgb(17 24 39) !important; /* gray-900 */
+    --tw-bg-opacity: 1 !important;
   }
 }
