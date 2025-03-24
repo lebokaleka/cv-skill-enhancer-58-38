@@ -3,8 +3,9 @@ import { useState } from 'react';
 import CVUploader from "@/components/upload/CVUploader";
 import { CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Briefcase, ArrowRight } from 'lucide-react';
+import { FileText, Briefcase, ArrowRight, AlertTriangle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface InputFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -16,6 +17,7 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   const [jobDescription, setJobDescription] = useState('');
   const [fileName, setFileName] = useState('');
   const [showUploader, setShowUploader] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCVUpload = (text: string, name?: string) => {
     setCvText(text);
@@ -23,14 +25,31 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
       setFileName(name);
     }
     setShowUploader(false);
+    setError(null);
   };
 
   const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDescription(e.target.value);
+    setError(null);
   };
 
   const handleAnalyzeClick = () => {
-    if (!cvText || !jobDescription) return;
+    // Clear any existing error
+    setError(null);
+    
+    // Check for missing data and set appropriate error message
+    if (!cvText && !jobDescription) {
+      setError("Please upload your CV and add a job description.");
+      return;
+    } else if (!cvText) {
+      setError("Please upload your CV.");
+      return;
+    } else if (!jobDescription) {
+      setError("Please add a job description.");
+      return;
+    }
+    
+    // Only proceed if both are available
     onAnalyze(cvText, jobDescription);
   };
 
@@ -61,11 +80,19 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
         <CVUploader onUpload={handleCVUpload} />
       </div>
 
+      {/* Error message */}
+      {error && (
+        <Alert variant="destructive" className="py-2">
+          <AlertTriangle className="h-4 w-4 mr-2" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
       {/* Analyze Button */}
       <div className="flex justify-end">
         <Button
           onClick={handleAnalyzeClick}
-          disabled={!cvText || !jobDescription || isAnalyzing}
+          disabled={isAnalyzing}
           className="rounded-full bg-[#46235C] hover:bg-[#46235C]/90 text-white isolate"
         >
           {isAnalyzing ? 'Analyzing...' : 'Analyze CV'}
