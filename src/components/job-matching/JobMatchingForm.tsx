@@ -44,7 +44,7 @@ const JobMatchingForm = ({ onAnalyze, isAnalyzing, matchResult }: JobMatchingFor
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
       <div>
-        <Card className="glass-card border-dashed border animate-fade-in h-[650px]">
+        <Card className="glass-card border-dashed border animate-fade-in h-auto">
           <CardHeader>
             <div className="flex items-center gap-2">
               <Briefcase size={20} />
