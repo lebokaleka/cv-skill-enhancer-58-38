@@ -1,12 +1,9 @@
-
 import { useToast } from "@/hooks/use-toast";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@/components/ui/toast";
-
 export function Toaster() {
   const {
     toasts
   } = useToast();
-  
   return <ToastProvider>
       {toasts.map(function ({
       id,
@@ -15,7 +12,9 @@ export function Toaster() {
       action,
       ...props
     }) {
-      return <Toast key={id} {...props} className="border-border shadow-lg rounded-lg bg-white dark:bg-gray-900" style={{ opacity: 1 }}>
+      return <Toast key={id} style={{
+        opacity: 1
+      }} className="border-border shadow-lg rounded-lg bg-white-10 dark:bg-gray-900\n">
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && <ToastDescription>{description}</ToastDescription>}
