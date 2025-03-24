@@ -24,11 +24,6 @@
     --input: 220 13% 91%;
     --ring: 277 45% 25%; /* Changed from accent color to match primary */
     --radius: 0.5rem;
-    
-    /* Toast colors */
-    --toast-background: 0 0% 0%;
-    --toast-foreground: 0 0% 100%;
-    --toast-border: 0 0% 15%;
   }
 
   .dark {
@@ -51,11 +46,6 @@
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
     --ring: 277 45% 25%; /* Changed from accent color to match primary */
-    
-    /* Toast colors */
-    --toast-background: 0 0% 0%;
-    --toast-foreground: 0 0% 100%;
-    --toast-border: 0 0% 20%;
   }
 }
 

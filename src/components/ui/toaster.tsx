@@ -1,7 +1,6 @@
 
 import { useToast } from "@/hooks/use-toast";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@/components/ui/toast";
-
 export function Toaster() {
   const {
     toasts
@@ -14,10 +13,10 @@ export function Toaster() {
       action,
       ...props
     }) {
-      return <Toast key={id} className="border border-gray-800 shadow-lg rounded-lg bg-gray-950 text-white">
+      return <Toast key={id} className="border-border shadow-lg rounded-lg bg-gray-950/95">
             <div className="grid gap-1">
-              {title && <ToastTitle className="text-white font-medium">{title}</ToastTitle>}
-              {description && <ToastDescription className="text-gray-200">{description}</ToastDescription>}
+              {title && <ToastTitle>{title}</ToastTitle>}
+              {description && <ToastDescription>{description}</ToastDescription>}
             </div>
             {action}
             <ToastClose />
