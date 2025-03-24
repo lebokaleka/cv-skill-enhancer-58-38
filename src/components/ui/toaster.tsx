@@ -14,7 +14,7 @@ export function Toaster() {
     }) {
       return <Toast key={id} style={{
         opacity: 1
-      }} className="border-border shadow-lg rounded-lg bg-white-10 dark:bg-gray-900\n">
+      }} className="border-border shadow-lg rounded-lg bg-transparent">
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && <ToastDescription>{description}</ToastDescription>}
