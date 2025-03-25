@@ -54,23 +54,29 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
     // Clear any existing error
     setError(null);
     
-    // Check for missing data and set appropriate error message
-    if (!cvText && !jobDescription) {
-      setError("Please upload your CV and add a job description.");
-      setShowErrorDialog(true);
-      return;
-    } else if (!cvText) {
-      setError("Please upload your CV.");
-      setShowErrorDialog(true);
-      return;
-    } else if (!jobDescription) {
-      setError("Please add a job description.");
-      setShowErrorDialog(true);
-      return;
-    }
+    // Force close any existing dialog first to ensure it can reappear
+    setShowErrorDialog(false);
     
-    // Only proceed if both are available
-    onAnalyze(cvText, jobDescription);
+    // Small timeout to ensure state updates before showing new dialog
+    setTimeout(() => {
+      // Check for missing data and set appropriate error message
+      if (!cvText && !jobDescription) {
+        setError("Please upload your CV and add a job description.");
+        setShowErrorDialog(true);
+        return;
+      } else if (!cvText) {
+        setError("Please upload your CV.");
+        setShowErrorDialog(true);
+        return;
+      } else if (!jobDescription) {
+        setError("Please add a job description.");
+        setShowErrorDialog(true);
+        return;
+      }
+      
+      // Only proceed if both are available
+      onAnalyze(cvText, jobDescription);
+    }, 10);
   };
 
   return (
