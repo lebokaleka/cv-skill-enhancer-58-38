@@ -1,5 +1,6 @@
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAuth } from '@/context/AuthContext';
 import AuthTabs from './components/AuthTabs';
 
@@ -21,15 +22,11 @@ const AuthModal = () => {
           <DialogTitle className="text-center text-2xl font-bold">
             {initialTab === 'sign-up' ? 'Create an Account' : 'Welcome Back'}
           </DialogTitle>
-          <DialogDescription className="text-center">
-            {selectedSubscription && initialTab === 'sign-up' ? (
-              <p className="text-sm mt-2 text-primary font-medium">
-                You've selected the {selectedSubscription.charAt(0).toUpperCase() + selectedSubscription.slice(1)} Plan
-              </p>
-            ) : (
-              'Sign in to your account to continue'
-            )}
-          </DialogDescription>
+          {selectedSubscription && initialTab === 'sign-up' && (
+            <p className="text-center text-sm mt-2 text-primary font-medium">
+              You've selected the {selectedSubscription.charAt(0).toUpperCase() + selectedSubscription.slice(1)} Plan
+            </p>
+          )}
         </DialogHeader>
         
         <AuthTabs initialTab={initialTab} />

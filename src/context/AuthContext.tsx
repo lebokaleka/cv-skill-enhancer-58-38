@@ -26,7 +26,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUserState] = useState<User>(null);
+  const [user, setUser] = useState<User>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionTier | null>(null);
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
-        setUserState(JSON.parse(storedUser));
+        setUser(JSON.parse(storedUser));
       } catch (error) {
         console.error('Failed to parse stored user:', error);
         localStorage.removeItem('user');
@@ -47,17 +47,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  // Enhanced setUser function that also updates localStorage
-  const setUser = (newUser: User) => {
-    setUserState(newUser);
-    if (newUser) {
-      localStorage.setItem('user', JSON.stringify(newUser));
+  // Store user in localStorage when it changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
     } else {
       localStorage.removeItem('user');
     }
-  };
+  }, [user]);
 
   const logout = () => {
+    // Trigger the logout event before clearing user data
+    document.dispatchEvent(new Event('logout'));
+    
     // Clear cover letter data when user logs out
     clearCoverLetterData();
     
