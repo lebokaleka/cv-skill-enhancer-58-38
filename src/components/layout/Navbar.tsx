@@ -216,11 +216,13 @@ const Navbar = () => {
         )}
       </header>
 
-      <ProfileModal
-        isOpen={isProfileModalOpen}
-        onClose={closeProfileModal}
-        user={user}
-      />
+      {user && (
+        <ProfileModal
+          isOpen={isProfileModalOpen}
+          onClose={closeProfileModal}
+          user={user}
+        />
+      )}
     </>
   );
 };

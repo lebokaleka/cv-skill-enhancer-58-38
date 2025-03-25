@@ -44,8 +44,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user }) =>
         name,
       });
       
-      // Password change logic would go here in a real app
-      
       // Close the modal
       onClose();
     }
@@ -56,22 +54,29 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user }) =>
     return tier.charAt(0).toUpperCase() + tier.slice(1) + ' Plan';
   };
   
+  // Reset form values when the modal opens
+  React.useEffect(() => {
+    if (isOpen && user) {
+      setName(user.name || '');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    }
+  }, [isOpen, user]);
+  
   return (
     <Dialog 
       open={isOpen} 
       onOpenChange={(open) => {
         if (!open) {
-          // Ensure we properly clean up before closing
-          setTimeout(() => {
-            onClose();
-          }, 0);
+          onClose();
         }
       }}
     >
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Profile Settings</DialogTitle>
-          <DialogDescription className="sr-only">
+          <DialogDescription>
             Edit your profile settings
           </DialogDescription>
         </DialogHeader>
