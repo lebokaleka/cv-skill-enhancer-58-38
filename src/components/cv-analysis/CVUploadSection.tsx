@@ -52,8 +52,8 @@ const CVUploadSection = ({
 
   return (
     <div className="animate-scale-in">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">CV Analysis & Optimization</h1>
+      <div className="text-center mb-8 animate-fade-in">
+        <h1 className="text-3xl font-bold mb-2 text-foreground">CV Analysis & Optimization</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Upload your CV to receive a score, ATS compatibility check, and actionable improvements.
         </p>
