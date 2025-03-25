@@ -1,0 +1,44 @@
+
+@layer components {
+  /* Style for tab triggers */
+  [data-radix-collection-item] {
+    background-color: transparent !important;
+  }
+  
+  [data-radix-collection-item][data-state="active"] {
+    background-color: #46235C !important;
+    opacity: 1 !important;
+    isolation: isolate;
+  }
+  
+  /* Style for tabs list container */
+  [role="tablist"] {
+    background-color: rgba(70, 35, 92, 0.2) !important;
+  }
+  
+  /* Fix for Select dropdown item visibility */
+  [data-radix-select-item] {
+    color: inherit !important; /* Ensure text color is always visible */
+    opacity: 1 !important;
+  }
+  
+  /* Style for Select item hover and selected states - no color change */
+  [data-radix-select-item]:hover,
+  [data-radix-select-item][data-highlighted],
+  [data-radix-select-item][data-state="checked"] {
+    transform: scale(1.02);
+    font-weight: 600;
+    transition: all 0.2s ease;
+    color: inherit !important; /* Keep text color the same on hover */
+  }
+  
+  /* Updated focus styles for input elements - single border only */
+  input:focus-visible,
+  textarea:focus-visible,
+  [contenteditable="true"]:focus-visible,
+  select:focus-visible,
+  .focus-visible {
+    @apply outline-none ring-0 border-primary;
+    box-shadow: none;
+  }
+}

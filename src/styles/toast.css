@@ -1,0 +1,45 @@
+
+@layer components {
+  /* Toast notification styling to match Job Matching section */
+  [role="status"][data-state="open"] {
+    @apply bg-white dark:bg-gray-900 shadow-lg border-none !important;
+    opacity: 1 !important;
+    background-color: white !important;
+    backdrop-filter: none !important;
+    border-radius: 0.5rem !important;
+    animation: slideUpFade 0.3s ease-out forwards !important;
+  }
+  
+  /* Additional specific override for toast backgrounds */
+  [role="status"] {
+    background-color: white !important;
+    --tw-bg-opacity: 1 !important;
+    max-width: 350px !important;
+    padding: 1rem !important;
+  }
+  
+  /* For dark mode */
+  .dark [role="status"] {
+    background-color: rgb(17 24 39) !important; /* gray-900 */
+    --tw-bg-opacity: 1 !important;
+  }
+  
+  /* Toast title and description styling */
+  [role="status"] [data-state="open"] [data-title] {
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    color: hsl(210 29% 24%) !important;
+    margin-bottom: 0.25rem !important;
+  }
+  
+  [role="status"] [data-state="open"] [data-description] {
+    font-size: 0.875rem !important;
+    color: hsl(196 6% 53%) !important;
+  }
+  
+  /* Animation for toast notifications */
+  @keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
