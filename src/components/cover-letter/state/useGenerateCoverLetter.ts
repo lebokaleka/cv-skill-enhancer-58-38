@@ -26,15 +26,20 @@ export const useGenerateCoverLetter = (
     setErrorMessage(null);
     setShowErrorDialog(false);
     
-    // Validate inputs
-    if (!cvText) {
+    // Validate inputs and set appropriate error message
+    const isCvMissing = !cvText;
+    const isJobDescMissing = !jobDescription;
+    
+    if (isCvMissing && isJobDescMissing) {
+      setErrorMessage("Please upload your CV and enter the Job Description");
+      setShowErrorDialog(true);
+      return;
+    } else if (isCvMissing) {
       setErrorMessage("Please upload your CV");
       setShowErrorDialog(true);
       return;
-    }
-    
-    if (!jobDescription) {
-      setErrorMessage("Please add a job description");
+    } else if (isJobDescMissing) {
+      setErrorMessage("Please enter the Job Description");
       setShowErrorDialog(true);
       return;
     }
