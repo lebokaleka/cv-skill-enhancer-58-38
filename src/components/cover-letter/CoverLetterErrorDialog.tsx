@@ -31,10 +31,10 @@ const CoverLetterErrorDialog = ({ open, setOpen, errorMessage }: CoverLetterErro
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent 
         variant="notification" 
-        className="fixed bottom-4 right-4 top-auto left-auto transform-none bg-white dark:bg-gray-900 rounded-lg p-4 max-w-md shadow-md border border-gray-100 dark:border-gray-800"
+        className="fixed bottom-4 right-4 top-auto left-auto transform-none bg-white dark:bg-gray-900 rounded-lg p-4 shadow-md border border-gray-100 dark:border-gray-800 w-[350px]"
       >
         <DialogTitle className="text-base font-medium text-foreground">Missing information</DialogTitle>
-        <DialogDescription className="text-sm text-muted-foreground">{errorMessage}</DialogDescription>
+        <DialogDescription className="text-sm text-muted-foreground break-words">{errorMessage}</DialogDescription>
       </DialogContent>
     </Dialog>
   );
