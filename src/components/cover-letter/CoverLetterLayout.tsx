@@ -20,10 +20,7 @@ const CoverLetterLayout: React.FC<CoverLetterLayoutProps> = ({ children }) => {
               Create a tailored cover letter based on your CV and the job description.
             </p>
           </div>
-          
-          <div className="animate-scale-in">
-            {children}
-          </div>
+          {children}
         </div>
       </main>
 

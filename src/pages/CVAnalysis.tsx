@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -22,15 +23,13 @@ const CVAnalysis = () => {
 
       <main className="flex-grow pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4 space-y-12">
-          {/* Wrap the upload section in the animate-scale-in div */}
-          <div className="animate-scale-in">
-            <CVUploadSection 
-              onAnalyze={handleCVUpload} 
-              isAnalyzing={isAnalyzing} 
-              savedCvText={cvText}
-              savedFileName={fileName}
-            />
-          </div>
+          {/* Always show the upload section */}
+          <CVUploadSection 
+            onAnalyze={handleCVUpload} 
+            isAnalyzing={isAnalyzing} 
+            savedCvText={cvText}
+            savedFileName={fileName}
+          />
 
           {/* Loading indicator */}
           {isAnalyzing && <CVAnalysisLoading />}
