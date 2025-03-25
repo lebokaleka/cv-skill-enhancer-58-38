@@ -26,6 +26,7 @@ const JobMatchingForm = ({
   const { 
     showContentIndicator, 
     expandContent, 
+    setExpandContent,
     toggleContent 
   } = useContentExpansion({ 
     onResultChange: matchResult 
@@ -36,6 +37,10 @@ const JobMatchingForm = ({
     if (showInterviewPreview) {
       setIsInterviewOptionsOpen(false);
     }
+  };
+
+  const handleExtendAllResults = () => {
+    setExpandContent(true);
   };
 
   return (
@@ -79,6 +84,17 @@ const JobMatchingForm = ({
                 />
               )}
             </div>
+            
+            {(!expandContent && matchResult && !showInterviewPreview) && (
+              <div className="flex justify-end mt-4 w-full">
+                <button 
+                  onClick={handleExtendAllResults}
+                  className="text-xs text-muted-foreground py-1.5 px-4 rounded-full bg-secondary/5 hover:bg-secondary/10 transition-all hover:text-foreground hover:font-medium"
+                >
+                  Extend All Results
+                </button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
