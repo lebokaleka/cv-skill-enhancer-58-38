@@ -1,5 +1,5 @@
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { CoverLetterStateData, CoverLetterStateActions, AuthenticationHandlers } from './types';
 import { useGenerateCoverLetter } from './useGenerateCoverLetter';
 
@@ -10,7 +10,13 @@ export const useCoverLetterActions = (
   const { isAuthenticated, setIsAuthModalOpen, setIsSubscriptionModalOpen } = authHandlers;
 
   // Generate functions from the dedicated hook
-  const { handleGenerate, handleRegenerate } = useGenerateCoverLetter(
+  const { 
+    handleGenerate, 
+    handleRegenerate, 
+    errorMessage, 
+    showErrorDialog, 
+    setShowErrorDialog 
+  } = useGenerateCoverLetter(
     stateData,
     isAuthenticated,
     setIsSubscriptionModalOpen
@@ -39,6 +45,9 @@ export const useCoverLetterActions = (
     handleTemplateSelect,
     handleGenerate,
     handleRegenerate,
-    setStep
+    setStep,
+    errorMessage,
+    showErrorDialog,
+    setShowErrorDialog
   };
 };

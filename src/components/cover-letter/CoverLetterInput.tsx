@@ -7,6 +7,7 @@ import { FileText, Briefcase } from 'lucide-react';
 import CVUploader from "@/components/upload/CVUploader";
 import TemplateSelector from "./TemplateSelector";
 import { CoverLetterTemplate } from "./coverLetterTemplates";
+import CoverLetterErrorDialog from './CoverLetterErrorDialog';
 
 interface CoverLetterInputProps {
   cvText: string;
@@ -18,6 +19,9 @@ interface CoverLetterInputProps {
   onJobDescriptionChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onTemplateSelect: (template: string) => void;
   onGenerate: () => void;
+  errorMessage: string | null;
+  showErrorDialog: boolean;
+  setShowErrorDialog: (show: boolean) => void;
 }
 
 const CoverLetterInput = ({
@@ -29,9 +33,20 @@ const CoverLetterInput = ({
   onCVUpload,
   onJobDescriptionChange,
   onTemplateSelect,
-  onGenerate
+  onGenerate,
+  errorMessage,
+  showErrorDialog,
+  setShowErrorDialog
 }: CoverLetterInputProps) => {
-  return <div className="space-y-8 animate-scale-in">
+  return (
+    <div className="space-y-8 animate-scale-in">
+      {/* Error Dialog - Local to this component */}
+      <CoverLetterErrorDialog 
+        open={showErrorDialog} 
+        setOpen={setShowErrorDialog} 
+        errorMessage={errorMessage} 
+      />
+      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* CV Upload Section */}
         <Card className="glass-card border-dashed h-full">
@@ -60,8 +75,13 @@ const CoverLetterInput = ({
               Paste the job description you want to apply for
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col h-[calc(100%-81px)] my-[-21px] py-[21px]"> {/* Adjusted to fill remaining height */}
-            <Textarea value={jobDescription} onChange={onJobDescriptionChange} placeholder="Paste job description here..." className="flex-grow min-h-[200px] resize-none" />
+          <CardContent className="flex flex-col h-[calc(100%-81px)] my-[-21px] py-[21px]">
+            <Textarea 
+              value={jobDescription} 
+              onChange={onJobDescriptionChange} 
+              placeholder="Paste job description here..." 
+              className="flex-grow min-h-[200px] resize-none" 
+            />
           </CardContent>
         </Card>
       </div>
@@ -75,7 +95,8 @@ const CoverLetterInput = ({
           {isGenerating ? 'Generating...' : 'Generate Cover Letter'}
         </Button>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default CoverLetterInput;

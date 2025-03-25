@@ -1,17 +1,61 @@
 
-import React from 'react';
-import { useCoverLetterState } from './state';
-import { CoverLetterStateProviderProps } from './types';
+import React, { createContext, useContext } from 'react';
+import { useCoverLetterData } from './state/useCoverLetterData';
+import { useCoverLetterActions } from './state/useCoverLetterActions';
+import { CoverLetterStateData, CoverLetterStateActions } from './state/types';
 
-const CoverLetterStateProvider = ({ children, isAuthenticated, setIsAuthModalOpen, setIsSubscriptionModalOpen }: CoverLetterStateProviderProps) => {
-  const state = useCoverLetterState(isAuthenticated, setIsAuthModalOpen, setIsSubscriptionModalOpen);
+export interface CoverLetterState extends CoverLetterStateData, CoverLetterStateActions {
+  errorMessage: string | null;
+  showErrorDialog: boolean;
+  setShowErrorDialog: (show: boolean) => void;
+}
+
+interface CoverLetterStateProviderProps {
+  children: (state: CoverLetterState) => React.ReactNode;
+  isAuthenticated: boolean;
+  setIsAuthModalOpen: (isOpen: boolean) => void;
+  setIsSubscriptionModalOpen: (isOpen: boolean) => void;
+}
+
+const CoverLetterStateProvider: React.FC<CoverLetterStateProviderProps> = ({
+  children,
+  isAuthenticated,
+  setIsAuthModalOpen,
+  setIsSubscriptionModalOpen
+}) => {
+  const stateData = useCoverLetterData();
   
+  const {
+    handleCVUpload,
+    handleJobDescriptionChange,
+    handleTemplateSelect,
+    handleGenerate,
+    handleRegenerate,
+    setStep,
+    errorMessage,
+    showErrorDialog,
+    setShowErrorDialog
+  } = useCoverLetterActions(
+    stateData,
+    { isAuthenticated, setIsAuthModalOpen, setIsSubscriptionModalOpen }
+  );
+
+  const value: CoverLetterState = {
+    ...stateData,
+    handleCVUpload,
+    handleJobDescriptionChange,
+    handleTemplateSelect,
+    handleGenerate,
+    handleRegenerate,
+    setStep,
+    errorMessage,
+    showErrorDialog,
+    setShowErrorDialog
+  };
+
   return (
-    <>
-      {children(state)}
-    </>
+    <>{children(value)}</>
   );
 };
 
 export default CoverLetterStateProvider;
-export type { CoverLetterState } from './types';

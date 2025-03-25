@@ -22,7 +22,10 @@ const CoverLetter = () => {
           onCVUpload={state.handleCVUpload} 
           onJobDescriptionChange={state.handleJobDescriptionChange} 
           onTemplateSelect={state.handleTemplateSelect} 
-          onGenerate={state.handleGenerate} 
+          onGenerate={state.handleGenerate}
+          errorMessage={state.errorMessage}
+          showErrorDialog={state.showErrorDialog}
+          setShowErrorDialog={state.setShowErrorDialog}
         />
         
         {state.coverLetter && (

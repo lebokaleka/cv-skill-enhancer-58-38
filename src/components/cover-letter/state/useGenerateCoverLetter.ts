@@ -1,7 +1,7 @@
 
+import { useState } from 'react';
 import { CoverLetterStateData } from './types';
 import { coverLetterTemplates } from '../coverLetterTemplates';
-import { toast } from "@/hooks/use-toast";
 
 export const useGenerateCoverLetter = (
   stateData: CoverLetterStateData,
@@ -16,24 +16,26 @@ export const useGenerateCoverLetter = (
     _setIsGenerating,
     _setStep
   } = stateData;
+  
+  // Local state for error handling
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
 
   const generateCoverLetter = () => {
-    // Validate inputs first
+    // Reset error state first
+    setErrorMessage(null);
+    setShowErrorDialog(false);
+    
+    // Validate inputs
     if (!cvText) {
-      toast({
-        title: "Missing information",
-        description: "Please upload your CV",
-        variant: "destructive",
-      });
+      setErrorMessage("Please upload your CV");
+      setShowErrorDialog(true);
       return;
     }
     
     if (!jobDescription) {
-      toast({
-        title: "Missing information",
-        description: "Please add a job description",
-        variant: "destructive",
-      });
+      setErrorMessage("Please add a job description");
+      setShowErrorDialog(true);
       return;
     }
     
@@ -185,6 +187,9 @@ Sincerely,
 
   return {
     handleGenerate: generateCoverLetter,
-    handleRegenerate: regenerateCoverLetter
+    handleRegenerate: regenerateCoverLetter,
+    errorMessage,
+    showErrorDialog,
+    setShowErrorDialog
   };
 };
