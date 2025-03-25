@@ -24,6 +24,7 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   const [showUploader, setShowUploader] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [dialogKey, setDialogKey] = useState(0); // Add a key to force dialog remount
 
   useEffect(() => {
     // Auto-hide notification after 3 seconds
@@ -54,10 +55,13 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
     // Clear any existing error
     setError(null);
     
-    // Force close any existing dialog first to ensure it can reappear
+    // Force reset the dialog state by incrementing the key
+    setDialogKey(prevKey => prevKey + 1);
+    
+    // Always close the existing dialog first
     setShowErrorDialog(false);
     
-    // Small timeout to ensure state updates before showing new dialog
+    // Use setTimeout to ensure state updates properly
     setTimeout(() => {
       // Check for missing data and set appropriate error message
       if (!cvText && !jobDescription) {
@@ -106,8 +110,12 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
         <CVUploader onUpload={handleCVUpload} />
       </div>
 
-      {/* Error notification popup - Updated position to bottom right */}
-      <Dialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
+      {/* Error notification popup */}
+      <Dialog 
+        key={dialogKey} // Add key prop to force remount
+        open={showErrorDialog} 
+        onOpenChange={setShowErrorDialog}
+      >
         <DialogContent 
           variant="notification" 
           className="fixed bottom-4 right-4 top-auto left-auto transform-none border-none shadow-lg"
