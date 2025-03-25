@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -59,12 +58,15 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    document.dispatchEvent(new Event('logout'));
     logout();
   };
 
   const openProfileModal = () => {
     setIsProfileModalOpen(true);
+  };
+
+  const closeProfileModal = () => {
+    setIsProfileModalOpen(false);
   };
 
   return (
@@ -216,7 +218,7 @@ const Navbar = () => {
 
       <ProfileModal
         isOpen={isProfileModalOpen}
-        onClose={() => setIsProfileModalOpen(false)}
+        onClose={closeProfileModal}
         user={user}
       />
     </>

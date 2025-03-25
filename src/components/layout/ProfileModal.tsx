@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -56,10 +57,23 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user }) =>
   };
   
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog 
+      open={isOpen} 
+      onOpenChange={(open) => {
+        if (!open) {
+          // Ensure we properly clean up before closing
+          setTimeout(() => {
+            onClose();
+          }, 0);
+        }
+      }}
+    >
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Profile Settings</DialogTitle>
+          <DialogDescription className="sr-only">
+            Edit your profile settings
+          </DialogDescription>
         </DialogHeader>
         
         <Tabs defaultValue="profile" className="w-full">

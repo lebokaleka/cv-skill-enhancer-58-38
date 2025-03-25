@@ -58,9 +58,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    // Trigger the logout event before clearing user data
-    document.dispatchEvent(new Event('logout'));
-    
     // Clear cover letter data when user logs out
     clearCoverLetterData();
     
