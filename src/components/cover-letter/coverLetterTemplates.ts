@@ -6,6 +6,7 @@ export interface CoverLetterTemplate {
   style: string;
   imageUrl?: string;
   preview?: React.ReactNode;
+  isCustomHTML?: boolean;
 }
 
 export const coverLetterTemplates: CoverLetterTemplate[] = [
@@ -57,5 +58,12 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
     description: 'Elegant design with burgundy triangle corners and circular profile photo',
     style: 'Clean and professional',
     imageUrl: '/lovable-uploads/ca0f80b7-ee23-4a1d-8f56-8e88a00047ca.png'
+  },
+  {
+    id: 'custom-html',
+    name: 'Custom HTML Template',
+    description: 'Upload your own HTML template',
+    style: 'Custom design',
+    isCustomHTML: true
   }
 ];

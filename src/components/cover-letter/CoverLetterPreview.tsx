@@ -14,12 +14,14 @@ import CreativeAccentTemplate from './templates/CreativeAccentTemplate';
 import ExecutiveElegantTemplate from './templates/ExecutiveElegantTemplate';
 import ProfessionalCornerTemplate from './templates/ProfessionalCornerTemplate';
 import ProfessionalBurgundyTemplate from './templates/ProfessionalBurgundyTemplate';
+import CustomHTMLTemplate from './templates/CustomHTMLTemplate';
 
 interface CoverLetterPreviewProps {
   coverLetter: string;
   selectedTemplate: string;
   templates: CoverLetterTemplate[];
   isGenerating: boolean;
+  customHTML?: string;
   onRegenerate: () => void;
   onBack: () => void;
 }
@@ -29,6 +31,7 @@ const CoverLetterPreview = ({
   selectedTemplate,
   templates,
   isGenerating,
+  customHTML,
   onRegenerate,
   onBack
 }: CoverLetterPreviewProps) => {
@@ -96,6 +99,8 @@ const CoverLetterPreview = ({
         return <ProfessionalCornerTemplate content={coverLetter} />;
       case 'professional-burgundy':
         return <ProfessionalBurgundyTemplate content={coverLetter} />;
+      case 'custom-html':
+        return <CustomHTMLTemplate content={coverLetter} htmlContent={customHTML} />;
       default:
         return <div className="bg-white border border-gray-200 border-dashed rounded-xl shadow-sm">
             <pre className="font-sans whitespace-pre-wrap text-foreground">

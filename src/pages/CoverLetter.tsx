@@ -23,6 +23,7 @@ const CoverLetter = () => {
           onJobDescriptionChange={state.handleJobDescriptionChange} 
           onTemplateSelect={state.handleTemplateSelect} 
           onGenerate={state.handleGenerate} 
+          onHTMLUpload={state.handleHTMLUpload}
         />
         
         {state.coverLetter && (
@@ -31,6 +32,7 @@ const CoverLetter = () => {
             selectedTemplate={state.selectedTemplate} 
             templates={coverLetterTemplates} 
             isGenerating={state.isGenerating} 
+            customHTML={state.customHTML}
             onRegenerate={state.handleRegenerate} 
             onBack={() => state.setStep('input')} 
           />
