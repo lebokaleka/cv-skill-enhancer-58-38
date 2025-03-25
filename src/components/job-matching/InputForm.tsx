@@ -100,9 +100,12 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
         <CVUploader onUpload={handleCVUpload} />
       </div>
 
-      {/* Error notification popup */}
+      {/* Error notification popup - Updated position to bottom right */}
       <Dialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
-        <DialogContent variant="notification" className="border-none shadow-lg">
+        <DialogContent 
+          variant="notification" 
+          className="fixed bottom-4 right-4 top-auto left-auto transform-none border-none shadow-lg"
+        >
           <DialogTitle className="text-base font-medium">Missing information</DialogTitle>
           <DialogDescription className="text-sm">{error}</DialogDescription>
         </DialogContent>
