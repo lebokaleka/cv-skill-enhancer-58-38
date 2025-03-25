@@ -14,8 +14,8 @@ const CoverLetterLayout: React.FC<CoverLetterLayoutProps> = ({ children }) => {
 
       <main className="flex-grow pt-24 pb-16">
         <div className="app-container">
-          <div className="max-w-3xl mx-auto text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2">Cover Letter Generator</h1>
+          <div className="max-w-3xl mx-auto text-center mb-8 animate-fade-in">
+            <h1 className="text-3xl font-bold mb-2 text-foreground">Cover Letter Generator</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Create a tailored cover letter based on your CV and the job description.
             </p>
