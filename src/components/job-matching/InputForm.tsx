@@ -24,7 +24,7 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   const [showUploader, setShowUploader] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
-  const [dialogKey, setDialogKey] = useState(0); // Add a key to force dialog remount
+  const [dialogKey, setDialogKey] = useState(0); // For forcing dialog remount
 
   useEffect(() => {
     // Auto-hide notification after 3 seconds
@@ -52,17 +52,15 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   };
 
   const handleAnalyzeClick = () => {
-    // Clear any existing error
-    setError(null);
-    
-    // Force reset the dialog state by incrementing the key
+    // First, increment the dialog key to force a remount regardless of current state
     setDialogKey(prevKey => prevKey + 1);
     
-    // Always close the existing dialog first
+    // Close any existing dialog
     setShowErrorDialog(false);
     
-    // Use setTimeout to ensure state updates properly
-    setTimeout(() => {
+    // Then check for errors and show the dialog if needed
+    // Use requestAnimationFrame to ensure DOM updates before showing new dialog
+    requestAnimationFrame(() => {
       // Check for missing data and set appropriate error message
       if (!cvText && !jobDescription) {
         setError("Please upload your CV and add a job description.");
@@ -80,7 +78,7 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
       
       // Only proceed if both are available
       onAnalyze(cvText, jobDescription);
-    }, 10);
+    });
   };
 
   return (
@@ -112,7 +110,7 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
 
       {/* Error notification popup */}
       <Dialog 
-        key={dialogKey} // Add key prop to force remount
+        key={dialogKey} // Key forces remount on each button click
         open={showErrorDialog} 
         onOpenChange={setShowErrorDialog}
       >
