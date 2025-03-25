@@ -41,7 +41,7 @@ const PreviewHeader = ({ showInterviewPreview, toggleInterviewPreview }: Preview
           variant="ghost" 
           size="sm" 
           onClick={handleInterviewClick} 
-          className="text-xs text-primary hover:underline hover:font-semibold transition-all"
+          className="text-xs text-primary hover:underline hover:font-semibold hover:text-primary/90 transition-all duration-200 ease-in-out"
         >
           Try Interview Coach
         </Button>
