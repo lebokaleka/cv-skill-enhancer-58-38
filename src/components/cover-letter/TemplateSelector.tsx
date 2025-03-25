@@ -52,7 +52,7 @@ const TemplateSelector = ({
   selectedTemplate,
   onSelectTemplate
 }: TemplateSelectorProps) => {
-  return <Card className="glass-card border-dashed my-[23px]">
+  return <Card className="glass-card border-dashed my-[21px]">
       <CardHeader className="py-4">
         <CardTitle>Choose a Template</CardTitle>
         <CardDescription>
