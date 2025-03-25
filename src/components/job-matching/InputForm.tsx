@@ -1,11 +1,16 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CVUploader from "@/components/upload/CVUploader";
 import { CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Briefcase, ArrowRight, AlertTriangle } from 'lucide-react';
+import { FileText, Briefcase, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { 
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface InputFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -18,6 +23,18 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   const [fileName, setFileName] = useState('');
   const [showUploader, setShowUploader] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
+
+  useEffect(() => {
+    // Auto-hide notification after 3 seconds
+    let timer: NodeJS.Timeout;
+    if (showErrorDialog) {
+      timer = setTimeout(() => {
+        setShowErrorDialog(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [showErrorDialog]);
 
   const handleCVUpload = (text: string, name?: string) => {
     setCvText(text);
@@ -40,12 +57,15 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
     // Check for missing data and set appropriate error message
     if (!cvText && !jobDescription) {
       setError("Please upload your CV and add a job description.");
+      setShowErrorDialog(true);
       return;
     } else if (!cvText) {
       setError("Please upload your CV.");
+      setShowErrorDialog(true);
       return;
     } else if (!jobDescription) {
       setError("Please add a job description.");
+      setShowErrorDialog(true);
       return;
     }
     
@@ -80,13 +100,13 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
         <CVUploader onUpload={handleCVUpload} />
       </div>
 
-      {/* Error message */}
-      {error && (
-        <Alert variant="destructive" className="py-2">
-          <AlertTriangle className="h-4 w-4 mr-2" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+      {/* Error notification popup */}
+      <Dialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
+        <DialogContent variant="notification" className="border-none shadow-lg">
+          <DialogTitle className="text-base font-medium">Missing information</DialogTitle>
+          <DialogDescription className="text-sm">{error}</DialogDescription>
+        </DialogContent>
+      </Dialog>
 
       {/* Analyze Button */}
       <div className="flex justify-end">
