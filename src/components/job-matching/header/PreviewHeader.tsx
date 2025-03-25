@@ -2,6 +2,7 @@
 import { PenTool, Mic } from 'lucide-react';
 import { CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from 'react-router-dom';
 
 interface PreviewHeaderProps {
   showInterviewPreview: boolean;
@@ -9,6 +10,13 @@ interface PreviewHeaderProps {
 }
 
 const PreviewHeader = ({ showInterviewPreview, toggleInterviewPreview }: PreviewHeaderProps) => {
+  const navigate = useNavigate();
+  
+  const handleInterviewClick = () => {
+    // Navigate to the interview page instead of toggling preview
+    navigate('/interview');
+  };
+  
   return (
     <>
       <CardTitle className="flex items-center gap-2">
@@ -33,10 +41,10 @@ const PreviewHeader = ({ showInterviewPreview, toggleInterviewPreview }: Preview
         <Button 
           variant="ghost" 
           size="sm" 
-          onClick={toggleInterviewPreview} 
-          className="text-xs text-primary hover:bg-primary/10"
+          onClick={handleInterviewClick} 
+          className="text-xs text-primary hover:text-primary/80 hover:font-semibold transition-all"
         >
-          {!showInterviewPreview ? "Try Interview Coach" : "Back to Analysis"}
+          Try Interview Coach
         </Button>
       </div>
     </>
