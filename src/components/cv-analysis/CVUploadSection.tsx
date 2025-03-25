@@ -52,28 +52,16 @@ const CVUploadSection = ({
 
   return (
     <div className="space-y-8">
-      <div 
-        className="text-center animate-slide-down" 
-        style={{ 
-          animationDuration: '0.6s', 
-          animationFillMode: 'both',
-          animationTimingFunction: 'ease-out'
-        }}
-      >
-        <h1 className="text-3xl font-bold mb-2 text-foreground">CV Analysis & Optimization</h1>
+      {/* Title and subtitle - Match the Cover Letter section's animation */}
+      <div className="max-w-3xl mx-auto text-center mb-8 animate-fade-in">
+        <h1 className="text-3xl font-bold mb-2">CV Analysis & Optimization</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Upload your CV to receive a score, ATS compatibility check, and actionable improvements.
         </p>
       </div>
 
-      <Card 
-        className="shadow-md overflow-hidden border animate-scale-in" 
-        style={{ 
-          animationDuration: '0.5s',
-          animationDelay: '0.2s',
-          animationFillMode: 'both'
-        }}
-      >
+      {/* Card with upload tabs - Match the Cover Letter section's animation */}
+      <Card className="shadow-md border animate-fade-in" style={{ animationDelay: '0.1s' }}>
         <div className="pt-6 px-6">
           <Tabs defaultValue={inputMethod} className="w-full" onValueChange={(value) => setInputMethod(value as 'upload' | 'paste')}>
             <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-6 rounded-full overflow-hidden">
