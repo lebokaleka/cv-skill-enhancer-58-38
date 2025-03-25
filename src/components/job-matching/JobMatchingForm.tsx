@@ -8,6 +8,7 @@ import PreviewHeader from './header/PreviewHeader';
 import AnalysisPreview from './analysis/AnalysisPreview';
 import InterviewPreview from './interview/InterviewPreview';
 import { useContentExpansion } from '@/hooks/useContentExpansion';
+import ContentIndicator from './ContentIndicator';
 
 interface JobMatchingFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -86,14 +87,12 @@ const JobMatchingForm = ({
             </div>
             
             {(!expandContent && matchResult && !showInterviewPreview) && (
-              <div className="flex justify-end mt-4 w-full">
-                <button 
-                  onClick={handleExtendAllResults}
-                  className="text-xs text-muted-foreground py-1.5 px-4 rounded-full bg-secondary/5 hover:bg-secondary/10 transition-all hover:text-foreground hover:font-medium"
-                >
-                  Extend All Results
-                </button>
-              </div>
+              <ContentIndicator 
+                onClick={handleExtendAllResults} 
+                isExpanded={false}
+                collapsedText="Extend All Results"
+                className="justify-center"
+              />
             )}
           </CardContent>
         </Card>

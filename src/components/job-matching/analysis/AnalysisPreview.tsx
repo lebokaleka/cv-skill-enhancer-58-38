@@ -33,10 +33,10 @@ const AnalysisPreview = ({
       <div className={expandContent ? "pb-4" : ""}>
         <AnalysisResults matchResult={matchResult} />
       </div>
-      {showContentIndicator && (
+      {showContentIndicator && expandContent && (
         <ContentIndicator 
           onClick={onExpandContent} 
-          isExpanded={expandContent} 
+          isExpanded={true} 
         />
       )}
     </div>
