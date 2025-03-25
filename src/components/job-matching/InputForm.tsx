@@ -1,11 +1,16 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import CVUploader from "@/components/upload/CVUploader";
 import { CardContent } from "@/components/ui/card";
-import { ArrowRight } from 'lucide-react';
+import { Textarea } from "@/components/ui/textarea";
+import { FileText, Briefcase, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import JobDescriptionInput from './components/JobDescriptionInput';
-import ErrorNotification from './components/ErrorNotification';
-import CVSection from './components/CVSection';
+import { 
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface InputFormProps {
   onAnalyze: (cvText: string, jobDescription: string) => void;
@@ -21,6 +26,17 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const [dialogKey, setDialogKey] = useState(0); // For forcing dialog remount
 
+  useEffect(() => {
+    // Auto-hide notification after 3 seconds
+    let timer: NodeJS.Timeout;
+    if (showErrorDialog) {
+      timer = setTimeout(() => {
+        setShowErrorDialog(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [showErrorDialog]);
+
   const handleCVUpload = (text: string, name?: string) => {
     setCvText(text);
     if (name) {
@@ -30,8 +46,8 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
     setError(null);
   };
 
-  const handleJobDescriptionChange = (value: string) => {
-    setJobDescription(value);
+  const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setJobDescription(e.target.value);
     setError(null);
   };
 
@@ -68,21 +84,44 @@ const InputForm = ({ onAnalyze, isAnalyzing }: InputFormProps) => {
   return (
     <CardContent className="space-y-6">
       {/* Job Description Section */}
-      <JobDescriptionInput 
-        value={jobDescription} 
-        onChange={handleJobDescriptionChange} 
-      />
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium flex items-center gap-2">
+          <Briefcase size={16} />
+          <span>Job Description</span>
+        </h3>
+        <Textarea
+          value={jobDescription}
+          onChange={handleJobDescriptionChange}
+          placeholder="Paste job description here..."
+          className="min-h-[180px] resize-none"
+        />
+      </div>
 
       {/* CV Section */}
-      <CVSection onUpload={handleCVUpload} />
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium flex items-center gap-2">
+          <FileText size={16} />
+          <span>Your CV</span>
+        </h3>
+        
+        {/* CV Uploader */}
+        <CVUploader onUpload={handleCVUpload} />
+      </div>
 
       {/* Error notification popup */}
-      <ErrorNotification 
-        isOpen={showErrorDialog}
-        error={error}
+      <Dialog 
+        key={dialogKey} // Key forces remount on each button click
+        open={showErrorDialog} 
         onOpenChange={setShowErrorDialog}
-        dialogKey={dialogKey}
-      />
+      >
+        <DialogContent 
+          variant="notification" 
+          className="fixed bottom-4 right-4 top-auto left-auto transform-none border-none shadow-lg"
+        >
+          <DialogTitle className="text-base font-medium">Missing information</DialogTitle>
+          <DialogDescription className="text-sm">{error}</DialogDescription>
+        </DialogContent>
+      </Dialog>
 
       {/* Analyze Button */}
       <div className="flex justify-end">

@@ -14,15 +14,15 @@ export function Toaster() {
     }) {
       return <Toast key={id} style={{
         opacity: 1
-      }} className="border-none shadow-lg rounded-lg bg-white dark:bg-gray-900 mx-[22px]">
+      }} className="border-border shadow-lg rounded-lg bg-white">
             <div className="grid gap-1">
-              {title && <ToastTitle className="text-base font-medium">{title}</ToastTitle>}
-              {description && <ToastDescription className="text-sm text-muted-foreground">{description}</ToastDescription>}
+              {title && <ToastTitle>{title}</ToastTitle>}
+              {description && <ToastDescription>{description}</ToastDescription>}
             </div>
             {action}
             <ToastClose />
           </Toast>;
     })}
-      <ToastViewport className="fixed bottom-4 right-4 flex flex-col gap-2 max-w-sm bg-transparent" />
+      <ToastViewport className="bg-transparent" />
     </ToastProvider>;
 }
