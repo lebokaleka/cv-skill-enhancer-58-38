@@ -84,16 +84,15 @@ const JobMatchingForm = ({
                   setIsInterviewOptionsOpen={setIsInterviewOptionsOpen} 
                 />
               )}
+              
+              {(!expandContent && matchResult && !showInterviewPreview) && (
+                <ContentIndicator 
+                  onClick={handleExtendAllResults} 
+                  isExpanded={false}
+                  collapsedText="Extend All Results"
+                />
+              )}
             </div>
-            
-            {(!expandContent && matchResult && !showInterviewPreview) && (
-              <ContentIndicator 
-                onClick={handleExtendAllResults} 
-                isExpanded={false}
-                collapsedText="Extend All Results"
-                className="justify-center"
-              />
-            )}
           </CardContent>
         </Card>
       </div>
