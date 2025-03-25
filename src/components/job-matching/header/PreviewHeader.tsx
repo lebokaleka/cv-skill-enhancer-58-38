@@ -13,7 +13,6 @@ const PreviewHeader = ({ showInterviewPreview, toggleInterviewPreview }: Preview
   const navigate = useNavigate();
   
   const handleInterviewClick = () => {
-    // Navigate to the interview page instead of toggling preview
     navigate('/interview');
   };
   
@@ -42,7 +41,7 @@ const PreviewHeader = ({ showInterviewPreview, toggleInterviewPreview }: Preview
           variant="ghost" 
           size="sm" 
           onClick={handleInterviewClick} 
-          className="text-xs text-primary hover:text-primary/80 hover:font-semibold transition-all"
+          className="text-xs text-primary hover:underline hover:font-semibold transition-all"
         >
           Try Interview Coach
         </Button>
