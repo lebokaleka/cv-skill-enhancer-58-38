@@ -26,10 +26,10 @@ const Image = ({
   }[objectFit];
 
   return (
-    <div className="relative w-full h-full">
+    <div className="w-full h-full">
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100/50">
+          <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
         </div>
       )}
       <img 

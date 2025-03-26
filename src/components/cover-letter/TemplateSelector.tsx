@@ -43,24 +43,24 @@ const TemplateCard = ({
                 fallback="/placeholder.svg" 
                 objectFit="contain"
               />
+              
+              {/* Selection Indicator positioned on the image */}
+              {isSelected && (
+                <div className="absolute top-3 right-3 bg-primary text-white rounded-full p-1 shadow-sm z-10">
+                  <Check size={16} />
+                </div>
+              )}
             </div>
           ) : (
             <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
               <span className="text-xs">No preview</span>
             </div>
           )}
-          
-          {/* Selection Indicator */}
-          {isSelected && (
-            <div className="absolute top-2 right-2 bg-primary text-white rounded-full p-1 shadow-md z-10">
-              <Check size={14} />
-            </div>
-          )}
         </AspectRatio>
       </div>
       
       {/* Template Information - Name Only */}
-      <div className="p-3">
+      <div className="p-3 pt-2">
         <h3 className="text-sm font-medium mb-2 truncate">{template.name}</h3>
         
         <Button 
