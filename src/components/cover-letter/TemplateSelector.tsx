@@ -33,14 +33,18 @@ const TemplateCard = ({
     >
       {/* Template Preview Image with A4 Aspect Ratio */}
       <div className="relative w-full cursor-pointer" onClick={onSelect}>
-        <AspectRatio ratio={1 / 1.414}>
+        <AspectRatio ratio={1 / 1.414} className="bg-white">
           {template.imageUrl ? (
-            <Image 
-              src={template.imageUrl} 
-              alt={template.name} 
-              className="transition-opacity duration-200 object-cover" 
-              fallback="/placeholder.svg" 
-            />
+            <div className="relative w-full h-full">
+              <Image 
+                src={template.imageUrl} 
+                alt={template.name} 
+                className="transition-opacity duration-200 object-contain h-full w-full" 
+                fallback="/placeholder.svg" 
+              />
+              {/* White overlay at the bottom to hide any template title text in the image */}
+              <div className="absolute bottom-0 left-0 right-0 h-[40px] bg-white"></div>
+            </div>
           ) : (
             <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
               <span className="text-xs">No preview</span>

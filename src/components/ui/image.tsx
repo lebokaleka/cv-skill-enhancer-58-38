@@ -24,14 +24,14 @@ const Image = ({
       )}
       <img 
         src={error ? fallback : src || fallback} 
-        alt={alt || "Template preview"} 
+        alt={alt || "Image"} 
         onError={() => {
           console.error(`Failed to load image: ${src}`);
           setError(true);
           setLoading(false);
         }} 
         onLoad={() => setLoading(false)}
-        className={`object-cover w-full h-full ${className || ''}`}
+        className={`${className || ''}`}
         {...props}
       />
     </div>
