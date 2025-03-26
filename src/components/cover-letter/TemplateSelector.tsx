@@ -90,65 +90,16 @@ const TemplateSelector = ({
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {/* Template 1 Container */}
-          <div data-template-container="template-1" className="template-container">
-            {templates.length > 0 && (
+          {/* Individual Template Containers */}
+          {templates.map((template, index) => (
+            <div key={template.id} data-template-container={`template-${index + 1}`} className="template-container">
               <TemplateCard 
-                key={templates[0].id} 
-                template={templates[0]} 
-                isSelected={selectedTemplate === templates[0].id} 
-                onSelect={() => onSelectTemplate(templates[0].id)} 
+                template={template} 
+                isSelected={selectedTemplate === template.id} 
+                onSelect={() => onSelectTemplate(template.id)} 
               />
-            )}
-          </div>
-          
-          {/* Template 2 Container */}
-          <div data-template-container="template-2" className="template-container">
-            {templates.length > 1 && (
-              <TemplateCard 
-                key={templates[1].id} 
-                template={templates[1]} 
-                isSelected={selectedTemplate === templates[1].id} 
-                onSelect={() => onSelectTemplate(templates[1].id)} 
-              />
-            )}
-          </div>
-          
-          {/* Template 3 Container */}
-          <div data-template-container="template-3" className="template-container">
-            {templates.length > 2 && (
-              <TemplateCard 
-                key={templates[2].id} 
-                template={templates[2]} 
-                isSelected={selectedTemplate === templates[2].id} 
-                onSelect={() => onSelectTemplate(templates[2].id)} 
-              />
-            )}
-          </div>
-          
-          {/* Template 4 Container */}
-          <div data-template-container="template-4" className="template-container">
-            {templates.length > 3 && (
-              <TemplateCard 
-                key={templates[3].id} 
-                template={templates[3]} 
-                isSelected={selectedTemplate === templates[3].id} 
-                onSelect={() => onSelectTemplate(templates[3].id)} 
-              />
-            )}
-          </div>
-          
-          {/* Template 5 Container */}
-          <div data-template-container="template-5" className="template-container">
-            {templates.length > 4 && (
-              <TemplateCard 
-                key={templates[4].id} 
-                template={templates[4]} 
-                isSelected={selectedTemplate === templates[4].id} 
-                onSelect={() => onSelectTemplate(templates[4].id)} 
-              />
-            )}
-          </div>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>

@@ -1,4 +1,3 @@
-
 export interface CoverLetterTemplate {
   id: string;
   name: string;
@@ -19,9 +18,9 @@ export const coverLetterTemplates: CoverLetterTemplate[] = [
   {
     id: 'modern-minimalist',
     name: 'Modern Minimalist',
-    description: 'Sleek, minimalist design with elegant typography and ample whitespace',
+    description: 'Elegant split design with contact info sidebar and clean typography',
     style: 'Contemporary and refined',
-    imageUrl: '/lovable-uploads/0b8e0eff-7ae9-434f-b5a9-98a9f276ca23.png'
+    imageUrl: '/lovable-uploads/f411b55e-29a6-4dee-93ae-c7229867a3b1.png'
   },
   {
     id: 'creative-accent',
