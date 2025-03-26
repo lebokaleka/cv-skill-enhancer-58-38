@@ -1,3 +1,4 @@
+
 export interface CoverLetterTemplate {
   id: string;
   name: string;

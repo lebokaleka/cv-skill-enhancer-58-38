@@ -25,22 +25,29 @@ const Image = ({
     'scale-down': 'object-scale-down'
   }[objectFit];
 
+  // Ensure the image has loaded or handle errors
+  const handleImageLoad = () => {
+    setLoading(false);
+  };
+
+  const handleImageError = () => {
+    console.error(`Failed to load image: ${src}`);
+    setError(true);
+    setLoading(false);
+  };
+
   return (
-    <div className="w-full h-full" data-image-container>
+    <div className="w-full h-full relative" data-image-container>
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100/20" data-image-loading>
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100/20 z-10" data-image-loading>
           <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
         </div>
       )}
       <img 
         src={error ? fallback : src || fallback} 
         alt={alt || "Template preview"} 
-        onError={() => {
-          console.error(`Failed to load image: ${src}`);
-          setError(true);
-          setLoading(false);
-        }} 
-        onLoad={() => setLoading(false)}
+        onError={handleImageError}
+        onLoad={handleImageLoad}
         className={`w-full h-full ${objectFitClass} ${className || ''}`}
         {...props}
         data-image

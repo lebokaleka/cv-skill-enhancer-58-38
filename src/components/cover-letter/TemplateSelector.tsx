@@ -35,8 +35,15 @@ const TemplateCard = ({
       <div className="relative cursor-pointer" onClick={onSelect} data-template-preview>
         <AspectRatio ratio={1 / 1.414} className="bg-white">
           <div className="w-full h-full relative">
+            {/* Debug information - remove in production */}
+            {!template.imageUrl && (
+              <div className="absolute inset-0 flex items-center justify-center bg-red-100 text-red-500 text-xs p-2">
+                Missing image URL
+              </div>
+            )}
+            
             <Image 
-              src={template.imageUrl} 
+              src={template.imageUrl || "/placeholder.svg"} 
               alt={template.name}
               fallback="/placeholder.svg" 
               objectFit="contain"
