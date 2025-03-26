@@ -35,12 +35,17 @@ const TemplateCard = ({
       <div className="relative w-full cursor-pointer" onClick={onSelect}>
         <AspectRatio ratio={1 / 1.414}>
           {template.imageUrl ? (
-            <Image 
-              src={template.imageUrl} 
-              alt={template.name} 
-              className="transition-opacity duration-200 object-cover" 
-              fallback="/placeholder.svg" 
-            />
+            <div className="w-full h-full relative">
+              <Image 
+                src={template.imageUrl} 
+                alt={template.name} 
+                className="transition-opacity duration-200 object-cover" 
+                fallback="/placeholder.svg" 
+              />
+              
+              {/* Overlay to hide the text at the bottom of the image */}
+              <div className="absolute bottom-0 left-0 right-0 h-10 bg-white"></div>
+            </div>
           ) : (
             <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
               <span className="text-xs">No preview</span>
