@@ -51,12 +51,12 @@ const TemplateCard = ({
         </AspectRatio>
       </div>
       
-      {/* Button Only - No Title Text - Reduced Padding for Height Reduction */}
-      <div className="p-2">
+      {/* Button Only - No Title Text */}
+      <div className="p-3">
         <Button 
           size="sm" 
           variant={isSelected ? "default" : "outline"} 
-          className={`w-full transition-all duration-200 h-8 ${
+          className={`w-full transition-all duration-200 ${
             isSelected ? '' : 'text-gray-700 border-gray-300'
           }`} 
           onClick={onSelect}
@@ -80,13 +80,13 @@ const TemplateSelector = ({
 }: TemplateSelectorProps) => {
   return (
     <Card className="glass-card border-dashed my-[21px]">
-      <CardHeader className="py-3">
+      <CardHeader className="py-4">
         <CardTitle>Choose a Template</CardTitle>
         <CardDescription>
           Select a template that matches the tone you want to convey
         </CardDescription>
       </CardHeader>
-      <CardContent className="pb-3">
+      <CardContent>
         <div className="templates-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {templates.map(template => (
             <div key={template.id} className="template-window">
