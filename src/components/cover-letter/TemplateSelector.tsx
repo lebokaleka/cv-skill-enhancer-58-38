@@ -18,56 +18,46 @@ interface TemplateCardProps {
   onSelect: () => void;
 }
 
-// Single template card component for better customization
+// Single template card component
 const TemplateCard = ({
   template,
   isSelected,
   onSelect
 }: TemplateCardProps) => {
   return (
-    <Card 
-      key={template.id} 
-      className={`transition-all duration-300 overflow-hidden h-full ${
-        isSelected ? 'ring-2 ring-primary/50 shadow-md' : 'hover:shadow-sm'
+    <div 
+      className={`bg-white rounded-lg overflow-hidden transition-all duration-200 h-full ${
+        isSelected ? 'ring-2 ring-primary shadow-md' : 'border border-gray-200 hover:border-gray-300'
       }`}
     >
-      {/* Template Preview Image with A4 Aspect Ratio */}
-      <div className="relative w-full cursor-pointer" onClick={onSelect}>
+      {/* Template Preview Image Container */}
+      <div className="relative cursor-pointer" onClick={onSelect}>
         <AspectRatio ratio={1 / 1.414} className="bg-white">
-          {template.imageUrl ? (
-            <div className="w-full h-full relative">
-              <Image 
-                src={template.imageUrl} 
-                alt={template.name} 
-                className="transition-opacity duration-200" 
-                fallback="/placeholder.svg" 
-                objectFit="contain"
-              />
-              
-              {/* Selection Indicator positioned on the image */}
-              {isSelected && (
-                <div className="absolute top-3 right-3 bg-primary text-white rounded-full p-1 shadow-sm z-10">
-                  <Check size={16} />
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-              <span className="text-xs">No preview</span>
-            </div>
-          )}
+          <div className="w-full h-full relative">
+            <Image 
+              src={template.imageUrl} 
+              alt={template.name}
+              fallback="/placeholder.svg" 
+              objectFit="contain"
+            />
+            
+            {/* Selection Indicator */}
+            {isSelected && (
+              <div className="absolute top-3 right-3 bg-primary text-white rounded-full p-1 shadow-sm z-10">
+                <Check size={16} />
+              </div>
+            )}
+          </div>
         </AspectRatio>
       </div>
       
-      {/* Template Information - Name Only */}
-      <div className="p-3 pt-2">
-        <h3 className="text-sm font-medium mb-2 truncate">{template.name}</h3>
-        
+      {/* Button Only - No Title Text */}
+      <div className="p-3">
         <Button 
           size="sm" 
           variant={isSelected ? "default" : "outline"} 
-          className={`w-full transition-all duration-300 ${
-            isSelected ? 'shadow-md' : 'hover:shadow-sm'
+          className={`w-full transition-all duration-200 ${
+            isSelected ? '' : 'text-gray-700 border-gray-300'
           }`} 
           onClick={onSelect}
         >
@@ -79,7 +69,7 @@ const TemplateCard = ({
           ) : "Use This"}
         </Button>
       </div>
-    </Card>
+    </div>
   );
 };
 
