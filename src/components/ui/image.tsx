@@ -3,6 +3,7 @@ import React from 'react';
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallback?: string;
+  objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
 }
 
 const Image = ({
@@ -10,10 +11,19 @@ const Image = ({
   alt,
   fallback = "/placeholder.svg",
   className,
+  objectFit = "cover",
   ...props
 }: ImageProps) => {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+
+  const objectFitClass = {
+    contain: 'object-contain',
+    cover: 'object-cover',
+    fill: 'object-fill',
+    none: 'object-none',
+    'scale-down': 'object-scale-down'
+  }[objectFit];
 
   return (
     <div className="relative w-full h-full">
@@ -31,7 +41,7 @@ const Image = ({
           setLoading(false);
         }} 
         onLoad={() => setLoading(false)}
-        className={`object-cover w-full h-full ${className || ''}`}
+        className={`w-full h-full ${objectFitClass} ${className || ''}`}
         {...props}
       />
     </div>

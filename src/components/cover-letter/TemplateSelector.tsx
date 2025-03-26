@@ -33,18 +33,16 @@ const TemplateCard = ({
     >
       {/* Template Preview Image with A4 Aspect Ratio */}
       <div className="relative w-full cursor-pointer" onClick={onSelect}>
-        <AspectRatio ratio={1 / 1.414}>
+        <AspectRatio ratio={1 / 1.414} className="bg-white">
           {template.imageUrl ? (
             <div className="w-full h-full relative">
               <Image 
                 src={template.imageUrl} 
                 alt={template.name} 
-                className="transition-opacity duration-200 object-cover" 
+                className="transition-opacity duration-200" 
                 fallback="/placeholder.svg" 
+                objectFit="contain"
               />
-              
-              {/* Overlay to hide the text at the bottom of the image */}
-              <div className="absolute bottom-0 left-0 right-0 h-10 bg-white"></div>
             </div>
           ) : (
             <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
@@ -54,7 +52,7 @@ const TemplateCard = ({
           
           {/* Selection Indicator */}
           {isSelected && (
-            <div className="absolute top-2 right-2 bg-primary text-white rounded-full p-1 shadow-md">
+            <div className="absolute top-2 right-2 bg-primary text-white rounded-full p-1 shadow-md z-10">
               <Check size={14} />
             </div>
           )}
