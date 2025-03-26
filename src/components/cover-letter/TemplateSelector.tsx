@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CoverLetterTemplate } from "./coverLetterTemplates";
@@ -26,12 +25,12 @@ const TemplateCard = ({
 }: TemplateCardProps) => {
   return (
     <div 
-      className={`bg-white rounded-lg overflow-hidden transition-all duration-200 h-full ${
+      className={`bg-white rounded-lg overflow-hidden transition-all duration-200 h-full flex flex-col ${
         isSelected ? 'ring-2 ring-primary shadow-md' : 'border border-gray-200 hover:border-gray-300'
       }`}
     >
       {/* Template Preview Image Container */}
-      <div className="relative cursor-pointer" onClick={onSelect}>
+      <div className="relative cursor-pointer flex-grow" onClick={onSelect}>
         <AspectRatio ratio={1 / 1.414} className="bg-white">
           <div className="w-full h-full relative">
             <Image 
@@ -51,24 +50,22 @@ const TemplateCard = ({
         </AspectRatio>
       </div>
       
-      {/* Button Only - No Title Text */}
-      <div className="p-3">
-        <Button 
-          size="sm" 
-          variant={isSelected ? "default" : "outline"} 
-          className={`w-full transition-all duration-200 ${
-            isSelected ? '' : 'text-gray-700 border-gray-300'
-          }`} 
-          onClick={onSelect}
-        >
-          {isSelected ? (
-            <>
-              <Check size={14} className="mr-1" />
-              Selected
-            </>
-          ) : "Use This"}
-        </Button>
-      </div>
+      {/* Button - No Padding/Margin to Remove White Space */}
+      <Button 
+        size="lg" 
+        variant={isSelected ? "default" : "outline"} 
+        className={`w-full rounded-t-none transition-all duration-200 ${
+          isSelected ? '' : 'text-gray-700 border-gray-300'
+        }`} 
+        onClick={onSelect}
+      >
+        {isSelected ? (
+          <>
+            <Check size={14} className="mr-1" />
+            Selected
+          </>
+        ) : "Use This"}
+      </Button>
     </div>
   );
 };
