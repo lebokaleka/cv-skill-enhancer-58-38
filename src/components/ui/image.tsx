@@ -25,7 +25,6 @@ const Image = ({
     'scale-down': 'object-scale-down'
   }[objectFit];
 
-  // Ensure the image has loaded or handle errors
   const handleImageLoad = () => {
     setLoading(false);
   };
@@ -35,6 +34,12 @@ const Image = ({
     setError(true);
     setLoading(false);
   };
+
+  // Reset states when src changes
+  React.useEffect(() => {
+    setError(false);
+    setLoading(true);
+  }, [src]);
 
   return (
     <div className="w-full h-full relative" data-image-container>
