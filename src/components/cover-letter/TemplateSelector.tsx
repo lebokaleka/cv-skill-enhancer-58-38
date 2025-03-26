@@ -87,14 +87,15 @@ const TemplateSelector = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="templates-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {templates.map(template => (
-            <TemplateCard 
-              key={template.id} 
-              template={template} 
-              isSelected={selectedTemplate === template.id} 
-              onSelect={() => onSelectTemplate(template.id)} 
-            />
+            <div key={template.id} className="template-window">
+              <TemplateCard 
+                template={template} 
+                isSelected={selectedTemplate === template.id} 
+                onSelect={() => onSelectTemplate(template.id)} 
+              />
+            </div>
           ))}
         </div>
       </CardContent>
