@@ -4,7 +4,7 @@ import InterviewLanding from '@/components/interview/InterviewLanding';
 import InterviewSelection from '@/components/interview/InterviewSelection';
 import InterviewSession from '@/components/interview/InterviewSession';
 import InterviewResults from '@/components/interview/InterviewResults';
-import Navbar from '@/components/layout/navbar';
+import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
 import { InterviewType } from '@/types/interview';
