@@ -16,6 +16,7 @@ export const NavLink = ({ to, active, onClick, children }: NavLinkProps) => {
       className={`text-sm font-medium transition-colors hover:text-primary ${
         active ? 'text-primary' : 'text-foreground/80'
       }`}
+      style={{ letterSpacing: '0.01em' }}
     >
       {children}
     </Link>

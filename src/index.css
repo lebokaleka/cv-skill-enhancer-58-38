@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,6 +97,17 @@
     opacity: 1 !important;
     isolation: isolate;
     backdrop-filter: none;
+  }
+  
+  /* Prevent font-weight changes in navigation */
+  .nav-link, 
+  [role="navigation"] a,
+  header a {
+    font-variation-settings: 'wght' 500;
+    font-synthesis: none;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
   }
   
   /* Create interactive button states with opacity variations */
