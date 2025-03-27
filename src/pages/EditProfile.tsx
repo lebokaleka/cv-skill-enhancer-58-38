@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -88,7 +89,7 @@ const EditProfile = () => {
   
   return (
     <div className="min-h-screen pt-20 pb-10">
-      <div className="app-container max-w-4xl mx-auto">
+      <div className="container mx-auto px-4 max-w-5xl">
         <div className="mb-8">
           <Link to="/" className="text-sm flex items-center hover:text-primary">
             <ArrowLeft className="mr-2 h-4 w-4" />
