@@ -11,6 +11,7 @@ import CVAnalysis from "./pages/CVAnalysis";
 import JobMatching from "./pages/JobMatching";
 import CoverLetter from "./pages/CoverLetter";
 import Interview from "./pages/Interview";
+import EditProfile from "./pages/EditProfile";
 import { AuthProvider } from "./context/AuthContext";
 import AuthModal from "./components/auth/AuthModal";
 import SubscriptionModal from "./components/subscription/SubscriptionModal";
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/job-matching" element={<JobMatching />} />
             <Route path="/cover-letter" element={<CoverLetter />} />
             <Route path="/interview" element={<Interview />} />
+            <Route path="/edit-profile" element={<EditProfile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
