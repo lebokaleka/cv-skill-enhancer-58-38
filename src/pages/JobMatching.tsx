@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import Navbar from "@/components/layout/navbar";
+import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { MatchResult } from '@/types/jobMatching';
 import JobMatchingForm from '@/components/job-matching/JobMatchingForm';
