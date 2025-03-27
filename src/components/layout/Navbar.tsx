@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut } from 'lucide-react';
+import { Menu, X, LogOut, UserCog } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { 
   DropdownMenu,
@@ -118,6 +119,13 @@ const Navbar = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="flex items-center cursor-pointer"
+                  onClick={() => window.open('/edit-profile', '_self')}
+                >
+                  <UserCog className="mr-2 h-4 w-4" />
+                  Edit Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex items-center cursor-pointer"
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -159,15 +167,22 @@ const Navbar = () => {
             ))}
             
             {isAuthenticated ? (
-              <div className="px-4 py-2 flex items-center justify-between">
+              <div className="px-4 py-2 flex flex-col space-y-2">
                 <div>
                   <p className="text-sm font-medium">{user?.name}</p>
                   <p className="text-xs text-muted-foreground">{user?.email}</p>
                 </div>
+                <Link
+                  to="/edit-profile"
+                  className="text-sm flex items-center py-2 text-foreground/80 hover:text-primary"
+                >
+                  <UserCog className="h-4 w-4 mr-2" />
+                  Edit Profile
+                </Link>
                 <Button 
                   variant="ghost" 
-                  size="sm" 
-                  className="ml-2"
+                  size="sm"
+                  className="justify-start px-0"
                   onClick={handleLogout}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
