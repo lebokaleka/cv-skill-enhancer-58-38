@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/Footer";
 
 interface CoverLetterLayoutProps {
