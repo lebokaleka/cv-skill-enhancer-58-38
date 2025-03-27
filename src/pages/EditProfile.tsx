@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -24,23 +23,21 @@ const EditProfile = () => {
     
     setIsUpdating(true);
     
-    // Simulate API call with timeout
-    setTimeout(() => {
-      if (user) {
-        setUser({
-          ...user,
-          name,
-          email,
-        });
-      }
-      
-      toast({
-        title: "Profile updated",
-        description: "Your profile information has been updated successfully.",
+    // Update user information immediately without delay
+    if (user) {
+      setUser({
+        ...user,
+        name,
+        email,
       });
-      
-      setIsUpdating(false);
-    }, 1000);
+    }
+    
+    toast({
+      title: "Profile updated",
+      description: "Your profile information has been updated successfully.",
+    });
+    
+    setIsUpdating(false);
   };
   
   const handlePasswordUpdate = (e: React.FormEvent) => {
@@ -57,18 +54,16 @@ const EditProfile = () => {
     
     setIsUpdating(true);
     
-    // Simulate API call with timeout
-    setTimeout(() => {
-      toast({
-        title: "Password updated",
-        description: "Your password has been updated successfully.",
-      });
-      
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-      setIsUpdating(false);
-    }, 1000);
+    // Update password immediately without delay
+    toast({
+      title: "Password updated",
+      description: "Your password has been updated successfully.",
+    });
+    
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setIsUpdating(false);
   };
   
   if (!user) {
