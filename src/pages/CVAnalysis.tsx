@@ -1,5 +1,6 @@
+
 import React from 'react';
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/Footer";
 import CVUploadSection from "@/components/cv-analysis/CVUploadSection";
 import CVAnalysisLoading from "@/components/cv-analysis/CVAnalysisLoading";
