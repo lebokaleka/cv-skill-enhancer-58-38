@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { SubscriptionTier } from '@/types/subscription';
 import { clearCoverLetterData } from '@/utils/coverLetterStorage';
 
-type User = {
+export type User = {
   id: string;
   name: string;
   email: string;
