@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -104,7 +105,8 @@ const EditProfile = () => {
           </p>
         </div>
         
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Profile Information Card */}
           <Card>
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
@@ -140,78 +142,78 @@ const EditProfile = () => {
             </CardContent>
           </Card>
           
-          <div className="flex flex-col gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Subscription Plan</CardTitle>
-                <CardDescription>
-                  Your current subscription details
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="rounded-lg border p-3">
-                  <div className="font-medium">
-                    {user?.subscriptionTier 
-                      ? `${user.subscriptionTier.charAt(0).toUpperCase() + user.subscriptionTier.slice(1)} Plan` 
-                      : "Free Plan"}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    {user?.subscriptionTier === "free" && "Limited features access"}
-                    {user?.subscriptionTier === "weekly" && "Renews weekly - Full access"}
-                    {user?.subscriptionTier === "monthly" && "Renews monthly - Full access"}
-                    {user?.subscriptionTier === "yearly" && "Renews yearly - Full access + Bonus features"}
-                  </div>
+          {/* Security Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Security</CardTitle>
+              <CardDescription>
+                Manage your password and security settings
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handlePasswordUpdate} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="current-password">Current Password</Label>
+                  <Input
+                    id="current-password"
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="Your current password"
+                  />
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Security</CardTitle>
-                <CardDescription>
-                  Manage your password and security settings
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handlePasswordUpdate} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="current-password">Current Password</Label>
-                    <Input
-                      id="current-password"
-                      type="password"
-                      value={currentPassword}
-                      onChange={(e) => setCurrentPassword(e.target.value)}
-                      placeholder="Your current password"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="new-password">New Password</Label>
-                    <Input
-                      id="new-password"
-                      type="password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      placeholder="New password"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input
-                      id="confirm-password"
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Confirm new password"
-                    />
-                  </div>
-                  <Button type="submit" variant="outline" className="w-full" disabled={isUpdating}>
-                    <Shield className="mr-2 h-4 w-4" />
-                    {isUpdating ? "Updating..." : "Change Password"}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
+                <div className="space-y-2">
+                  <Label htmlFor="new-password">New Password</Label>
+                  <Input
+                    id="new-password"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="New password"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirm-password">Confirm Password</Label>
+                  <Input
+                    id="confirm-password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm new password"
+                  />
+                </div>
+                <Button type="submit" variant="outline" className="w-full" disabled={isUpdating}>
+                  <Shield className="mr-2 h-4 w-4" />
+                  {isUpdating ? "Updating..." : "Change Password"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+          
+          {/* Subscription Plan Card - Now spans full width */}
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle>Subscription Plan</CardTitle>
+              <CardDescription>
+                Your current subscription details
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-lg border p-3">
+                <div className="font-medium">
+                  {user?.subscriptionTier 
+                    ? `${user.subscriptionTier.charAt(0).toUpperCase() + user.subscriptionTier.slice(1)} Plan` 
+                    : "Free Plan"}
+                </div>
+                <div className="text-sm text-muted-foreground mt-1">
+                  {user?.subscriptionTier === "free" && "Limited features access"}
+                  {user?.subscriptionTier === "weekly" && "Renews weekly - Full access"}
+                  {user?.subscriptionTier === "monthly" && "Renews monthly - Full access"}
+                  {user?.subscriptionTier === "yearly" && "Renews yearly - Full access + Bonus features"}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
