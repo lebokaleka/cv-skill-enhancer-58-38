@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
+import { SubscriptionTier } from "@/types/subscription";
 
 interface ProfileInformationProps {
   user: {
     id: string;
     name: string;
     email: string;
-    subscriptionTier?: string;
+    subscriptionTier?: SubscriptionTier;
   };
 }
 
