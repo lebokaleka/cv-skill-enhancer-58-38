@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -6,8 +5,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, Shield, UserCog } from "lucide-react";
+import { ArrowLeft, Shield, UserCog, Check, Star, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SUBSCRIPTION_PLANS, SubscriptionTier } from "@/types/subscription";
 
 const EditProfile = () => {
   const { user, setUser } = useAuth();
@@ -24,7 +24,6 @@ const EditProfile = () => {
     
     setIsUpdating(true);
     
-    // Update user information immediately without delay
     if (user) {
       setUser({
         ...user,
@@ -55,7 +54,6 @@ const EditProfile = () => {
     
     setIsUpdating(true);
     
-    // Update password immediately without delay
     toast({
       title: "Password updated",
       description: "Your password has been updated successfully.",
@@ -106,7 +104,6 @@ const EditProfile = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Profile Information Card */}
           <Card>
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
@@ -142,7 +139,6 @@ const EditProfile = () => {
             </CardContent>
           </Card>
           
-          {/* Security Card */}
           <Card>
             <CardHeader>
               <CardTitle>Security</CardTitle>
@@ -190,27 +186,81 @@ const EditProfile = () => {
             </CardContent>
           </Card>
           
-          {/* Subscription Plan Card - Now spans full width */}
           <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle>Subscription Plan</CardTitle>
               <CardDescription>
-                Your current subscription details
+                Your current subscription plan and available options
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="rounded-lg border p-3">
-                <div className="font-medium">
-                  {user?.subscriptionTier 
-                    ? `${user.subscriptionTier.charAt(0).toUpperCase() + user.subscriptionTier.slice(1)} Plan` 
-                    : "Free Plan"}
-                </div>
-                <div className="text-sm text-muted-foreground mt-1">
-                  {user?.subscriptionTier === "free" && "Limited features access"}
-                  {user?.subscriptionTier === "weekly" && "Renews weekly - Full access"}
-                  {user?.subscriptionTier === "monthly" && "Renews monthly - Full access"}
-                  {user?.subscriptionTier === "yearly" && "Renews yearly - Full access + Bonus features"}
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {SUBSCRIPTION_PLANS.map((plan) => {
+                  const isCurrentPlan = user?.subscriptionTier === plan.id;
+                  const getPlanIcon = () => {
+                    switch (plan.id) {
+                      case 'free':
+                        return <Star className="h-5 w-5 text-primary" />;
+                      case 'yearly':
+                      case 'monthly':
+                        return <Calendar className="h-5 w-5 text-primary" />;
+                      default:
+                        return <Calendar className="h-5 w-5 text-primary" />;
+                    }
+                  };
+                  
+                  return (
+                    <div 
+                      key={plan.id}
+                      className={`rounded-xl p-4 flex flex-col h-full relative ${
+                        isCurrentPlan 
+                          ? 'border-2 border-primary bg-primary/5' 
+                          : 'border border-border'
+                      } ${plan.highlighted ? 'relative' : ''}`}
+                    >
+                      {plan.highlighted && (
+                        <div className="absolute -top-3 left-0 right-0 flex justify-center">
+                          <span className="bg-primary text-white text-xs font-semibold px-3 py-0.5 rounded-full">
+                            Popular Choice
+                          </span>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center gap-2 mb-1">
+                        {getPlanIcon()}
+                        <h3 className="font-semibold text-lg">{plan.name}</h3>
+                      </div>
+                      
+                      <div className="mb-2">
+                        <span className="text-2xl font-bold">{plan.price}</span>
+                        <span className="text-muted-foreground text-sm"> {plan.period}</span>
+                      </div>
+                      
+                      <p className="text-sm text-muted-foreground mb-2">{plan.description}</p>
+                      
+                      {plan.limit && (
+                        <div className="bg-amber-50 text-amber-700 text-xs p-1.5 rounded-md mb-2">
+                          {plan.limit}
+                        </div>
+                      )}
+                      
+                      <ul className="space-y-1.5 flex-grow">
+                        {plan.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-start gap-1.5 text-sm">
+                            <Check className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      {isCurrentPlan && (
+                        <div className="mt-3 bg-primary/10 text-primary font-medium text-sm py-1.5 rounded-md text-center">
+                          Selected
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
