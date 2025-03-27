@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, UserCog } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { 
   DropdownMenu,
@@ -59,10 +58,6 @@ const Navbar = () => {
   const handleLogout = () => {
     document.dispatchEvent(new Event('logout'));
     logout();
-  };
-
-  const handleEditProfile = () => {
-    window.open('/edit-profile', '_blank');
   };
 
   return (
@@ -123,13 +118,6 @@ const Navbar = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="flex items-center cursor-pointer"
-                  onClick={handleEditProfile}
-                >
-                  <UserCog className="mr-2 h-4 w-4" />
-                  Edit Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="flex items-center cursor-pointer"
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -171,24 +159,15 @@ const Navbar = () => {
             ))}
             
             {isAuthenticated ? (
-              <div className="px-4 py-2 flex flex-col space-y-2">
+              <div className="px-4 py-2 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium">{user?.name}</p>
                   <p className="text-xs text-muted-foreground">{user?.email}</p>
                 </div>
                 <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full flex items-center justify-center"
-                  onClick={handleEditProfile}
-                >
-                  <UserCog className="h-4 w-4 mr-2" />
-                  Edit Profile
-                </Button>
-                <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="w-full flex items-center justify-center"
+                  className="ml-2"
                   onClick={handleLogout}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
