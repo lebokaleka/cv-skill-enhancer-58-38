@@ -83,7 +83,7 @@ const InterviewChat = ({
             
             <div 
               className={`p-3 rounded-lg ${message.role === 'ai' 
-                ? 'bg-muted text-foreground mr-12' 
+                ? 'bg-[#F5F5F5] text-foreground mr-12' 
                 : 'bg-primary text-primary-foreground ml-12'}`}
             >
               <div dangerouslySetInnerHTML={{ __html: message.content }} />
