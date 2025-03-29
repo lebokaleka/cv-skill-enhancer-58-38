@@ -51,52 +51,77 @@ const InterviewChat = ({
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
+  
+  // Check if this message is a new question after a feedback message
+  const isNewQuestion = (index: number): boolean => {
+    if (index <= 0) return false;
+    
+    const currentMsg = messages[index];
+    const prevMsg = messages[index - 1];
+    
+    // If current message is from AI and doesn't have sentiment data
+    // and previous message is also from AI with sentiment data
+    return currentMsg.role === 'ai' && 
+           !currentMsg.sentiment && 
+           prevMsg.role === 'ai' && 
+           prevMsg.sentiment !== undefined;
+  };
 
   return (
     <div>
       <div ref={chatContainerRef} className="h-64 overflow-y-auto space-y-4 mb-4 p-2">
         {messages.map((message, index) => (
-          <div 
-            key={index} 
-            className={`p-3 rounded-lg ${message.role === 'ai' 
-              ? 'bg-muted text-foreground mr-12' 
-              : 'bg-primary text-primary-foreground ml-12'}`}
-          >
-            <div dangerouslySetInnerHTML={{ __html: message.content }} />
-            {message.sentiment && (
-              <div className="mt-2 pt-2 border-t border-border">
-                <div className="grid grid-cols-4 gap-2 text-xs">
-                  <div>
-                    <div className="font-semibold">Confidence</div>
-                    <div className="flex items-center">
-                      <Progress value={message.sentiment.confidence} className="h-1.5 mr-2 w-16" />
-                      {message.sentiment.confidence}%
+          <div key={index}>
+            {/* Add a visual separator before a new question */}
+            {isNewQuestion(index) && (
+              <div className="my-4 flex items-center">
+                <div className="flex-grow h-px bg-muted-foreground/30"></div>
+                <div className="mx-2 text-xs text-muted-foreground">Next Question</div>
+                <div className="flex-grow h-px bg-muted-foreground/30"></div>
+              </div>
+            )}
+            
+            <div 
+              className={`p-3 rounded-lg ${message.role === 'ai' 
+                ? 'bg-muted text-foreground mr-12' 
+                : 'bg-primary text-primary-foreground ml-12'}`}
+            >
+              <div dangerouslySetInnerHTML={{ __html: message.content }} />
+              {message.sentiment && (
+                <div className="mt-2 pt-2 border-t border-border">
+                  <div className="grid grid-cols-4 gap-2 text-xs">
+                    <div>
+                      <div className="font-semibold">Confidence</div>
+                      <div className="flex items-center">
+                        <Progress value={message.sentiment.confidence} className="h-1.5 mr-2 w-16" />
+                        {message.sentiment.confidence}%
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <div className="font-semibold">Clarity</div>
-                    <div className="flex items-center">
-                      <Progress value={message.sentiment.clarity} className="h-1.5 mr-2 w-16" />
-                      {message.sentiment.clarity}%
+                    <div>
+                      <div className="font-semibold">Clarity</div>
+                      <div className="flex items-center">
+                        <Progress value={message.sentiment.clarity} className="h-1.5 mr-2 w-16" />
+                        {message.sentiment.clarity}%
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <div className="font-semibold">Relevance</div>
-                    <div className="flex items-center">
-                      <Progress value={message.sentiment.relevance} className="h-1.5 mr-2 w-16" />
-                      {message.sentiment.relevance}%
+                    <div>
+                      <div className="font-semibold">Relevance</div>
+                      <div className="flex items-center">
+                        <Progress value={message.sentiment.relevance} className="h-1.5 mr-2 w-16" />
+                        {message.sentiment.relevance}%
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <div className="font-semibold">Overall</div>
-                    <div className="flex items-center">
-                      <Progress value={message.sentiment.overall} className="h-1.5 mr-2 w-16" />
-                      {message.sentiment.overall}%
+                    <div>
+                      <div className="font-semibold">Overall</div>
+                      <div className="flex items-center">
+                        <Progress value={message.sentiment.overall} className="h-1.5 mr-2 w-16" />
+                        {message.sentiment.overall}%
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         ))}
         {isAnalyzing && (
