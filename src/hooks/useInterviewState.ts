@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InterviewStep, InterviewType } from '@/types/interview';
 import { useRecording } from './interview/useRecording';
 import { useInterviewQuestions } from './interview/useInterviewQuestions';
@@ -10,8 +10,8 @@ export const useInterviewState = () => {
   const [currentStep, setCurrentStep] = useState<InterviewStep>('landing');
   const [interviewType, setInterviewType] = useState<InterviewType>(null);
   const [difficulty, setDifficulty] = useState('basic');
-  const [questionCount, setQuestionCount] = useState(5);
-
+  const [questionCount, setQuestionCount] = useState(5); // Default to 5 questions for General Interview
+  
   // Custom hooks
   const recording = useRecording();
   const interviewQuestions = useInterviewQuestions(currentStep, interviewType, difficulty, questionCount);
@@ -26,19 +26,33 @@ export const useInterviewState = () => {
   const handleSubmitRecording = () => {
     if (!recording.audioUrl) return;
     
-    const userResponse = "This is a simulated transcription of the recorded answer. In a real implementation, this would be the actual transcribed text from the audio recording.";
-    
-    interviewQuestions.setMessages(prev => [...prev, {
-      role: 'user',
-      content: userResponse
-    }]);
-    
+    // Set a flag to indicate that analysis is in progress
     answerAnalysis.setIsAnalyzing(true);
     
-    setTimeout(() => {
-      answerAnalysis.analyzeSentiment(userResponse);
-      interviewQuestions.setCurrentQuestionIndex(prev => prev + 1);
-    }, 2000);
+    // For General Interview, we process with OpenAI API
+    if (interviewType === 'general') {
+      // In a real implementation, this would send the audio to OpenAI for processing
+      // and handle the response. For this implementation, we'll simulate the process
+      // with a timeout and use our existing analysis function.
+      
+      // Simulate OpenAI processing with a timeout
+      setTimeout(() => {
+        // Simulate speech-to-text conversion
+        const userResponse = "This is a simulated transcription of the recorded answer from OpenAI. In a real implementation, this would be the actual transcribed text from the audio recording.";
+        
+        // Add the user's response to the messages
+        interviewQuestions.setMessages(prev => [...prev, {
+          role: 'user',
+          content: userResponse
+        }]);
+        
+        // Analyze the response
+        answerAnalysis.analyzeSentiment(userResponse);
+        
+        // Move to the next question
+        interviewQuestions.setCurrentQuestionIndex(prev => prev + 1);
+      }, 2000);
+    }
   };
 
   // Interview flow handlers

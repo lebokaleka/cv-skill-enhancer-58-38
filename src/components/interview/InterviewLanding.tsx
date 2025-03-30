@@ -14,7 +14,7 @@ const InterviewLanding = ({
   onSelectInterviewType
 }: InterviewLandingProps) => {
   const [difficulty, setDifficulty] = useState<string | null>(null);
-  const [questionCount, setQuestionCount] = useState<number | null>(10); // Default to 10 questions
+  const [questionCount] = useState<number | null>(5); // Fixed to 5 questions for General Interview
   const [showGeneralError, setShowGeneralError] = useState(false);
   const [showJobError, setShowJobError] = useState(false);
   const [activeTab, setActiveTab] = useState<'general' | 'job'>('general');
@@ -73,7 +73,7 @@ const InterviewLanding = ({
           showError={showGeneralError}
           onSelectTab={() => setActiveTab('general')}
           onSetDifficulty={setDifficulty}
-          onSetQuestionCount={setQuestionCount}
+          onSetQuestionCount={() => {}} // Empty function as we fixed the question count
           onStartInterview={handleGeneralInterviewStart}
         />
         
