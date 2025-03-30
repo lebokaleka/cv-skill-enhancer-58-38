@@ -10,7 +10,7 @@ export const useInterviewState = () => {
   const [currentStep, setCurrentStep] = useState<InterviewStep>('landing');
   const [interviewType, setInterviewType] = useState<InterviewType>(null);
   const [difficulty, setDifficulty] = useState('basic');
-  const [questionCount, setQuestionCount] = useState(5);
+  const [questionCount, setQuestionCount] = useState(5); // Fixed to 5 for general interviews
 
   // Custom hooks
   const recording = useRecording();
@@ -23,22 +23,27 @@ export const useInterviewState = () => {
   );
 
   // Submit recording handler
-  const handleSubmitRecording = () => {
+  const handleSubmitRecording = async () => {
     if (!recording.audioUrl) return;
     
-    const userResponse = "This is a simulated transcription of the recorded answer. In a real implementation, this would be the actual transcribed text from the audio recording.";
-    
-    interviewQuestions.setMessages(prev => [...prev, {
-      role: 'user',
-      content: userResponse
-    }]);
-    
-    answerAnalysis.setIsAnalyzing(true);
-    
-    setTimeout(() => {
-      answerAnalysis.analyzeSentiment(userResponse);
-      interviewQuestions.setCurrentQuestionIndex(prev => prev + 1);
-    }, 2000);
+    try {
+      // Transcribe audio using OpenAI
+      const userResponse = await recording.transcribeAudio();
+      
+      interviewQuestions.setMessages(prev => [...prev, {
+        role: 'user',
+        content: userResponse
+      }]);
+      
+      answerAnalysis.setIsAnalyzing(true);
+      
+      setTimeout(() => {
+        answerAnalysis.analyzeSentiment(userResponse);
+        interviewQuestions.setCurrentQuestionIndex(prev => prev + 1);
+      }, 2000);
+    } catch (error) {
+      console.error("Error processing recording:", error);
+    }
   };
 
   // Interview flow handlers
@@ -58,6 +63,7 @@ export const useInterviewState = () => {
     setInterviewType(null);
     interviewQuestions.setCurrentQuestionIndex(0);
     recording.setAudioUrl(null);
+    recording.setTranscription(null);
   };
 
   return {
@@ -74,6 +80,8 @@ export const useInterviewState = () => {
     messages: interviewQuestions.messages,
     audioUrl: recording.audioUrl,
     isAnalyzing: answerAnalysis.isAnalyzing,
+    isProcessing: recording.isProcessing,
+    transcription: recording.transcription,
     
     // Handlers
     setDifficulty,

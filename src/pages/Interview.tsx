@@ -24,6 +24,8 @@ const Interview = () => {
     messages,
     audioUrl,
     isAnalyzing,
+    isProcessing,
+    transcription,
     
     setDifficulty,
     setQuestionCount,
@@ -86,7 +88,9 @@ const Interview = () => {
             recordingTime={recordingTime}
             isPlaying={isPlaying}
             isAnalyzing={isAnalyzing}
+            isProcessing={isProcessing}
             audioUrl={audioUrl}
+            transcription={transcription}
             startRecording={handleStartRecording}
             stopRecording={handleStopRecording}
             togglePlayback={handleTogglePlayback}

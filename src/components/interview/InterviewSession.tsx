@@ -30,7 +30,9 @@ interface InterviewSessionProps {
   recordingTime: number;
   isPlaying: boolean;
   isAnalyzing: boolean;
+  isProcessing: boolean;
   audioUrl: string | null;
+  transcription: string | null;
   startRecording: () => void;
   stopRecording: () => void;
   togglePlayback: () => void;
@@ -48,7 +50,9 @@ const InterviewSession = ({
   recordingTime,
   isPlaying,
   isAnalyzing,
+  isProcessing,
   audioUrl,
+  transcription,
   startRecording,
   stopRecording,
   togglePlayback,
@@ -78,7 +82,21 @@ const InterviewSession = ({
             <Progress value={currentQuestionIndex / questions.length * 100} className="h-2" />
           </CardHeader>
           <CardContent>
-            <InterviewChat messages={messages} isRecording={isRecording} recordingTime={recordingTime} isPlaying={isPlaying} isAnalyzing={isAnalyzing} audioUrl={audioUrl} startRecording={startRecording} stopRecording={stopRecording} togglePlayback={togglePlayback} submitRecording={submitRecording} clearRecording={clearRecording} />
+            <InterviewChat 
+              messages={messages} 
+              isRecording={isRecording} 
+              recordingTime={recordingTime} 
+              isPlaying={isPlaying} 
+              isAnalyzing={isAnalyzing} 
+              isProcessing={isProcessing}
+              audioUrl={audioUrl}
+              transcription={transcription} 
+              startRecording={startRecording} 
+              stopRecording={stopRecording} 
+              togglePlayback={togglePlayback} 
+              submitRecording={submitRecording} 
+              clearRecording={clearRecording} 
+            />
           </CardContent>
         </Card>
         

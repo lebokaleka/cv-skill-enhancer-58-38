@@ -23,7 +23,9 @@ interface InterviewChatProps {
   recordingTime: number;
   isPlaying: boolean;
   isAnalyzing: boolean;
+  isProcessing: boolean;
   audioUrl: string | null;
+  transcription: string | null;
   startRecording: () => void;
   stopRecording: () => void;
   togglePlayback: () => void;
@@ -37,7 +39,9 @@ const InterviewChat = ({
   recordingTime,
   isPlaying,
   isAnalyzing,
+  isProcessing,
   audioUrl,
+  transcription,
   startRecording,
   stopRecording,
   togglePlayback,
@@ -50,7 +54,7 @@ const InterviewChat = ({
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, transcription]);
   
   // Check if this message is a new question after a feedback message
   const isNewQuestion = (index: number): boolean => {
@@ -124,6 +128,23 @@ const InterviewChat = ({
             </div>
           </div>
         ))}
+        
+        {/* Show transcription processing state */}
+        {isProcessing && (
+          <div className="flex justify-center items-center p-4">
+            <RotateCw className="h-6 w-6 animate-spin text-muted-foreground" />
+            <span className="ml-2 text-muted-foreground">Transcribing your response...</span>
+          </div>
+        )}
+        
+        {/* Show transcription preview */}
+        {transcription && !isAnalyzing && (
+          <div className="p-3 rounded-lg bg-primary/10 text-foreground mr-12">
+            <div className="font-semibold mb-1 text-sm">Transcription Preview:</div>
+            <div className="text-sm italic">{transcription}</div>
+          </div>
+        )}
+        
         {isAnalyzing && (
           <div className="flex justify-center items-center p-4">
             <RotateCw className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -138,6 +159,7 @@ const InterviewChat = ({
             <Button 
               onClick={isRecording ? stopRecording : startRecording} 
               className={`rounded-full w-12 h-12 flex items-center justify-center ${isRecording ? 'bg-red-500 hover:bg-red-600' : ''}`}
+              disabled={isProcessing || isAnalyzing}
             >
               <Mic className={`h-6 w-6 ${isRecording ? 'animate-pulse' : ''}`} />
             </Button>
@@ -148,7 +170,7 @@ const InterviewChat = ({
                   variant="outline" 
                   onClick={togglePlayback} 
                   className="rounded-full w-12 h-12 flex items-center justify-center" 
-                  disabled={isAnalyzing}
+                  disabled={isProcessing || isAnalyzing}
                 >
                   <Play className={`h-6 w-6 ${isPlaying ? 'text-green-500' : ''}`} />
                 </Button>
@@ -157,7 +179,7 @@ const InterviewChat = ({
                   variant="outline" 
                   onClick={clearRecording} 
                   className="rounded-full w-12 h-12 flex items-center justify-center" 
-                  disabled={isAnalyzing}
+                  disabled={isProcessing || isAnalyzing}
                 >
                   <RefreshCw className="h-6 w-6" />
                 </Button>
@@ -172,7 +194,7 @@ const InterviewChat = ({
             </div>
           )}
           
-          {audioUrl && !isAnalyzing && (
+          {audioUrl && !isProcessing && !isAnalyzing && (
             <Button className="mt-2" onClick={submitRecording}>
               Submit Response
             </Button>
