@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { BrainCircuit, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
 interface GeneralInterviewCardProps {
   isActive: boolean;
   difficulty: string | null;
@@ -17,7 +15,6 @@ interface GeneralInterviewCardProps {
   onSetQuestionCount: (count: number) => void;
   onStartInterview: () => void;
 }
-
 const GeneralInterviewCard = ({
   isActive,
   difficulty,
@@ -28,12 +25,8 @@ const GeneralInterviewCard = ({
   onSetQuestionCount,
   onStartInterview
 }: GeneralInterviewCardProps) => {
-  return (
-    <Card 
-      className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${isActive ? 'ring-2 ring-primary' : ''} flex flex-col`}
-      onClick={onSelectTab}
-    >
-      <CardHeader className="text-center">
+  return <Card className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${isActive ? 'ring-2 ring-primary' : ''} flex flex-col`} onClick={onSelectTab}>
+      <CardHeader className="text-center mx-[144px] my-[130px] py-0 rounded-sm px-[24px]">
         <CardTitle className="text-xl flex justify-center items-center gap-2">
           <BrainCircuit size={22} />
           <span>General Interview</span>
@@ -45,11 +38,7 @@ const GeneralInterviewCard = ({
       <CardContent className="space-y-4 flex-1 flex flex-col items-center">
         <div className="space-y-4 w-full max-w-md">
           <div className="w-full">
-            <RadioGroup 
-              value={difficulty || ""} 
-              onValueChange={(value) => onSetDifficulty(value)}
-              className="flex justify-center gap-4"
-            >
+            <RadioGroup value={difficulty || ""} onValueChange={value => onSetDifficulty(value)} className="flex justify-center gap-4">
               <div className="flex flex-col items-center space-y-1">
                 <RadioGroupItem value="basic" id="basic" />
                 <Label htmlFor="basic" className="font-normal">Basic</Label>
@@ -65,26 +54,19 @@ const GeneralInterviewCard = ({
             </RadioGroup>
           </div>
           
-          {showError && (
-            <Alert variant="destructive" className="py-2">
+          {showError && <Alert variant="destructive" className="py-2">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 Please select a difficulty level
               </AlertDescription>
-            </Alert>
-          )}
+            </Alert>}
         </div>
       </CardContent>
       <CardFooter className="mt-auto flex justify-center">
-        <Button 
-          className="rounded-full" 
-          onClick={onStartInterview}
-        >
+        <Button className="rounded-full" onClick={onStartInterview}>
           Start General Interview
         </Button>
       </CardFooter>
-    </Card>
-  );
+    </Card>;
 };
-
 export default GeneralInterviewCard;
