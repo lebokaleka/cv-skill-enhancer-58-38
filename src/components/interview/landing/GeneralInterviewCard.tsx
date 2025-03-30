@@ -44,24 +44,24 @@ const GeneralInterviewCard = ({
             <RadioGroup 
               value={difficulty || ""} 
               onValueChange={value => onSetDifficulty(value)} 
-              className="flex justify-center gap-8"
+              className="flex justify-center gap-16"
             >
               <div className="flex flex-col items-center">
-                <div className={`relative w-20 h-20 rounded-full flex items-center justify-center cursor-pointer border-2 transition-all ${difficulty === 'basic' ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary/50'}`} onClick={() => onSetDifficulty('basic')}>
+                <div className={`relative w-24 h-12 rounded-full flex items-center justify-center cursor-pointer border transition-all ${difficulty === 'basic' ? 'bg-primary text-white border-primary' : 'bg-white border-gray-300 hover:border-primary/50'}`} onClick={() => onSetDifficulty('basic')}>
                   <RadioGroupItem value="basic" id="basic" className="absolute opacity-0" />
                   <span className="text-sm font-medium">Basic</span>
                 </div>
               </div>
               
               <div className="flex flex-col items-center">
-                <div className={`relative w-20 h-20 rounded-full flex items-center justify-center cursor-pointer border-2 transition-all ${difficulty === 'intermediate' ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary/50'}`} onClick={() => onSetDifficulty('intermediate')}>
+                <div className={`relative w-24 h-12 rounded-full flex items-center justify-center cursor-pointer border transition-all ${difficulty === 'intermediate' ? 'bg-primary text-white border-primary' : 'bg-white border-gray-300 hover:border-primary/50'}`} onClick={() => onSetDifficulty('intermediate')}>
                   <RadioGroupItem value="intermediate" id="intermediate" className="absolute opacity-0" />
                   <span className="text-sm font-medium">Intermediate</span>
                 </div>
               </div>
               
               <div className="flex flex-col items-center">
-                <div className={`relative w-20 h-20 rounded-full flex items-center justify-center cursor-pointer border-2 transition-all ${difficulty === 'advanced' ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-primary/50'}`} onClick={() => onSetDifficulty('advanced')}>
+                <div className={`relative w-24 h-12 rounded-full flex items-center justify-center cursor-pointer border transition-all ${difficulty === 'advanced' ? 'bg-primary text-white border-primary' : 'bg-white border-gray-300 hover:border-primary/50'}`} onClick={() => onSetDifficulty('advanced')}>
                   <RadioGroupItem value="advanced" id="advanced" className="absolute opacity-0" />
                   <span className="text-sm font-medium">Advanced</span>
                 </div>
