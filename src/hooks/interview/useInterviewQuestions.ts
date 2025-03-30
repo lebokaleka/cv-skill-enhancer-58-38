@@ -17,10 +17,8 @@ export const useInterviewQuestions = (
   useEffect(() => {
     if (currentStep === 'interview') {
       if (interviewType === 'general') {
-        // For General Interview, we always use 5 questions from the selected difficulty
         const selectedQuestions = [...interviewQuestionsByCategory.general[difficulty as keyof typeof interviewQuestionsByCategory.general]];
-        // Only use first 5 questions for General Interview
-        setQuestions(selectedQuestions.slice(0, 5));
+        setQuestions(selectedQuestions.slice(0, questionCount));
         setMessages([{
           role: 'ai',
           content: selectedQuestions[0]
@@ -42,7 +40,7 @@ export const useInterviewQuestions = (
         }]);
       }
     }
-  }, [currentStep, interviewType, difficulty]);
+  }, [currentStep, interviewType, difficulty, questionCount]);
 
   return {
     questions,
