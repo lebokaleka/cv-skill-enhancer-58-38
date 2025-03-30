@@ -33,57 +33,34 @@ const GeneralInterviewCard = ({
       className={`glass-card border-dashed border hover:shadow-md transition-shadow cursor-pointer ${isActive ? 'ring-2 ring-primary' : ''} flex flex-col`}
       onClick={onSelectTab}
     >
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BrainCircuit size={20} />
+      <CardHeader className="text-center">
+        <CardTitle className="text-xl flex justify-center items-center gap-2">
+          <BrainCircuit size={22} />
           <span>General Interview</span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-base">
           Practice common interview questions that apply to most job positions
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4 flex-1">
-        <div className="space-y-4">
-          <div>
-            <h3 className="font-medium mb-2">Difficulty Level</h3>
+      <CardContent className="space-y-4 flex-1 flex flex-col items-center">
+        <div className="space-y-4 w-full max-w-md">
+          <div className="w-full">
             <RadioGroup 
               value={difficulty || ""} 
               onValueChange={(value) => onSetDifficulty(value)}
-              className="space-y-1"
+              className="flex justify-center gap-4"
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-col items-center space-y-1">
                 <RadioGroupItem value="basic" id="basic" />
                 <Label htmlFor="basic" className="font-normal">Basic</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-col items-center space-y-1">
                 <RadioGroupItem value="intermediate" id="intermediate" />
                 <Label htmlFor="intermediate" className="font-normal">Intermediate</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-col items-center space-y-1">
                 <RadioGroupItem value="advanced" id="advanced" />
                 <Label htmlFor="advanced" className="font-normal">Advanced</Label>
-              </div>
-            </RadioGroup>
-          </div>
-          
-          <div>
-            <h3 className="font-medium mb-2">Number of Questions</h3>
-            <RadioGroup 
-              value={questionCount?.toString() || ""} 
-              onValueChange={(value) => onSetQuestionCount(parseInt(value))}
-              className="space-y-1"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="5" id="q5" />
-                <Label htmlFor="q5" className="font-normal">5 Questions</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="10" id="q10" />
-                <Label htmlFor="q10" className="font-normal">10 Questions</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="15" id="q15" />
-                <Label htmlFor="q15" className="font-normal">15 Questions</Label>
               </div>
             </RadioGroup>
           </div>
@@ -92,15 +69,15 @@ const GeneralInterviewCard = ({
             <Alert variant="destructive" className="py-2">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                Please select both difficulty level and number of questions
+                Please select a difficulty level
               </AlertDescription>
             </Alert>
           )}
         </div>
       </CardContent>
-      <CardFooter className="mt-auto">
+      <CardFooter className="mt-auto flex justify-center">
         <Button 
-          className="w-full rounded-full" 
+          className="rounded-full" 
           onClick={onStartInterview}
         >
           Start General Interview

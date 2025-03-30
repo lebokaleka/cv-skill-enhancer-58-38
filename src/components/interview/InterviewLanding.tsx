@@ -14,7 +14,7 @@ const InterviewLanding = ({
   onSelectInterviewType
 }: InterviewLandingProps) => {
   const [difficulty, setDifficulty] = useState<string | null>(null);
-  const [questionCount, setQuestionCount] = useState<number | null>(null);
+  const [questionCount, setQuestionCount] = useState<number | null>(10); // Default to 10 questions
   const [showGeneralError, setShowGeneralError] = useState(false);
   const [showJobError, setShowJobError] = useState(false);
   const [activeTab, setActiveTab] = useState<'general' | 'job'>('general');
@@ -30,12 +30,12 @@ const InterviewLanding = ({
   });
 
   const handleGeneralInterviewStart = () => {
-    if (difficulty && questionCount) {
-      // Both settings are selected, proceed with the interview
+    if (difficulty) {
+      // Only difficulty setting is required now
       onSelectInterviewType('general');
       setShowGeneralError(false);
     } else {
-      // Show error message if settings are not complete
+      // Show error message if difficulty is not selected
       setShowGeneralError(true);
     }
   };
