@@ -24,14 +24,29 @@ interface InterviewResultsProps {
 }
 
 const InterviewResults = ({ messages, questions, onStartNewInterview }: InterviewResultsProps) => {
-  const getAverageScore = (scoreType: keyof SentimentScore) => {
+  const getAverageScore = () => {
     const scoresArray = messages
       .filter(msg => msg.sentiment)
-      .map(msg => msg.sentiment ? msg.sentiment[scoreType] : 0);
+      .map(msg => msg.sentiment ? msg.sentiment.overall : 0);
     
     return scoresArray.length 
       ? Math.floor(scoresArray.reduce((a, b) => a + b, 0) / scoresArray.length) 
       : 0;
+  };
+
+  const averageScore = getAverageScore();
+  
+  // Generate overall assessment based on average score
+  const getOverallAssessment = (score: number) => {
+    if (score >= 85) {
+      return "Excellent performance! You demonstrate strong interviewing skills.";
+    } else if (score >= 70) {
+      return "Good performance. With some refinement, you'll excel in interviews.";
+    } else if (score >= 50) {
+      return "Satisfactory performance. Focus on the improvement areas to enhance your interview skills.";
+    } else {
+      return "You have significant room for improvement. Regular practice will help you develop stronger interviewing skills.";
+    }
   };
 
   return (
@@ -50,46 +65,27 @@ const InterviewResults = ({ messages, questions, onStartNewInterview }: Intervie
           <CardTitle>Performance Overview</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="flex justify-center items-center mb-6">
             <div className="flex flex-col items-center">
-              <div className="text-2xl font-bold">
-                {getAverageScore('confidence')}%
+              <div className="text-4xl font-bold">
+                {averageScore}%
               </div>
-              <div className="text-sm text-muted-foreground">Confidence</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-2xl font-bold">
-                {getAverageScore('clarity')}%
-              </div>
-              <div className="text-sm text-muted-foreground">Clarity</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-2xl font-bold">
-                {getAverageScore('relevance')}%
-              </div>
-              <div className="text-sm text-muted-foreground">Relevance</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-2xl font-bold">
-                {getAverageScore('overall')}%
-              </div>
-              <div className="text-sm text-muted-foreground">Overall</div>
+              <div className="text-sm text-muted-foreground mt-1">Overall Score</div>
             </div>
           </div>
           
           <div className="space-y-4">
-            <h4 className="font-semibold">Key Strengths</h4>
-            <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li>You provided specific examples in your answers.</li>
-              <li>Your responses were generally well-structured.</li>
-              <li>You maintained good energy throughout the interview.</li>
-            </ul>
+            <p className="text-center text-base">
+              {getOverallAssessment(averageScore)}
+            </p>
             
-            <h4 className="font-semibold pt-4">Areas for Improvement</h4>
+            <h4 className="font-semibold pt-4">Key Areas for Development</h4>
             <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li>Try to be more concise in some of your longer answers.</li>
-              <li>Practice eliminating filler words ("um", "like", "you know").</li>
-              <li>Work on connecting your experiences more clearly to the job requirements.</li>
+              <li>Practice using the STAR method to structure your answers.</li>
+              <li>Work on including specific metrics and results in your examples.</li>
+              <li>Prepare concise, focused answers for common interview questions.</li>
+              <li>Record yourself and listen for filler words and pacing.</li>
+              <li>Practice relating your experiences directly to the job requirements.</li>
             </ul>
           </div>
         </CardContent>
@@ -131,7 +127,7 @@ const InterviewResults = ({ messages, questions, onStartNewInterview }: Intervie
                             : 'border-orange-500 text-orange-700'
                         }`}
                       >
-                        {aiMsg.sentiment.overall}% Overall
+                        {aiMsg.sentiment.overall}% Score
                       </Badge>
                     </div>
                   )}

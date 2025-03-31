@@ -50,24 +50,59 @@ export const stopRecording = (setIsRecording: (value: boolean) => void, setAudio
 export const generateFeedback = (sentiment: Message["sentiment"]) => {
   if (!sentiment) return '';
   
-  const confidenceFeedback = sentiment.confidence > 75 
-    ? "Your confidence level is excellent! You speak with authority and conviction." 
-    : "Try to improve your confidence by speaking with more conviction and avoiding hesitations.";
+  // Calculate overall percentage
+  const overallScore = sentiment.overall;
   
-  const clarityFeedback = sentiment.clarity > 75 
-    ? "Your answer was very clear and articulate." 
-    : "Work on making your points more clearly and concisely.";
+  // Generate personalized feedback based on simulated analysis
+  const strengthPoints = [
+    "You provided a clear structure in your answer",
+    "Your examples were relevant to the question",
+    "You demonstrated good problem-solving skills",
+    "You connected your experience to the specific question",
+    "You maintained good pacing throughout your answer"
+  ];
   
-  const relevanceFeedback = sentiment.relevance > 75 
-    ? "Your answer was highly relevant to the question." 
-    : "Try to focus more directly on answering the specific question asked.";
+  const improvementPoints = [
+    "Try to be more concise while still being thorough",
+    "Incorporate more specific examples from your experience",
+    "Structure your answer using the STAR method (Situation, Task, Action, Result)",
+    "Make sure to address all parts of the question directly",
+    "Practice reducing filler words to sound more confident"
+  ];
   
+  // Select 2-3 random strength points
+  const randomStrengths = [];
+  while (randomStrengths.length < Math.min(3, Math.ceil(overallScore/30))) {
+    const randomIndex = Math.floor(Math.random() * strengthPoints.length);
+    if (!randomStrengths.includes(strengthPoints[randomIndex])) {
+      randomStrengths.push(strengthPoints[randomIndex]);
+    }
+  }
+  
+  // Select 2-3 random improvement points
+  const randomImprovements = [];
+  while (randomImprovements.length < Math.min(3, Math.ceil((100-overallScore)/30))) {
+    const randomIndex = Math.floor(Math.random() * improvementPoints.length);
+    if (!randomImprovements.includes(improvementPoints[randomIndex])) {
+      randomImprovements.push(improvementPoints[randomIndex]);
+    }
+  }
+  
+  // Create the HTML feedback content
   return `
-    <h3>Feedback on your answer:</h3>
-    <p><strong>Confidence:</strong> ${confidenceFeedback}</p>
-    <p><strong>Clarity:</strong> ${clarityFeedback}</p>
-    <p><strong>Relevance:</strong> ${relevanceFeedback}</p>
-    <p><strong>Overall Impression:</strong> ${sentiment.overall > 75 ? "Your answer was strong and effective." : "There's room for improvement in your answer."}</p>
-    <p><strong>Tips for improvement:</strong> Prepare concise stories using the STAR method (Situation, Task, Action, Result) for behavioral questions. Practice speaking at a measured pace and emphasize key points.</p>
+    <h3>Answer Analysis</h3>
+    <p>Overall Score: <strong>${overallScore}%</strong></p>
+    
+    <h4>Strengths:</h4>
+    <ul>
+      ${randomStrengths.map(point => `<li>${point}</li>`).join('')}
+    </ul>
+    
+    <h4>Areas for Improvement:</h4>
+    <ul>
+      ${randomImprovements.map(point => `<li>${point}</li>`).join('')}
+    </ul>
+    
+    <p><strong>Tips:</strong> When answering interview questions, focus on being specific rather than general. Use concrete examples from your experience to illustrate your points. Remember to highlight both the actions you took and the results you achieved.</p>
   `;
 };

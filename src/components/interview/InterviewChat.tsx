@@ -93,34 +93,11 @@ const InterviewChat = ({
               <div dangerouslySetInnerHTML={{ __html: message.content }} />
               {message.sentiment && (
                 <div className="mt-2 pt-2 border-t border-border">
-                  <div className="grid grid-cols-4 gap-2 text-xs">
-                    <div>
-                      <div className="font-semibold">Confidence</div>
-                      <div className="flex items-center">
-                        <Progress value={message.sentiment.confidence} className="h-1.5 mr-2 w-16" />
-                        {message.sentiment.confidence}%
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-semibold">Clarity</div>
-                      <div className="flex items-center">
-                        <Progress value={message.sentiment.clarity} className="h-1.5 mr-2 w-16" />
-                        {message.sentiment.clarity}%
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-semibold">Relevance</div>
-                      <div className="flex items-center">
-                        <Progress value={message.sentiment.relevance} className="h-1.5 mr-2 w-16" />
-                        {message.sentiment.relevance}%
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-semibold">Overall</div>
-                      <div className="flex items-center">
-                        <Progress value={message.sentiment.overall} className="h-1.5 mr-2 w-16" />
-                        {message.sentiment.overall}%
-                      </div>
+                  <div className="flex items-center justify-center">
+                    <div className="text-center">
+                      <span className="text-lg font-semibold">
+                        Overall Score: {message.sentiment.overall}%
+                      </span>
                     </div>
                   </div>
                 </div>
