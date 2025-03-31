@@ -53,56 +53,100 @@ export const generateFeedback = (sentiment: Message["sentiment"]) => {
   // Calculate overall percentage
   const overallScore = sentiment.overall;
   
-  // Generate personalized feedback based on simulated analysis
-  const strengthPoints = [
-    "You provided a clear structure in your answer",
-    "Your examples were relevant to the question",
-    "You demonstrated good problem-solving skills",
-    "You connected your experience to the specific question",
-    "You maintained good pacing throughout your answer"
+  // Define possible feedback components based on response analysis
+  const contentFeedback = [
+    "Your answer lacks specific examples. Try to include concrete situations from your experience.",
+    "You provided good examples, but could elaborate more on the results achieved.",
+    "Consider structuring your answer using the STAR method for more clarity.",
+    "Your answer addresses the question well, but could be more concise.",
+    "Try to connect your experience more directly to the requirements of the position.",
+    "Your introduction was strong, but your conclusion could be more impactful.",
+    "Consider quantifying your achievements with specific metrics or percentages.",
+    "You covered the main points well, but missed an opportunity to highlight your unique skills.",
+    "Focus more on what you learned from challenging situations rather than just describing them.",
+    "Try to demonstrate more self-awareness when discussing your weaknesses."
   ];
   
-  const improvementPoints = [
-    "Try to be more concise while still being thorough",
-    "Incorporate more specific examples from your experience",
-    "Structure your answer using the STAR method (Situation, Task, Action, Result)",
-    "Make sure to address all parts of the question directly",
-    "Practice reducing filler words to sound more confident"
+  const deliveryFeedback = [
+    "Practice reducing filler words (like 'um', 'uh', 'like') to sound more confident.",
+    "Try varying your tone to emphasize key points in your answer.",
+    "Consider slowing down your pace slightly for better clarity.",
+    "Pausing briefly between main points can help the interviewer absorb your information better.",
+    "Work on maintaining a conversational tone rather than sounding rehearsed.",
+    "Your enthusiasm comes through well - maintain this energy throughout all answers.",
+    "Practice speaking with more confidence, especially when discussing your achievements.",
+    "Consider using more professional vocabulary in your responses.",
+    "Try to maintain a positive framing even when discussing challenges."
   ];
   
-  // Select 2-3 random strength points
-  const randomStrengths = [];
-  while (randomStrengths.length < Math.min(3, Math.ceil(overallScore/30))) {
-    const randomIndex = Math.floor(Math.random() * strengthPoints.length);
-    if (!randomStrengths.includes(strengthPoints[randomIndex])) {
-      randomStrengths.push(strengthPoints[randomIndex]);
-    }
+  // Determine feedback based on score ranges
+  let strengthPoints: string[] = [];
+  let improvementPoints: string[] = [];
+  
+  // Select feedback points based on simulated content analysis
+  // In a real implementation, this would be based on actual content analysis
+  
+  // For strengths
+  if (overallScore > 70) {
+    strengthPoints = [
+      "You effectively structured your answer with a clear beginning, middle, and end.",
+      "You provided relevant examples that illustrated your skills well.",
+      "Your answer demonstrated good self-awareness and authenticity."
+    ];
+  } else if (overallScore > 50) {
+    strengthPoints = [
+      "You addressed the key points the question was asking for.",
+      "You shared some relevant background information that supports your qualifications."
+    ];
+  } else {
+    strengthPoints = [
+      "You maintained a professional tone throughout your answer.",
+      "You showed willingness to engage with the question."
+    ];
   }
   
+  // For improvement areas
   // Select 2-3 random improvement points
-  const randomImprovements = [];
-  while (randomImprovements.length < Math.min(3, Math.ceil((100-overallScore)/30))) {
-    const randomIndex = Math.floor(Math.random() * improvementPoints.length);
-    if (!randomImprovements.includes(improvementPoints[randomIndex])) {
-      randomImprovements.push(improvementPoints[randomIndex]);
-    }
+  const shuffledContentFeedback = [...contentFeedback].sort(() => 0.5 - Math.random());
+  const shuffledDeliveryFeedback = [...deliveryFeedback].sort(() => 0.5 - Math.random());
+  
+  // Lower scores get more improvement points
+  const numImprovements = overallScore > 80 ? 1 : overallScore > 60 ? 2 : 3;
+  
+  // Mix content and delivery feedback
+  improvementPoints = [
+    ...shuffledContentFeedback.slice(0, Math.ceil(numImprovements/2)),
+    ...shuffledDeliveryFeedback.slice(0, Math.floor(numImprovements/2))
+  ];
+  
+  // Add tailored advice based on score
+  let tailoredAdvice = "";
+  if (overallScore > 80) {
+    tailoredAdvice = "Your answer was strong overall. For even more impact, consider practicing responses to unexpected follow-up questions.";
+  } else if (overallScore > 60) {
+    tailoredAdvice = "With some refinement in the areas mentioned, your answer will be more impactful and memorable to interviewers.";
+  } else {
+    tailoredAdvice = "Focus on preparing more thoroughly for common interview questions by writing out key points and practicing your delivery aloud.";
   }
   
   // Create the HTML feedback content
   return `
-    <h3>Answer Analysis</h3>
-    <p>Overall Score: <strong>${overallScore}%</strong></p>
+    <h3>Feedback on your answer:</h3>
+    <p><strong>Overall Score:</strong> ${overallScore}%</p>
     
-    <h4>Strengths:</h4>
+    <h4>What you did well:</h4>
     <ul>
-      ${randomStrengths.map(point => `<li>${point}</li>`).join('')}
+      ${strengthPoints.map(point => `<li>${point}</li>`).join('')}
     </ul>
     
-    <h4>Areas for Improvement:</h4>
+    <h4>Areas for improvement:</h4>
     <ul>
-      ${randomImprovements.map(point => `<li>${point}</li>`).join('')}
+      ${improvementPoints.map(point => `<li>${point}</li>`).join('')}
     </ul>
     
-    <p><strong>Tips:</strong> When answering interview questions, focus on being specific rather than general. Use concrete examples from your experience to illustrate your points. Remember to highlight both the actions you took and the results you achieved.</p>
+    <p><strong>${tailoredAdvice}</strong></p>
+    
+    <p class="text-sm mt-4">Try using the STAR method in your answers: <strong>S</strong>ituation, <strong>T</strong>ask, <strong>A</strong>ction, <strong>R</strong>esult. This structure helps you deliver clear, compelling stories about your experience.</p>
   `;
 };
+

@@ -94,10 +94,8 @@ const InterviewChat = ({
               {message.sentiment && (
                 <div className="mt-2 pt-2 border-t border-border">
                   <div className="flex items-center justify-center">
-                    <div className="text-center">
-                      <span className="text-lg font-semibold">
-                        Overall Score: {message.sentiment.overall}%
-                      </span>
+                    <div className="text-xs text-muted-foreground">
+                      Overall Score: <span className="font-bold text-foreground">{message.sentiment.overall}%</span>
                     </div>
                   </div>
                 </div>

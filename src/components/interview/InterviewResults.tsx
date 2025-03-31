@@ -39,14 +39,39 @@ const InterviewResults = ({ messages, questions, onStartNewInterview }: Intervie
   // Generate overall assessment based on average score
   const getOverallAssessment = (score: number) => {
     if (score >= 85) {
-      return "Excellent performance! You demonstrate strong interviewing skills.";
+      return "Excellent performance! You demonstrate strong interviewing skills and are likely to make a positive impression on employers.";
     } else if (score >= 70) {
-      return "Good performance. With some refinement, you'll excel in interviews.";
+      return "Good performance. With some refinement in specific areas, you'll excel in interviews and effectively showcase your qualifications.";
     } else if (score >= 50) {
-      return "Satisfactory performance. Focus on the improvement areas to enhance your interview skills.";
+      return "Satisfactory performance. Focus on the improvement areas to enhance your interview skills and better highlight your strengths.";
     } else {
-      return "You have significant room for improvement. Regular practice will help you develop stronger interviewing skills.";
+      return "You have significant room for improvement. Regular practice using the suggested techniques will help you develop stronger interviewing skills.";
     }
+  };
+
+  // Generate key recommendations based on score
+  const getKeyRecommendations = (score: number) => {
+    const commonRecommendations = [
+      "Practice using the STAR method to structure your answers",
+      "Record yourself and listen for filler words and pacing",
+      "Prepare concise, focused answers for common interview questions"
+    ];
+    
+    const lowerScoreRecommendations = [
+      "Focus on connecting your experiences directly to job requirements",
+      "Practice with a friend who can provide candid feedback",
+      "Write out key talking points for common questions before practicing"
+    ];
+    
+    const higherScoreRecommendations = [
+      "Prepare for behavioral and situational questions with specific examples",
+      "Research the company thoroughly to personalize your answers",
+      "Develop strong questions to ask the interviewer at the end"
+    ];
+    
+    return score >= 70 
+      ? [...commonRecommendations, ...higherScoreRecommendations.slice(0, 2)]
+      : [...commonRecommendations, ...lowerScoreRecommendations.slice(0, 2)];
   };
 
   return (
@@ -81,11 +106,9 @@ const InterviewResults = ({ messages, questions, onStartNewInterview }: Intervie
             
             <h4 className="font-semibold pt-4">Key Areas for Development</h4>
             <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li>Practice using the STAR method to structure your answers.</li>
-              <li>Work on including specific metrics and results in your examples.</li>
-              <li>Prepare concise, focused answers for common interview questions.</li>
-              <li>Record yourself and listen for filler words and pacing.</li>
-              <li>Practice relating your experiences directly to the job requirements.</li>
+              {getKeyRecommendations(averageScore).map((rec, index) => (
+                <li key={index}>{rec}</li>
+              ))}
             </ul>
           </div>
         </CardContent>
