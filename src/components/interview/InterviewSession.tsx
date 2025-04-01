@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import InterviewChat from './InterviewChat';
 import InterviewTips from './InterviewTips';
 import QuestionStrategy from './QuestionStrategy';
+import { QuestionWithStrategy } from '@/types/interview';
 
 interface SentimentScore {
   confidence: number;
@@ -25,6 +26,7 @@ interface InterviewSessionProps {
   interviewType: 'general' | 'narrowed' | null;
   currentQuestionIndex: number;
   questions: string[];
+  questionObjects?: QuestionWithStrategy[];
   messages: Message[];
   isRecording: boolean;
   recordingTime: number;
@@ -45,6 +47,7 @@ const InterviewSession = ({
   interviewType,
   currentQuestionIndex,
   questions,
+  questionObjects = [],
   messages,
   isRecording,
   recordingTime,
@@ -60,6 +63,8 @@ const InterviewSession = ({
   clearRecording,
   onGoBack
 }: InterviewSessionProps) => {
+  const currentQuestionObject = questionObjects[currentQuestionIndex];
+  
   return <div className="grid grid-cols-1 md:grid-cols-12 gap-6 py-8">
       <div className="md:col-span-8">
         <div className="flex items-center mb-6">
@@ -107,7 +112,10 @@ const InterviewSession = ({
       </div>
       
       <div className="md:col-span-4">
-        <QuestionStrategy currentQuestion={questions[currentQuestionIndex]} />
+        <QuestionStrategy 
+          currentQuestion={questions[currentQuestionIndex]} 
+          questionObject={currentQuestionObject}
+        />
       </div>
     </div>;
 };

@@ -1,11 +1,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { QuestionWithStrategy } from "@/types/interview";
 
 interface QuestionStrategyProps {
   currentQuestion: string;
+  questionObject?: QuestionWithStrategy;
 }
 
-const QuestionStrategy = ({ currentQuestion }: QuestionStrategyProps) => {
+const QuestionStrategy = ({ currentQuestion, questionObject }: QuestionStrategyProps) => {
   return (
     <Card className="sticky top-4">
       <CardHeader>
@@ -21,23 +23,31 @@ const QuestionStrategy = ({ currentQuestion }: QuestionStrategyProps) => {
             <h4 className="text-sm font-semibold mb-2">Question Strategy</h4>
             <p className="text-sm text-muted-foreground">
               This is a{' '}
-              {currentQuestion?.toLowerCase().includes('tell me about') 
-                ? 'behavioral' 
-                : 'situational'} question.
-              Focus on {currentQuestion?.toLowerCase().includes('tell me about') 
-                ? 'providing specific examples' 
-                : 'explaining your thought process'}.
+              <span className="font-medium">{questionObject?.type || 'general'}</span> question.
+              {!questionObject && (
+                currentQuestion?.toLowerCase().includes('tell me about') 
+                  ? ' Focus on providing specific examples.' 
+                  : ' Focus on explaining your thought process.'
+              )}
             </p>
           </div>
           
           <div>
             <h4 className="text-sm font-semibold mb-2">Key Points to Address</h4>
-            <ul className="text-sm text-muted-foreground list-disc pl-5 space-y-1">
-              <li>Your specific experience or approach</li>
-              <li>The skills you demonstrated</li>
-              <li>The results you achieved</li>
-              <li>What you learned from the experience</li>
-            </ul>
+            {questionObject ? (
+              <ul className="text-sm text-muted-foreground list-disc pl-5 space-y-1">
+                {questionObject.keyPoints.map((point, index) => (
+                  <li key={index}>{point}</li>
+                ))}
+              </ul>
+            ) : (
+              <ul className="text-sm text-muted-foreground list-disc pl-5 space-y-1">
+                <li>Your specific experience or approach</li>
+                <li>The skills you demonstrated</li>
+                <li>The results you achieved</li>
+                <li>What you learned from the experience</li>
+              </ul>
+            )}
           </div>
         </div>
       </CardContent>

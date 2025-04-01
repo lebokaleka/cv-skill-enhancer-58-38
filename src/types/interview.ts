@@ -24,10 +24,16 @@ export interface FormData {
   keySkills: string;
 }
 
+export interface QuestionWithStrategy {
+  question: string;
+  type: string;
+  keyPoints: string[];
+}
+
 export interface InterviewQuestions {
   general: {
-    basic: string[];
-    intermediate: string[];
-    advanced: string[];
+    basic: QuestionWithStrategy[];
+    intermediate: QuestionWithStrategy[];
+    advanced: QuestionWithStrategy[];
   }
 }

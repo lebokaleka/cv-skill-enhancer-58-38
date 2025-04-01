@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import { InterviewType, Message } from '@/types/interview';
-import { interviewQuestionsByCategory } from '@/utils/interviewUtils';
+import { InterviewType, Message, QuestionWithStrategy } from '@/types/interview';
+import { interviewQuestionsByCategory, selectRandomQuestions, extractQuestionTexts } from '@/utils/interviewUtils';
 
 export const useInterviewQuestions = (
   currentStep: string, 
@@ -10,6 +10,7 @@ export const useInterviewQuestions = (
   questionCount: number
 ) => {
   const [questions, setQuestions] = useState<string[]>([]);
+  const [questionObjects, setQuestionObjects] = useState<QuestionWithStrategy[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -17,11 +18,18 @@ export const useInterviewQuestions = (
   useEffect(() => {
     if (currentStep === 'interview') {
       if (interviewType === 'general') {
-        const selectedQuestions = [...interviewQuestionsByCategory.general[difficulty as keyof typeof interviewQuestionsByCategory.general]];
-        setQuestions(selectedQuestions.slice(0, questionCount));
+        // Select random questions based on difficulty
+        const selectedQuestionObjects = selectRandomQuestions(difficulty, questionCount);
+        setQuestionObjects(selectedQuestionObjects);
+        
+        // Extract just the question texts for backwards compatibility
+        const questionTexts = extractQuestionTexts(selectedQuestionObjects);
+        setQuestions(questionTexts);
+        
+        // Set the first question as an AI message
         setMessages([{
           role: 'ai',
-          content: selectedQuestions[0]
+          content: questionTexts[0]
         }]);
       } else if (interviewType === 'narrowed') {
         // For job-specific interviews, we'll use a set of default questions for now
@@ -33,6 +41,19 @@ export const useInterviewQuestions = (
           "What interests you most about working at this company?",
           "How do you see yourself contributing to this role in the first 90 days?"
         ];
+        
+        // Create dummy question objects for job-specific questions
+        const jobSpecificQuestionObjects = jobSpecificQuestions.map(q => ({
+          question: q,
+          type: "Job-Specific",
+          keyPoints: [
+            "Relevant experience",
+            "Skills alignment",
+            "Cultural fit"
+          ]
+        }));
+        
+        setQuestionObjects(jobSpecificQuestionObjects);
         setQuestions(jobSpecificQuestions);
         setMessages([{
           role: 'ai',
@@ -44,6 +65,7 @@ export const useInterviewQuestions = (
 
   return {
     questions,
+    questionObjects,
     messages,
     currentQuestionIndex,
     setMessages,
