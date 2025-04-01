@@ -1,7 +1,8 @@
 
 import { useState, useEffect } from 'react';
-import { InterviewType, Message, QuestionWithStrategy } from '@/types/interview';
+import { InterviewType, Message, QuestionWithStrategy, DifficultyLevel } from '@/types/interview';
 import { interviewQuestionsByCategory, selectRandomQuestions, extractQuestionTexts } from '@/utils/interviewUtils';
+import { toast } from "@/hooks/use-toast";
 
 export const useInterviewQuestions = (
   currentStep: string, 
@@ -18,22 +19,44 @@ export const useInterviewQuestions = (
   useEffect(() => {
     if (currentStep === 'interview') {
       if (interviewType === 'general') {
+        // Validate and normalize difficulty to ensure it's a valid DifficultyLevel
+        const validatedDifficulty = validateDifficulty(difficulty);
+        
         // Debug information
-        console.log(`Selecting questions with difficulty: ${difficulty}`);
+        console.log(`Selecting questions with validated difficulty: ${validatedDifficulty}`);
         
-        // Select random questions based on difficulty - explicitly pass the difficulty level
-        const selectedQuestionObjects = selectRandomQuestions(difficulty, questionCount);
-        setQuestionObjects(selectedQuestionObjects);
-        
-        // Extract just the question texts for backwards compatibility
-        const questionTexts = extractQuestionTexts(selectedQuestionObjects);
-        setQuestions(questionTexts);
-        
-        // Set the first question as an AI message
-        setMessages([{
-          role: 'ai',
-          content: questionTexts[0]
-        }]);
+        try {
+          // Select random questions based on validated difficulty
+          const selectedQuestionObjects = selectRandomQuestions(validatedDifficulty, questionCount);
+          
+          if (selectedQuestionObjects.length === 0) {
+            toast({
+              title: "Error loading questions",
+              description: "No questions available for the selected difficulty",
+              variant: "destructive"
+            });
+            return;
+          }
+          
+          setQuestionObjects(selectedQuestionObjects);
+          
+          // Extract just the question texts for backwards compatibility
+          const questionTexts = extractQuestionTexts(selectedQuestionObjects);
+          setQuestions(questionTexts);
+          
+          // Set the first question as an AI message
+          setMessages([{
+            role: 'ai',
+            content: questionTexts[0]
+          }]);
+        } catch (error) {
+          console.error("Error selecting interview questions:", error);
+          toast({
+            title: "Error loading questions",
+            description: "There was a problem loading interview questions",
+            variant: "destructive"
+          });
+        }
       } else if (interviewType === 'narrowed') {
         // For job-specific interviews, we'll use a set of default questions for now
         // In a real implementation, these would be generated based on job details
@@ -65,6 +88,21 @@ export const useInterviewQuestions = (
       }
     }
   }, [currentStep, interviewType, difficulty, questionCount]);
+
+  // Helper function to validate and normalize difficulty
+  const validateDifficulty = (difficultyInput: string): DifficultyLevel => {
+    // Normalize to lowercase for consistent comparison
+    const normalizedDifficulty = difficultyInput.toLowerCase();
+    
+    // Check if it's one of our valid difficulty levels
+    if (['basic', 'intermediate', 'advanced'].includes(normalizedDifficulty)) {
+      return normalizedDifficulty as DifficultyLevel;
+    }
+    
+    // Default to 'basic' if invalid
+    console.warn(`Invalid difficulty level provided: "${difficultyInput}". Defaulting to "basic".`);
+    return 'basic';
+  };
 
   return {
     questions,

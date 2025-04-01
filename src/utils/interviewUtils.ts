@@ -1,4 +1,5 @@
-import { Message, QuestionWithStrategy } from '@/types/interview';
+
+import { Message, QuestionWithStrategy, DifficultyLevel, InterviewQuestions } from '@/types/interview';
 import { toast } from "@/hooks/use-toast";
 
 export const interviewQuestionsByCategory = {
@@ -593,20 +594,36 @@ export const interviewQuestionsByCategory = {
 };
 
 // Function to select random questions for an interview session
-export const selectRandomQuestions = (difficultyLevel: string, count: number = 5): QuestionWithStrategy[] => {
-  // Make sure we're using the correct difficulty level
-  const validDifficulty = ['basic', 'intermediate', 'advanced'].includes(difficultyLevel) 
-    ? difficultyLevel 
-    : 'basic';
+export const selectRandomQuestions = (difficultyLevel: DifficultyLevel, count: number = 5): QuestionWithStrategy[] => {
+  try {
+    // Ensure we have a valid difficulty level
+    if (!['basic', 'intermediate', 'advanced'].includes(difficultyLevel)) {
+      console.error(`Invalid difficulty level: ${difficultyLevel}`);
+      throw new Error(`Invalid difficulty level: ${difficultyLevel}`);
+    }
     
-  console.log(`Using difficulty: ${validDifficulty} to select questions`);
-  
-  // Access the correct section of the question bank based on difficulty
-  const allQuestions = interviewQuestionsByCategory.general[validDifficulty as keyof typeof interviewQuestionsByCategory.general];
-  
-  // Shuffle and select the requested number of questions
-  const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
+    console.log(`Selecting questions from difficulty: ${difficultyLevel}`);
+    
+    // Safely access the correct section of the question bank based on difficulty
+    const questionBank = interviewQuestionsByCategory.general;
+    const allQuestions = questionBank[difficultyLevel];
+    
+    if (!allQuestions || !Array.isArray(allQuestions) || allQuestions.length === 0) {
+      console.error(`No questions found for difficulty: ${difficultyLevel}`);
+      throw new Error(`No questions found for difficulty: ${difficultyLevel}`);
+    }
+    
+    // Log how many questions are available for this difficulty
+    console.log(`Found ${allQuestions.length} questions for difficulty ${difficultyLevel}`);
+    
+    // Shuffle and select the requested number of questions
+    const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.min(count, allQuestions.length));
+  } catch (error) {
+    console.error("Error selecting random questions:", error);
+    // Return an empty array as a fallback
+    return [];
+  }
 };
 
 // Helper function to extract just the question text from the QuestionWithStrategy object
