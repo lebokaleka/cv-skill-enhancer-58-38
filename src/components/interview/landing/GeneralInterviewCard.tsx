@@ -1,11 +1,10 @@
-
 import { useState } from 'react';
 import { BrainCircuit, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
 interface GeneralInterviewCardProps {
   isActive: boolean;
   difficulty: string | null;
@@ -16,7 +15,6 @@ interface GeneralInterviewCardProps {
   onSetQuestionCount: (count: number) => void;
   onStartInterview: () => void;
 }
-
 const GeneralInterviewCard = ({
   isActive,
   difficulty,
@@ -40,7 +38,6 @@ const GeneralInterviewCard = ({
       <CardContent className="space-y-6 flex-1 flex flex-col items-center">
         <div className="space-y-4 w-full max-w-md">
           <div className="w-full">
-            <h3 className="text-center mb-4 font-medium">Select Difficulty Level</h3>
             <RadioGroup value={difficulty || ""} onValueChange={value => onSetDifficulty(value)} className="flex justify-center gap-16">
               <div className="flex flex-col items-center">
                 <div className={`relative w-24 h-12 rounded-full flex items-center justify-center cursor-pointer border transition-all ${difficulty === 'basic' ? 'bg-primary text-white border-primary' : 'bg-white border-gray-300 hover:border-primary/50'}`} onClick={() => onSetDifficulty('basic')}>
@@ -75,10 +72,9 @@ const GeneralInterviewCard = ({
       </CardContent>
       <CardFooter className="mt-auto flex justify-center pb-8">
         <Button className="rounded-full" onClick={onStartInterview}>
-          Start Interview with 5 Questions
+          Start General Interview
         </Button>
       </CardFooter>
     </Card>;
 };
-
 export default GeneralInterviewCard;

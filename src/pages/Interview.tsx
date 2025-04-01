@@ -21,7 +21,6 @@ const Interview = () => {
     isPlaying,
     currentQuestionIndex,
     questions,
-    questionObjects,
     messages,
     audioUrl,
     isAnalyzing,
@@ -84,7 +83,6 @@ const Interview = () => {
             interviewType={interviewType}
             currentQuestionIndex={currentQuestionIndex}
             questions={questions}
-            questionObjects={questionObjects}
             messages={messages}
             isRecording={isRecording}
             recordingTime={recordingTime}

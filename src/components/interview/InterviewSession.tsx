@@ -7,7 +7,6 @@ import { Progress } from "@/components/ui/progress";
 import InterviewChat from './InterviewChat';
 import InterviewTips from './InterviewTips';
 import QuestionStrategy from './QuestionStrategy';
-import { QuestionWithStrategy } from '@/types/interview';
 
 interface SentimentScore {
   confidence: number;
@@ -26,7 +25,6 @@ interface InterviewSessionProps {
   interviewType: 'general' | 'narrowed' | null;
   currentQuestionIndex: number;
   questions: string[];
-  questionObjects?: QuestionWithStrategy[];
   messages: Message[];
   isRecording: boolean;
   recordingTime: number;
@@ -47,7 +45,6 @@ const InterviewSession = ({
   interviewType,
   currentQuestionIndex,
   questions,
-  questionObjects = [],
   messages,
   isRecording,
   recordingTime,
@@ -63,24 +60,21 @@ const InterviewSession = ({
   clearRecording,
   onGoBack
 }: InterviewSessionProps) => {
-  const currentQuestionObject = questionObjects[currentQuestionIndex];
-  
   return <div className="grid grid-cols-1 md:grid-cols-12 gap-6 py-8">
-      <div className="md:col-span-8 py-0 my-[-25px]">
+      <div className="md:col-span-8">
         <div className="flex items-center mb-6">
-          <Button variant="ghost" size="sm" onClick={onGoBack} className="flex items-center gap-2">
-            <ArrowLeft size={16} />
-            Back to options
+          <Button variant="outline" size="sm" onClick={onGoBack}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back
           </Button>
         </div>
 
         <Card className="mb-6">
           <CardHeader className="pb-3">
             <CardTitle>Interview Session</CardTitle>
-            <Progress value={(currentQuestionIndex / questions.length) * 100} className="h-2" />
+            <Progress value={currentQuestionIndex / questions.length * 100} className="h-2" />
           </CardHeader>
           
-          {/* Interview info badges below header */}
+          {/* Interview info badges moved below header */}
           <div className="px-6 pb-3 flex space-x-2">
             <Badge variant="outline" className="text-xs">
               {interviewType === 'general' ? 'General Interview' : 'Job-Specific Interview'}
@@ -97,8 +91,8 @@ const InterviewSession = ({
               recordingTime={recordingTime} 
               isPlaying={isPlaying} 
               isAnalyzing={isAnalyzing} 
-              isProcessing={isProcessing} 
-              audioUrl={audioUrl} 
+              isProcessing={isProcessing}
+              audioUrl={audioUrl}
               transcription={transcription} 
               startRecording={startRecording} 
               stopRecording={stopRecording} 
@@ -113,10 +107,7 @@ const InterviewSession = ({
       </div>
       
       <div className="md:col-span-4">
-        <QuestionStrategy 
-          currentQuestion={questions[currentQuestionIndex]} 
-          questionObject={currentQuestionObject} 
-        />
+        <QuestionStrategy currentQuestion={questions[currentQuestionIndex]} />
       </div>
     </div>;
 };

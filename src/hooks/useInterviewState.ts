@@ -77,7 +77,6 @@ export const useInterviewState = () => {
     isPlaying: recording.isPlaying,
     currentQuestionIndex: interviewQuestions.currentQuestionIndex,
     questions: interviewQuestions.questions,
-    questionObjects: interviewQuestions.questionObjects,
     messages: interviewQuestions.messages,
     audioUrl: recording.audioUrl,
     isAnalyzing: answerAnalysis.isAnalyzing,
