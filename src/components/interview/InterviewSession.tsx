@@ -66,14 +66,6 @@ const InterviewSession = ({
           <Button variant="outline" size="sm" onClick={onGoBack}>
             <ArrowLeft className="mr-2 h-4 w-4" /> Back
           </Button>
-          <div className="ml-auto space-x-2">
-            <Badge variant="outline" className="text-xs">
-              {interviewType === 'general' ? 'General Interview' : 'Job-Specific Interview'}
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              Question {currentQuestionIndex + 1} of {questions.length}
-            </Badge>
-          </div>
         </div>
 
         <Card className="mb-6">
@@ -81,6 +73,17 @@ const InterviewSession = ({
             <CardTitle>Interview Session</CardTitle>
             <Progress value={currentQuestionIndex / questions.length * 100} className="h-2" />
           </CardHeader>
+          
+          {/* Interview info badges moved below header */}
+          <div className="px-6 pb-3 flex space-x-2">
+            <Badge variant="outline" className="text-xs">
+              {interviewType === 'general' ? 'General Interview' : 'Job-Specific Interview'}
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              Question {currentQuestionIndex + 1} of {questions.length}
+            </Badge>
+          </div>
+          
           <CardContent>
             <InterviewChat 
               messages={messages} 
