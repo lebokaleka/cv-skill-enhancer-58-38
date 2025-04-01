@@ -594,7 +594,17 @@ export const interviewQuestionsByCategory = {
 
 // Function to select random questions for an interview session
 export const selectRandomQuestions = (difficultyLevel: string, count: number = 5): QuestionWithStrategy[] => {
-  const allQuestions = interviewQuestionsByCategory.general[difficultyLevel as keyof typeof interviewQuestionsByCategory.general];
+  // Make sure we're using the correct difficulty level
+  const validDifficulty = ['basic', 'intermediate', 'advanced'].includes(difficultyLevel) 
+    ? difficultyLevel 
+    : 'basic';
+    
+  console.log(`Using difficulty: ${validDifficulty} to select questions`);
+  
+  // Access the correct section of the question bank based on difficulty
+  const allQuestions = interviewQuestionsByCategory.general[validDifficulty as keyof typeof interviewQuestionsByCategory.general];
+  
+  // Shuffle and select the requested number of questions
   const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };

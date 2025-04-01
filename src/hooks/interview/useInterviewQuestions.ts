@@ -18,7 +18,10 @@ export const useInterviewQuestions = (
   useEffect(() => {
     if (currentStep === 'interview') {
       if (interviewType === 'general') {
-        // Select random questions based on difficulty
+        // Debug information
+        console.log(`Selecting questions with difficulty: ${difficulty}`);
+        
+        // Select random questions based on difficulty - explicitly pass the difficulty level
         const selectedQuestionObjects = selectRandomQuestions(difficulty, questionCount);
         setQuestionObjects(selectedQuestionObjects);
         
