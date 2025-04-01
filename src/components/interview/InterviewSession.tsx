@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import InterviewChat from './InterviewChat';
 import InterviewTips from './InterviewTips';
 import QuestionStrategy from './QuestionStrategy';
+import { InterviewQuestion } from '@/types/interview';
 
 interface SentimentScore {
   confidence: number;
@@ -24,7 +25,7 @@ interface Message {
 interface InterviewSessionProps {
   interviewType: 'general' | 'narrowed' | null;
   currentQuestionIndex: number;
-  questions: string[];
+  questions: InterviewQuestion[];
   messages: Message[];
   isRecording: boolean;
   recordingTime: number;
@@ -74,7 +75,7 @@ const InterviewSession = ({
             <Progress value={currentQuestionIndex / questions.length * 100} className="h-2" />
           </CardHeader>
           
-          {/* Interview info badges moved below header */}
+          {/* Interview info badges below header */}
           <div className="px-6 pb-3 flex space-x-2">
             <Badge variant="outline" className="text-xs">
               {interviewType === 'general' ? 'General Interview' : 'Job-Specific Interview'}
@@ -107,7 +108,7 @@ const InterviewSession = ({
       </div>
       
       <div className="md:col-span-4">
-        <QuestionStrategy currentQuestion={questions[currentQuestionIndex]} />
+        {questions.length > 0 && <QuestionStrategy currentQuestion={questions[currentQuestionIndex]} />}
       </div>
     </div>;
 };
