@@ -1,5 +1,5 @@
 
-import { InterviewStep, InterviewType, Message } from '@/types/interview';
+import { InterviewStep, InterviewType, Message, InterviewQuestion } from '@/types/interview';
 
 export interface InterviewState {
   currentStep: InterviewStep;
@@ -10,7 +10,7 @@ export interface InterviewState {
   recordingTime: number;
   isPlaying: boolean;
   currentQuestionIndex: number;
-  questions: string[];
+  questions: InterviewQuestion[];
   messages: Message[];
   audioUrl: string | null;
   isAnalyzing: boolean;

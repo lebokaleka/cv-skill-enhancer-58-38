@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { InterviewStep, InterviewType } from '@/types/interview';
+import { InterviewStep, InterviewType, InterviewQuestion } from '@/types/interview';
 import { useRecording } from './interview/useRecording';
 import { useInterviewQuestions } from './interview/useInterviewQuestions';
 import { useAnswerAnalysis } from './interview/useAnswerAnalysis';

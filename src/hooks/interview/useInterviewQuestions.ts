@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { InterviewType, Message, InterviewQuestion } from '@/types/interview';
+import { InterviewType, Message, InterviewQuestion, QuestionType } from '@/types/interview';
 import { interviewQuestionsByCategory } from '@/utils/interviewUtils';
 
 export const useInterviewQuestions = (
@@ -27,14 +27,16 @@ export const useInterviewQuestions = (
         setQuestions(selectedQuestions);
         
         // Set the first question as the initial AI message
-        setMessages([{
-          role: 'ai',
-          content: selectedQuestions[0].question
-        }]);
+        if (selectedQuestions.length > 0) {
+          setMessages([{
+            role: 'ai',
+            content: selectedQuestions[0].question
+          }]);
+        }
       } else if (interviewType === 'narrowed') {
         // For job-specific interviews, we'll use a set of default questions for now
         // In a real implementation, these would be generated based on job details
-        const jobSpecificQuestions = [
+        const jobSpecificQuestions: InterviewQuestion[] = [
           {
             question: "What specific experience do you have that makes you a good fit for this position?",
             type: "Persuasive" as QuestionType,
@@ -62,10 +64,13 @@ export const useInterviewQuestions = (
           }
         ];
         setQuestions(jobSpecificQuestions);
-        setMessages([{
-          role: 'ai',
-          content: jobSpecificQuestions[0].question
-        }]);
+        
+        if (jobSpecificQuestions.length > 0) {
+          setMessages([{
+            role: 'ai',
+            content: jobSpecificQuestions[0].question
+          }]);
+        }
       }
     }
   }, [currentStep, interviewType, difficulty, questionCount]);

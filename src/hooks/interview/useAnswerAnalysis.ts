@@ -1,12 +1,12 @@
 
 import { useState } from 'react';
-import { Message } from '@/types/interview';
+import { Message, InterviewQuestion } from '@/types/interview';
 import { generateFeedback } from '@/utils/interviewUtils';
 
 export const useAnswerAnalysis = (
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
   currentQuestionIndex: number,
-  questions: string[],
+  questions: InterviewQuestion[],
   set: (step: 'results' | 'interview') => void
 ) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -34,7 +34,7 @@ export const useAnswerAnalysis = (
       setTimeout(() => {
         setMessages(prev => [...prev, {
           role: 'ai',
-          content: questions[currentQuestionIndex + 1]
+          content: questions[currentQuestionIndex + 1].question
         }]);
       }, 1500);
     } else {
