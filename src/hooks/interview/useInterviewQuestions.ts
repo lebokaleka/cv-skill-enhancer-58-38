@@ -18,19 +18,27 @@ export const useInterviewQuestions = (
     if (currentStep === 'interview') {
       if (interviewType === 'general') {
         // Get questions from the correct difficulty level
-        const availableQuestions = interviewQuestionsByCategory.general[difficulty as keyof typeof interviewQuestionsByCategory.general];
+        const difficultyKey = difficulty as keyof typeof interviewQuestionsByCategory.general;
+        const availableQuestions = interviewQuestionsByCategory.general[difficultyKey];
         
         // Randomly select the requested number of questions
+        // Type cast the questions to ensure they match InterviewQuestion type with QuestionType enum
         const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
         const selectedQuestions = shuffled.slice(0, questionCount);
         
-        setQuestions(selectedQuestions);
+        // Cast each question's type property to QuestionType
+        const typedQuestions: InterviewQuestion[] = selectedQuestions.map(q => ({
+          ...q,
+          type: q.type as QuestionType
+        }));
+        
+        setQuestions(typedQuestions);
         
         // Set the first question as the initial AI message
-        if (selectedQuestions.length > 0) {
+        if (typedQuestions.length > 0) {
           setMessages([{
             role: 'ai',
-            content: selectedQuestions[0].question
+            content: typedQuestions[0].question
           }]);
         }
       } else if (interviewType === 'narrowed') {
