@@ -3,6 +3,7 @@ import { ArrowLeft, Save } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { InterviewQuestion } from '@/types/interview';
 
 interface SentimentScore {
   confidence: number;
@@ -19,7 +20,7 @@ interface Message {
 
 interface InterviewResultsProps {
   messages: Message[];
-  questions: string[];
+  questions: InterviewQuestion[];
   onStartNewInterview: () => void;
 }
 
@@ -130,7 +131,7 @@ const InterviewResults = ({ messages, questions, onStartNewInterview }: Intervie
           <div className="space-y-6">
             {questions.map((question, index) => {
               const userMsg = messages.find(
-                (msg, i) => msg.role === 'user' && messages[i - 1]?.content === question
+                (msg, i) => msg.role === 'user' && messages[i - 1]?.content === question.question
               );
               
               const aiMsg = userMsg ? messages.find(
@@ -139,7 +140,7 @@ const InterviewResults = ({ messages, questions, onStartNewInterview }: Intervie
               
               return (
                 <div key={index} className="pb-4 border-b last:border-b-0">
-                  <h5 className="font-medium mb-2">{index + 1}. {question}</h5>
+                  <h5 className="font-medium mb-2">{index + 1}. {question.question}</h5>
                   {aiMsg?.sentiment && (
                     <div className="flex space-x-2 mt-2">
                       <Badge 
