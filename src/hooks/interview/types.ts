@@ -23,7 +23,7 @@ export interface InterviewActions {
   handleStopRecording: () => void;
   handleTogglePlayback: () => void;
   handleSubmitRecording: () => void;
-  handleInterviewTypeSelect: (type: InterviewType) => void;
+  handleInterviewTypeSelect: (type: InterviewType, selectedDifficulty?: string) => void;
   handleStartInterview: () => void;
   handleStartNewInterview: () => void;
   handleClearRecording: () => void;

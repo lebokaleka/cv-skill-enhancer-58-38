@@ -47,7 +47,12 @@ export const useInterviewState = () => {
   };
 
   // Interview flow handlers
-  const handleInterviewTypeSelect = (type: InterviewType) => {
+  const handleInterviewTypeSelect = (type: InterviewType, selectedDifficulty?: string) => {
+    // If a difficulty is provided, update it first
+    if (selectedDifficulty) {
+      setDifficulty(selectedDifficulty);
+    }
+    
     setInterviewType(type);
     if (type) {
       setCurrentStep('interview');

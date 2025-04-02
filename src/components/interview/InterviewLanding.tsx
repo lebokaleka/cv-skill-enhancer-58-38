@@ -7,7 +7,7 @@ import JobSpecificCard from './landing/JobSpecificCard';
 import { InterviewType } from '@/types/interview';
 
 interface InterviewLandingProps {
-  onSelectInterviewType: (type: InterviewType) => void;
+  onSelectInterviewType: (type: InterviewType, selectedDifficulty?: string) => void;
 }
 
 const InterviewLanding = ({
@@ -31,8 +31,8 @@ const InterviewLanding = ({
 
   const handleGeneralInterviewStart = () => {
     if (difficulty) {
-      // Only difficulty setting is required now
-      onSelectInterviewType('general');
+      // Pass the selected difficulty directly when starting the interview
+      onSelectInterviewType('general', difficulty);
       setShowGeneralError(false);
     } else {
       // Show error message if difficulty is not selected

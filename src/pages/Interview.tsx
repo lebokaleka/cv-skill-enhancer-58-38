@@ -42,12 +42,12 @@ const Interview = () => {
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
   
   // Check authentication when attempting to start an interview
-  const handleInterviewTypeSelectWithAuth = (type: InterviewType) => {
+  const handleInterviewTypeSelectWithAuth = (type: InterviewType, selectedDifficulty?: string) => {
     if (type && !isAuthenticated) {
       setIsAuthModalOpen(true);
       return;
     }
-    handleInterviewTypeSelect(type);
+    handleInterviewTypeSelect(type, selectedDifficulty);
   };
   
   const handleStartInterviewWithAuth = () => {
