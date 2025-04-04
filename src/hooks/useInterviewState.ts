@@ -11,7 +11,6 @@ export const useInterviewState = () => {
   const [interviewType, setInterviewType] = useState<InterviewType>(null);
   const [difficulty, setDifficulty] = useState('basic');
   const [questionCount, setQuestionCount] = useState(5); // Fixed to 5 for general interviews
-  const [openAIApiKey, setOpenAIApiKey] = useState<string | null>(localStorage.getItem('openai_api_key'));
 
   // Custom hooks
   const recording = useRecording();
@@ -23,120 +22,27 @@ export const useInterviewState = () => {
     (step) => setCurrentStep(step as InterviewStep)
   );
 
-  // API key handler
-  const handleSetApiKey = (key: string) => {
-    setOpenAIApiKey(key);
-    localStorage.setItem('openai_api_key', key);
-    recording.setApiKey(key);
-  };
-
   // Submit recording handler
   const handleSubmitRecording = async () => {
-    if (!recording.audioUrl) {
-      console.error("No audio recording to submit");
-      return;
-    }
+    if (!recording.audioUrl) return;
     
     try {
-      // Set loading state
-      recording.setIsProcessing(true);
+      // Transcribe audio using OpenAI
+      const userResponse = await recording.transcribeAudio();
       
-      // Transcribe audio using OpenAI via the edge function
-      const audioData = await recording.transcribeAudio();
+      interviewQuestions.setMessages(prev => [...prev, {
+        role: 'user',
+        content: userResponse
+      }]);
       
-      if (!audioData) {
-        throw new Error("Failed to process audio");
-      }
-      
-      // Get the current question
-      const currentQuestion = interviewQuestions.questions[interviewQuestions.currentQuestionIndex];
-      
-      if (!currentQuestion) {
-        throw new Error("No question found");
-      }
-      
-      // Send audio to analyze-interview-response edge function
-      const response = await fetch('https://tpsbdccngrhhdoekzasp.supabase.co/functions/v1/analyze-interview-response', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          audio: audioData,
-          question: currentQuestion.question
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Analysis failed: ${await response.text()}`);
-      }
-      
-      const result = await response.json();
-      
-      // Set the transcription
-      recording.setTranscription(result.transcription);
-      
-      // Add user message with the transcription
-      interviewQuestions.setMessages(prev => [
-        ...prev, 
-        {
-          role: 'user',
-          content: result.transcription
-        }
-      ]);
-      
-      // Analyze the response
       answerAnalysis.setIsAnalyzing(true);
       
-      // Add the AI feedback message (now handled by the edge function response)
-      const feedbackHtml = `
-        <div>
-          <p>${result.feedback}</p>
-          <div class="mt-3 pt-3 border-t border-gray-200">
-            <div class="grid grid-cols-2 gap-2 text-sm">
-              <div>Confidence: ${result.sentiment.confidence}%</div>
-              <div>Clarity: ${result.sentiment.clarity}%</div>
-              <div>Relevance: ${result.sentiment.relevance}%</div>
-              <div>Overall: ${result.sentiment.overall}%</div>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      interviewQuestions.setMessages(prev => [
-        ...prev,
-        {
-          role: 'ai',
-          content: feedbackHtml,
-          sentiment: result.sentiment
-        }
-      ]);
-      
-      // Move to the next question if available
-      if (interviewQuestions.currentQuestionIndex < interviewQuestions.questions.length - 1) {
-        interviewQuestions.setCurrentQuestionIndex(interviewQuestions.currentQuestionIndex + 1);
-        const nextQuestion = interviewQuestions.questions[interviewQuestions.currentQuestionIndex + 1];
-        
-        interviewQuestions.setMessages(prev => [
-          ...prev,
-          {
-            role: 'ai',
-            content: nextQuestion.question
-          }
-        ]);
-      } else {
-        // If this was the last question, move to results screen
-        setTimeout(() => {
-          setCurrentStep('results');
-        }, 1500);
-      }
-      
+      setTimeout(() => {
+        answerAnalysis.analyzeSentiment(userResponse);
+        interviewQuestions.setCurrentQuestionIndex(prev => prev + 1);
+      }, 2000);
     } catch (error) {
       console.error("Error processing recording:", error);
-      recording.setTranscription("An error occurred while processing your response. Please try again.");
-    } finally {
-      recording.setIsProcessing(false);
-      answerAnalysis.setIsAnalyzing(false);
     }
   };
 
@@ -161,8 +67,7 @@ export const useInterviewState = () => {
     setCurrentStep('landing');
     setInterviewType(null);
     interviewQuestions.setCurrentQuestionIndex(0);
-    // Instead of using setAudioUrl which doesn't exist, we'll use handleClearRecording
-    recording.handleClearRecording();
+    recording.setAudioUrl(null);
     recording.setTranscription(null);
   };
 
@@ -182,7 +87,6 @@ export const useInterviewState = () => {
     isAnalyzing: answerAnalysis.isAnalyzing,
     isProcessing: recording.isProcessing,
     transcription: recording.transcription,
-    openAIApiKey,
     
     // Handlers
     setDifficulty,
@@ -194,7 +98,6 @@ export const useInterviewState = () => {
     handleInterviewTypeSelect,
     handleStartInterview,
     handleStartNewInterview,
-    handleClearRecording: recording.handleClearRecording,
-    setOpenAIApiKey: handleSetApiKey
+    handleClearRecording: recording.handleClearRecording
   };
 };

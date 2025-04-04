@@ -1,22 +1,16 @@
 
-import { useState } from 'react';
 import { useInterviewState } from '@/hooks/useInterviewState';
 import InterviewLanding from '@/components/interview/InterviewLanding';
 import InterviewSelection from '@/components/interview/InterviewSelection';
 import InterviewSession from '@/components/interview/InterviewSession';
 import InterviewResults from '@/components/interview/InterviewResults';
-import ApiKeySettings from '@/components/interview/settings/ApiKeySettings';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
 import { InterviewType } from '@/types/interview';
-import { Settings, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet';
+import { useEffect } from 'react';
 
 const Interview = () => {
-  const [showSettings, setShowSettings] = useState(false);
-  
   const {
     currentStep,
     interviewType,
@@ -32,7 +26,6 @@ const Interview = () => {
     isAnalyzing,
     isProcessing,
     transcription,
-    openAIApiKey,
     
     setDifficulty,
     setQuestionCount,
@@ -43,8 +36,7 @@ const Interview = () => {
     handleInterviewTypeSelect,
     handleStartInterview,
     handleStartNewInterview,
-    handleClearRecording,
-    setOpenAIApiKey
+    handleClearRecording
   } = useInterviewState();
   
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
@@ -122,44 +114,6 @@ const Interview = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow pt-24 pb-16">
-        {/* Settings button */}
-        <div className="fixed top-20 right-4 z-10">
-          <Button
-            onClick={() => setShowSettings(true)}
-            size="sm"
-            variant="outline"
-            className="rounded-full h-10 w-10 p-0"
-          >
-            <Settings className="h-5 w-5" />
-          </Button>
-        </div>
-        
-        {/* Settings panel */}
-        <Sheet open={showSettings} onOpenChange={setShowSettings}>
-          <SheetContent>
-            <SheetHeader className="pb-4">
-              <SheetTitle>Interview Settings</SheetTitle>
-              <SheetDescription>
-                Configure API keys and other interview settings.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="space-y-6 py-4">
-              <ApiKeySettings 
-                apiKey={openAIApiKey} 
-                setApiKey={setOpenAIApiKey} 
-              />
-            </div>
-            <SheetClose asChild>
-              <Button
-                className="absolute top-4 right-4 h-7 w-7 p-0 rounded-full"
-                variant="ghost"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </SheetClose>
-          </SheetContent>
-        </Sheet>
-        
         <div className="app-container">
           {renderContent()}
         </div>

@@ -14,7 +14,6 @@ export interface InterviewState {
   messages: Message[];
   audioUrl: string | null;
   isAnalyzing: boolean;
-  openAIApiKey: string | null;
 }
 
 export interface InterviewActions {
@@ -28,5 +27,4 @@ export interface InterviewActions {
   handleStartInterview: () => void;
   handleStartNewInterview: () => void;
   handleClearRecording: () => void;
-  setOpenAIApiKey: (key: string) => void;
 }
