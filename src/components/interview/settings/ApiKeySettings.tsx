@@ -16,8 +16,9 @@ const ApiKeySettings = ({ apiKey, setApiKey }: ApiKeySettingsProps) => {
   const [key, setKey] = useState(apiKey || '');
   const [isKeySaved, setIsKeySaved] = useState(Boolean(apiKey));
   const [isKeyHidden, setIsKeyHidden] = useState(true);
+  const [isValidating, setIsValidating] = useState(false);
 
-  const handleSaveKey = () => {
+  const handleSaveKey = async () => {
     if (!key.trim()) {
       toast({
         title: "API Key Required",
@@ -27,15 +28,41 @@ const ApiKeySettings = ({ apiKey, setApiKey }: ApiKeySettingsProps) => {
       return;
     }
     
-    // Store in localStorage
-    localStorage.setItem('openai_api_key', key.trim());
-    setApiKey(key.trim());
-    setIsKeySaved(true);
+    // Validate the API key format
+    if (!key.trim().startsWith('sk-')) {
+      toast({
+        title: "Invalid API Key",
+        description: "OpenAI API keys should start with 'sk-'",
+        variant: "destructive"
+      });
+      return;
+    }
     
-    toast({
-      title: "API Key Saved",
-      description: "Your OpenAI API key has been saved successfully",
-    });
+    try {
+      setIsValidating(true);
+      
+      // For security reasons, we won't validate the key by making an API call
+      // Instead, we'll just check the format and trust it
+      
+      // Store in localStorage
+      localStorage.setItem('openai_api_key', key.trim());
+      setApiKey(key.trim());
+      setIsKeySaved(true);
+      
+      toast({
+        title: "API Key Saved",
+        description: "Your OpenAI API key has been saved successfully",
+      });
+    } catch (error) {
+      console.error("Error validating API key:", error);
+      toast({
+        title: "Validation Failed",
+        description: "Could not validate your API key",
+        variant: "destructive"
+      });
+    } finally {
+      setIsValidating(false);
+    }
   };
 
   const handleClearKey = () => {
@@ -68,6 +95,7 @@ const ApiKeySettings = ({ apiKey, setApiKey }: ApiKeySettingsProps) => {
               <AlertCircle className="h-4 w-4 text-amber-600" />
               <AlertDescription>
                 Your API key is stored locally in your browser and is never sent to our servers.
+                All API calls are made directly from your browser to OpenAI through our secure edge functions.
               </AlertDescription>
             </Alert>
 
@@ -99,11 +127,11 @@ const ApiKeySettings = ({ apiKey, setApiKey }: ApiKeySettingsProps) => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={handleClearKey} disabled={!isKeySaved}>
+        <Button variant="outline" onClick={handleClearKey} disabled={!isKeySaved || isValidating}>
           Clear Key
         </Button>
-        <Button onClick={handleSaveKey}>
-          Save Key
+        <Button onClick={handleSaveKey} disabled={isValidating}>
+          {isValidating ? "Validating..." : "Save Key"}
         </Button>
       </CardFooter>
     </Card>

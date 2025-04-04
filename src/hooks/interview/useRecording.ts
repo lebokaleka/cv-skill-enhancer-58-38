@@ -2,24 +2,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { toast } from "@/hooks/use-toast";
 
-// Audio processing helper function
-const getMimeType = () => {
-  const types = [
-    'audio/webm',
-    'audio/mp4',
-    'audio/ogg',
-    'audio/wav'
-  ];
-  
-  for (const type of types) {
-    if (MediaRecorder.isTypeSupported(type)) {
-      return type;
-    }
-  }
-  
-  return 'audio/webm'; // Fallback
-};
-
 export const useRecording = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
@@ -27,173 +9,182 @@ export const useRecording = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [transcription, setTranscription] = useState<string | null>(null);
-  const [apiKey, setApiKey] = useState<string | null>(localStorage.getItem('openai_api_key'));
+  const [apiKey, setApiKey] = useState<string | null>(null);
   
-  // Refs
-  const recordingTimerRef = useRef<number | null>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const audioBlobRef = useRef<Blob | null>(null);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const audioChunks = useRef<Blob[]>([]);
+  const timerRef = useRef<number | null>(null);
+  const audioElement = useRef<HTMLAudioElement | null>(null);
 
-  // Effects for recording timer
+  // Reset timer when component unmounts
   useEffect(() => {
-    if (isRecording) {
-      recordingTimerRef.current = window.setInterval(() => {
+    return () => {
+      if (timerRef.current) {
+        window.clearInterval(timerRef.current);
+      }
+    };
+  }, []);
+
+  // Load API key from localStorage on mount
+  useEffect(() => {
+    const storedApiKey = localStorage.getItem('openai_api_key');
+    if (storedApiKey) {
+      setApiKey(storedApiKey);
+    }
+  }, []);
+
+  // Function to handle recording start
+  const handleStartRecording = async () => {
+    try {
+      // Check if the browser supports MediaRecorder
+      if (!navigator.mediaDevices || !window.MediaRecorder) {
+        toast({
+          title: "Recording Not Supported",
+          description: "Your browser doesn't support audio recording",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Get access to the microphone
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      
+      // Create a new MediaRecorder instance
+      const mimeType = getMimeType();
+      mediaRecorder.current = new MediaRecorder(stream, { mimeType });
+      
+      // Clear previous audio chunks
+      audioChunks.current = [];
+      
+      // Add the audio chunks when available
+      mediaRecorder.current.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunks.current.push(event.data);
+        }
+      };
+      
+      // When the recording stops, create a Blob and set the audio URL
+      mediaRecorder.current.onstop = () => {
+        const audioBlob = new Blob(audioChunks.current, { type: mimeType });
+        const newAudioUrl = URL.createObjectURL(audioBlob);
+        setAudioUrl(newAudioUrl);
+        
+        // Create an audio element for playback
+        audioElement.current = new Audio(newAudioUrl);
+        audioElement.current.onended = () => {
+          setIsPlaying(false);
+        };
+      };
+      
+      // Start recording
+      mediaRecorder.current.start();
+      setIsRecording(true);
+      setRecordingTime(0);
+      
+      // Start a timer to track recording duration
+      timerRef.current = window.setInterval(() => {
         setRecordingTime(prev => {
+          // Auto-stop after 30 seconds
           if (prev >= 30) {
-            handleStopRecording();
-            toast({
-              title: "Recording limit reached",
-              description: "The maximum recording time is 30 seconds"
-            });
-            return 30;
+            if (mediaRecorder.current && mediaRecorder.current.state === 'recording') {
+              handleStopRecording();
+            }
+            return prev;
           }
           return prev + 1;
         });
       }, 1000);
-    } else if (recordingTimerRef.current) {
-      clearInterval(recordingTimerRef.current);
-    }
-    
-    return () => {
-      if (recordingTimerRef.current) {
-        clearInterval(recordingTimerRef.current);
-      }
-    };
-  }, [isRecording]);
-
-  // Handlers
-  const handleStartRecording = async () => {
-    try {
-      setTranscription(null);
-      audioChunksRef.current = [];
-
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       
-      const mimeType = getMimeType();
-      const mediaRecorder = new MediaRecorder(stream, { mimeType });
-      
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
-
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
-        audioBlobRef.current = audioBlob;
-        const url = URL.createObjectURL(audioBlob);
-        setAudioUrl(url);
-        
-        // Clean up stream tracks
-        stream.getTracks().forEach(track => track.stop());
-      };
-
-      mediaRecorderRef.current = mediaRecorder;
-      mediaRecorder.start();
-      setIsRecording(true);
-      setRecordingTime(0);
-      setAudioUrl(null);
-
-      toast({
-        title: "Recording started",
-        description: "Speak clearly into your microphone..."
-      });
-
     } catch (error) {
       console.error("Error starting recording:", error);
       toast({
-        title: "Recording failed",
-        description: "Unable to access microphone",
+        title: "Recording Failed",
+        description: "Could not access your microphone",
         variant: "destructive"
       });
     }
   };
 
+  // Function to handle recording stop
   const handleStopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
+    if (mediaRecorder.current && mediaRecorder.current.state === 'recording') {
+      mediaRecorder.current.stop();
+      
+      // Stop all audio tracks
+      mediaRecorder.current.stream.getTracks().forEach(track => track.stop());
+      
       setIsRecording(false);
       
-      toast({
-        title: "Recording complete",
-        description: "You can now listen to your answer or submit it for analysis."
-      });
+      // Clear the timer
+      if (timerRef.current) {
+        window.clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     }
   };
 
+  // Function to toggle audio playback
   const handleTogglePlayback = () => {
-    setIsPlaying(!isPlaying);
-    if (!isPlaying) {
-      setTimeout(() => {
-        setIsPlaying(false);
-      }, 3000);
+    if (!audioElement.current) return;
+    
+    if (isPlaying) {
+      audioElement.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioElement.current.play();
+      setIsPlaying(true);
     }
   };
 
+  // Function to clear the recording
   const handleClearRecording = () => {
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+    }
     setAudioUrl(null);
     setTranscription(null);
-    audioBlobRef.current = null;
+    audioChunks.current = [];
+    audioElement.current = null;
   };
 
-  const transcribeAudio = async (): Promise<string> => {
-    if (!audioUrl || !audioBlobRef.current) {
-      throw new Error("No audio recording available");
+  // Function to transcribe audio using OpenAI's Whisper API
+  const transcribeAudio = async () => {
+    if (!audioUrl) {
+      return "";
     }
     
-    setIsProcessing(true);
-    
     try {
-      // Check if we have an API key
-      if (!apiKey) {
-        // If no API key, use simulation instead
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        const simulatedTranscription = "This is a simulated transcription of the recorded answer. In a real implementation, this would be the actual transcribed text from the OpenAI API.";
-        setTranscription(simulatedTranscription);
-        setIsProcessing(false);
-        return simulatedTranscription;
-      }
+      setIsProcessing(true);
       
-      // Create a FormData instance to send the audio file
-      const formData = new FormData();
-      formData.append('file', audioBlobRef.current, 'recording.webm');
-      formData.append('model', 'whisper-1');
-      formData.append('language', 'en');
+      // Convert the audio URL to base64
+      const audioBlob = await fetch(audioUrl).then(r => r.blob());
       
-      // Make the API request to OpenAI's Whisper API
-      const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: formData
+      // Create a FileReader to read the blob as a base64 string
+      const reader = new FileReader();
+      const audioBase64Promise = new Promise<string>((resolve) => {
+        reader.onloadend = () => {
+          const base64 = reader.result as string;
+          resolve(base64);
+        };
       });
+      reader.readAsDataURL(audioBlob);
       
-      if (!response.ok) {
-        throw new Error(`Whisper API error: ${response.status} ${response.statusText}`);
-      }
+      const audioBase64 = await audioBase64Promise;
       
-      const data = await response.json();
-      const transcribedText = data.text || '';
+      // Direct transcription is now handled by the edge function
+      // Just return the audio for now
+      setTranscription("Processing your response...");
+      return audioBase64;
       
-      setTranscription(transcribedText);
-      setIsProcessing(false);
-      return transcribedText;
     } catch (error) {
       console.error("Error transcribing audio:", error);
-      setIsProcessing(false);
-      
       toast({
-        title: "Transcription failed",
-        description: "Unable to transcribe audio. Using simulated transcription instead.",
+        title: "Transcription Failed",
+        description: "An error occurred while processing your recording",
         variant: "destructive"
       });
-      
-      // Fallback to simulated transcription
-      const simulatedTranscription = "This is a simulated transcription as the OpenAI API call failed. Please check your API key or try again later.";
-      setTranscription(simulatedTranscription);
-      return simulatedTranscription;
+      setIsProcessing(false);
+      return "";
     }
   };
 
@@ -209,8 +200,26 @@ export const useRecording = () => {
     handleTogglePlayback,
     handleClearRecording,
     transcribeAudio,
-    setAudioUrl,
-    setTranscription,
-    setApiKey
+    setApiKey,
+    setIsProcessing,
+    setTranscription
   };
+};
+
+// Helper function to get supported mime type
+const getMimeType = () => {
+  const types = [
+    'audio/webm',
+    'audio/mp4',
+    'audio/ogg',
+    'audio/wav'
+  ];
+  
+  for (const type of types) {
+    if (MediaRecorder.isTypeSupported(type)) {
+      return type;
+    }
+  }
+  
+  return 'audio/webm'; // Fallback
 };
