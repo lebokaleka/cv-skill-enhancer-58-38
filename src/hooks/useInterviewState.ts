@@ -26,12 +26,16 @@ export const useInterviewState = () => {
   // API key handler
   const handleSetApiKey = (key: string) => {
     setOpenAIApiKey(key);
+    localStorage.setItem('openai_api_key', key);
     recording.setApiKey(key);
   };
 
   // Submit recording handler
   const handleSubmitRecording = async () => {
-    if (!recording.audioUrl) return;
+    if (!recording.audioUrl) {
+      console.error("No audio recording to submit");
+      return;
+    }
     
     try {
       // Set loading state
@@ -129,7 +133,7 @@ export const useInterviewState = () => {
       
     } catch (error) {
       console.error("Error processing recording:", error);
-      recording.setTranscription(null);
+      recording.setTranscription("An error occurred while processing your response. Please try again.");
     } finally {
       recording.setIsProcessing(false);
       answerAnalysis.setIsAnalyzing(false);

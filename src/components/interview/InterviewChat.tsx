@@ -1,8 +1,9 @@
 
 import { useRef, useEffect } from 'react';
 import { Progress } from "@/components/ui/progress";
-import { Mic, Play, RefreshCw, RotateCw } from 'lucide-react';
+import { Mic, Play, RefreshCw, RotateCw, Send } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 
 interface SentimentScore {
   confidence: number;
@@ -71,6 +72,20 @@ const InterviewChat = ({
            prevMsg.sentiment !== undefined;
   };
 
+  const handleSubmit = () => {
+    if (!audioUrl) {
+      toast({
+        title: "No Recording",
+        description: "Please record your answer first",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Call the submission function
+    submitRecording();
+  };
+
   return (
     <div>
       <div ref={chatContainerRef} className="h-64 overflow-y-auto space-y-4 mb-4 p-2">
@@ -113,7 +128,7 @@ const InterviewChat = ({
         )}
         
         {/* Show transcription preview */}
-        {transcription && !isAnalyzing && (
+        {transcription && !isAnalyzing && !isProcessing && (
           <div className="p-3 rounded-lg bg-primary/10 text-foreground mr-12">
             <div className="font-semibold mb-1 text-sm">Transcription Preview:</div>
             <div className="text-sm italic">{transcription}</div>
@@ -170,7 +185,11 @@ const InterviewChat = ({
           )}
           
           {audioUrl && !isProcessing && !isAnalyzing && (
-            <Button className="mt-2" onClick={submitRecording}>
+            <Button 
+              className="mt-2 flex items-center gap-2" 
+              onClick={handleSubmit}
+            >
+              <Send className="h-4 w-4" />
               Submit Response
             </Button>
           )}

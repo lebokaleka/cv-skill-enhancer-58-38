@@ -150,7 +150,8 @@ export const useRecording = () => {
   // Function to transcribe audio using OpenAI's Whisper API
   const transcribeAudio = async () => {
     if (!audioUrl) {
-      return "";
+      console.error("No audio URL to transcribe");
+      return null;
     }
     
     try {
@@ -171,9 +172,9 @@ export const useRecording = () => {
       
       const audioBase64 = await audioBase64Promise;
       
-      // Direct transcription is now handled by the edge function
-      // Just return the audio for now
+      // Set a temporary transcription message
       setTranscription("Processing your response...");
+      
       return audioBase64;
       
     } catch (error) {
@@ -183,8 +184,7 @@ export const useRecording = () => {
         description: "An error occurred while processing your recording",
         variant: "destructive"
       });
-      setIsProcessing(false);
-      return "";
+      return null;
     }
   };
 
