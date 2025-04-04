@@ -157,7 +157,8 @@ export const useInterviewState = () => {
     setCurrentStep('landing');
     setInterviewType(null);
     interviewQuestions.setCurrentQuestionIndex(0);
-    recording.setAudioUrl(null);
+    // Instead of using setAudioUrl which doesn't exist, we'll use handleClearRecording
+    recording.handleClearRecording();
     recording.setTranscription(null);
   };
 
