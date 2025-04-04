@@ -1,7 +1,8 @@
 
 import { useState } from 'react';
 import { Message, InterviewQuestion } from '@/types/interview';
-import { generateFeedback } from '@/utils/interviewUtils';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 
 export const useAnswerAnalysis = (
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
@@ -11,40 +12,69 @@ export const useAnswerAnalysis = (
 ) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  const analyzeSentiment = (response: string) => {
-    // In a real implementation, this would call an API to analyze the sentiment
-    const sentiment = {
-      confidence: Math.floor(Math.random() * 40) + 60,
-      clarity: Math.floor(Math.random() * 40) + 60,
-      relevance: Math.floor(Math.random() * 40) + 60,
-      overall: Math.floor(Math.random() * 40) + 60
-    };
+  const analyzeSentiment = async (response: string) => {
+    setIsAnalyzing(true);
     
-    const feedback = generateFeedback(sentiment);
-    
-    setMessages(prev => [...prev, {
-      role: 'ai',
-      content: feedback,
-      sentiment: sentiment
-    }]);
-    
-    setIsAnalyzing(false);
-    
-    if (currentQuestionIndex < questions.length - 1) {
-      setTimeout(() => {
-        setMessages(prev => [...prev, {
-          role: 'ai',
-          content: questions[currentQuestionIndex + 1].question
-        }]);
-      }, 1500);
-    } else {
-      setTimeout(() => {
-        setMessages(prev => [...prev, {
-          role: 'ai',
-          content: "Interview session complete! You've answered all the questions. You can now view your results."
-        }]);
-        set('results');
-      }, 1500);
+    try {
+      // Get the current question
+      const currentQuestion = questions[currentQuestionIndex];
+      
+      // Call our Supabase Edge Function to analyze the response
+      const { data, error } = await supabase.functions.invoke('analyze-interview', {
+        body: {
+          question: currentQuestion.question,
+          transcription: response
+        }
+      });
+      
+      if (error) {
+        console.error('Error analyzing response:', error);
+        toast({
+          title: 'Analysis Error',
+          description: 'There was an error analyzing your response. Please try again.',
+          variant: 'destructive'
+        });
+        setIsAnalyzing(false);
+        return;
+      }
+      
+      // Extract sentiment scores and feedback
+      const { sentiment, feedback } = data;
+      
+      // Add AI message with feedback and sentiment scores
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        content: feedback,
+        sentiment: sentiment
+      }]);
+      
+      setIsAnalyzing(false);
+      
+      // Move to next question or results
+      if (currentQuestionIndex < questions.length - 1) {
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            role: 'ai',
+            content: questions[currentQuestionIndex + 1].question
+          }]);
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            role: 'ai',
+            content: "Interview session complete! You've answered all the questions. You can now view your results."
+          }]);
+          set('results');
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Error in analyzeSentiment:', error);
+      toast({
+        title: 'Analysis Failed',
+        description: 'There was an error analyzing your response. Please try again.',
+        variant: 'destructive'
+      });
+      setIsAnalyzing(false);
     }
   };
 

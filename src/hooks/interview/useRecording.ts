@@ -1,6 +1,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { toast } from "@/hooks/use-toast";
+import { supabase } from '@/integrations/supabase/client';
 
 // Audio processing helper function
 const getMimeType = () => {
@@ -32,6 +33,7 @@ export const useRecording = () => {
   const recordingTimerRef = useRef<number | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Effects for recording timer
   useEffect(() => {
@@ -59,6 +61,28 @@ export const useRecording = () => {
       }
     };
   }, [isRecording]);
+
+  // Effect for audio playback
+  useEffect(() => {
+    if (isPlaying && audioUrl) {
+      audioRef.current = new Audio(audioUrl);
+      audioRef.current.play();
+      
+      audioRef.current.onended = () => {
+        setIsPlaying(false);
+      };
+    } else if (!isPlaying && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, [isPlaying, audioUrl]);
 
   // Handlers
   const handleStartRecording = async () => {
@@ -121,11 +145,6 @@ export const useRecording = () => {
 
   const handleTogglePlayback = () => {
     setIsPlaying(!isPlaying);
-    if (!isPlaying) {
-      setTimeout(() => {
-        setIsPlaying(false);
-      }, 3000);
-    }
   };
 
   const handleClearRecording = () => {
@@ -141,24 +160,36 @@ export const useRecording = () => {
     setIsProcessing(true);
     
     try {
-      // For demo purposes, we're simulating a transcription
-      // In a real implementation, we would send the audio to OpenAI's API
+      // Convert the audio blob to base64
+      const audioBlob = await fetch(audioUrl).then(r => r.blob());
+      const buffer = await audioBlob.arrayBuffer();
+      const base64Audio = btoa(
+        new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
       
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Use our Supabase Edge Function to transcribe the audio
+      const { data, error } = await supabase.functions.invoke('analyze-interview', {
+        body: { 
+          audio: base64Audio,
+          question: "Transcription only" // Dummy question for transcription-only mode
+        }
+      });
       
-      // This is where you would integrate with OpenAI API in a real implementation
-      const simulatedTranscription = "This is a simulated transcription of the recorded answer. In a real implementation, this would be the actual transcribed text from the OpenAI API.";
+      if (error) {
+        console.error("Error from edge function:", error);
+        throw new Error(error.message);
+      }
       
-      setTranscription(simulatedTranscription);
+      const result = data.transcription || "Sorry, I couldn't transcribe your response.";
+      setTranscription(result);
       setIsProcessing(false);
-      return simulatedTranscription;
+      return result;
     } catch (error) {
       console.error("Error transcribing audio:", error);
       setIsProcessing(false);
       toast({
         title: "Transcription failed",
-        description: "Unable to transcribe audio",
+        description: "Unable to transcribe audio: " + error.message,
         variant: "destructive"
       });
       throw error;
