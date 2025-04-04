@@ -11,6 +11,7 @@ export const useInterviewState = () => {
   const [interviewType, setInterviewType] = useState<InterviewType>(null);
   const [difficulty, setDifficulty] = useState('basic');
   const [questionCount, setQuestionCount] = useState(5); // Fixed to 5 for general interviews
+  const [openAIApiKey, setOpenAIApiKey] = useState<string | null>(localStorage.getItem('openai_api_key'));
 
   // Custom hooks
   const recording = useRecording();
@@ -21,6 +22,13 @@ export const useInterviewState = () => {
     interviewQuestions.questions,
     (step) => setCurrentStep(step as InterviewStep)
   );
+
+  // API key handler
+  const handleSetApiKey = (key: string) => {
+    setOpenAIApiKey(key);
+    recording.setApiKey(key);
+    // Also pass to answer analysis if needed
+  };
 
   // Submit recording handler
   const handleSubmitRecording = async () => {
@@ -36,11 +44,7 @@ export const useInterviewState = () => {
       }]);
       
       answerAnalysis.setIsAnalyzing(true);
-      
-      setTimeout(() => {
-        answerAnalysis.analyzeSentiment(userResponse);
-        interviewQuestions.setCurrentQuestionIndex(prev => prev + 1);
-      }, 2000);
+      answerAnalysis.analyzeSentiment(userResponse);
     } catch (error) {
       console.error("Error processing recording:", error);
     }
@@ -87,6 +91,7 @@ export const useInterviewState = () => {
     isAnalyzing: answerAnalysis.isAnalyzing,
     isProcessing: recording.isProcessing,
     transcription: recording.transcription,
+    openAIApiKey,
     
     // Handlers
     setDifficulty,
@@ -98,6 +103,7 @@ export const useInterviewState = () => {
     handleInterviewTypeSelect,
     handleStartInterview,
     handleStartNewInterview,
-    handleClearRecording: recording.handleClearRecording
+    handleClearRecording: recording.handleClearRecording,
+    setOpenAIApiKey: handleSetApiKey
   };
 };
