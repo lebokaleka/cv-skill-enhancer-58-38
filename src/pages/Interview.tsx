@@ -8,15 +8,9 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
 import { InterviewType } from '@/types/interview';
-import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import APIKeySettings from '@/components/settings/APIKeySettings';
-import { isOpenAIKeySet } from '@/utils/openaiUtils';
-import { toast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
 
 const Interview = () => {
-  const [showSettings, setShowSettings] = useState(false);
-  
   const {
     currentStep,
     interviewType,
@@ -53,18 +47,6 @@ const Interview = () => {
       setIsAuthModalOpen(true);
       return;
     }
-    
-    // Check if OpenAI API key is set before starting the interview
-    if (type && !isOpenAIKeySet()) {
-      toast({
-        title: "API Key Required",
-        description: "Please set your OpenAI API key in the settings before starting an interview",
-        variant: "destructive"
-      });
-      setShowSettings(true);
-      return;
-    }
-    
     handleInterviewTypeSelect(type, selectedDifficulty);
   };
   
@@ -73,18 +55,6 @@ const Interview = () => {
       setIsAuthModalOpen(true);
       return;
     }
-    
-    // Check if OpenAI API key is set before starting the interview
-    if (!isOpenAIKeySet()) {
-      toast({
-        title: "API Key Required",
-        description: "Please set your OpenAI API key in the settings before starting an interview",
-        variant: "destructive"
-      });
-      setShowSettings(true);
-      return;
-    }
-    
     handleStartInterview();
   };
 
@@ -93,22 +63,7 @@ const Interview = () => {
     switch (currentStep) {
       case 'landing':
         return (
-          <>
-            <div className="flex justify-end mb-6">
-              <button 
-                onClick={() => setShowSettings(!showSettings)}
-                className="text-sm text-primary underline"
-              >
-                {showSettings ? "Hide Settings" : "Settings"}
-              </button>
-            </div>
-            
-            {showSettings ? (
-              <APIKeySettings />
-            ) : (
-              <InterviewLanding onSelectInterviewType={handleInterviewTypeSelectWithAuth} />
-            )}
-          </>
+          <InterviewLanding onSelectInterviewType={handleInterviewTypeSelectWithAuth} />
         );
       case 'selection':
         return (
