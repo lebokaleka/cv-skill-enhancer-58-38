@@ -9,6 +9,18 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Default response to ensure consistent structure
+const defaultResponse = {
+  sentiment: {
+    confidence: 50,
+    clarity: 50,
+    relevance: 50,
+    jobFit: 50,
+    overall: 50
+  },
+  feedback: "Unable to analyze response. Please try again."
+};
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -16,17 +28,36 @@ serve(async (req) => {
   }
 
   try {
-    const { question, transcription, jobDetails } = await req.json();
+    const requestBody = await req.json();
+    const { question, transcription, jobDetails } = requestBody;
     
     if (!question || !transcription || !jobDetails) {
+      console.error("Missing required parameters:", { 
+        hasQuestion: !!question, 
+        hasTranscription: !!transcription, 
+        hasJobDetails: !!jobDetails 
+      });
+      
       return new Response(
-        JSON.stringify({ error: "Missing required parameters" }),
+        JSON.stringify({ 
+          error: "Missing required parameters",
+          ...defaultResponse
+        }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
     
+    // Validate job details with fallbacks
+    const safeJobDetails = {
+      jobTitle: jobDetails.jobTitle || 'Unknown position',
+      companyName: jobDetails.companyName || 'Unknown company',
+      jobDescription: jobDetails.jobDescription || '',
+      positionLevel: jobDetails.positionLevel || 'Entry level',
+      keySkills: jobDetails.keySkills || ''
+    };
+    
     // Get job-specific analysis
-    const analysis = await analyzeJobSpecificResponse(question, transcription, jobDetails);
+    const analysis = await analyzeJobSpecificResponse(question, transcription, safeJobDetails);
     
     return new Response(
       JSON.stringify(analysis),
@@ -37,15 +68,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         error: error.message,
-        // Provide default structure to prevent map errors
-        sentiment: {
-          confidence: 0,
-          clarity: 0,
-          relevance: 0,
-          jobFit: 0,
-          overall: 0
-        },
-        feedback: "Error analyzing response. Please try again."
+        ...defaultResponse
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -115,22 +138,37 @@ Format your analysis as JSON with the following structure:
     
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`OpenAI API error: ${errorText}`);
+      console.error(`OpenAI API error (${response.status}):`, errorText);
+      throw new Error(`OpenAI API error: ${response.status}`);
     }
     
     const data = await response.json();
-    const parsedContent = JSON.parse(data.choices[0].message.content);
     
-    // Ensure the data structure is complete to prevent map errors
+    // Make sure we have a content field
+    if (!data?.choices?.[0]?.message?.content) {
+      console.error("Invalid response format from OpenAI:", data);
+      throw new Error("Invalid response format from OpenAI");
+    }
+    
+    let parsedContent;
+    
+    try {
+      parsedContent = JSON.parse(data.choices[0].message.content);
+    } catch (parseError) {
+      console.error("Failed to parse OpenAI response:", data.choices[0].message.content);
+      throw new Error("Failed to parse OpenAI response");
+    }
+    
+    // Ensure the data structure is complete with fallbacks for any missing fields
     const result = {
       sentiment: {
-        confidence: parsedContent.sentiment?.confidence || 0,
-        clarity: parsedContent.sentiment?.clarity || 0,
-        relevance: parsedContent.sentiment?.relevance || 0,
-        jobFit: parsedContent.sentiment?.jobFit || 0,
-        overall: parsedContent.sentiment?.overall || 0
+        confidence: parsedContent?.sentiment?.confidence ?? 50,
+        clarity: parsedContent?.sentiment?.clarity ?? 50,
+        relevance: parsedContent?.sentiment?.relevance ?? 50,
+        jobFit: parsedContent?.sentiment?.jobFit ?? 50,
+        overall: parsedContent?.sentiment?.overall ?? 50
       },
-      feedback: parsedContent.feedback || "No feedback provided."
+      feedback: parsedContent?.feedback || "No feedback provided."
     };
     
     return result;
@@ -139,11 +177,11 @@ Format your analysis as JSON with the following structure:
     // Return a fallback structure instead of throwing
     return {
       sentiment: {
-        confidence: 0,
-        clarity: 0,
-        relevance: 0,
-        jobFit: 0,
-        overall: 0
+        confidence: 50,
+        clarity: 50,
+        relevance: 50,
+        jobFit: 50,
+        overall: 50
       },
       feedback: `There was an error analyzing your response: ${error.message}. Please try again.`
     };

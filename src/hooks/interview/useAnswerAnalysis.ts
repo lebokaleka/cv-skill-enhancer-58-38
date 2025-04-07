@@ -18,12 +18,17 @@ export const useAnswerAnalysis = (
     setIsAnalyzing(true);
     
     try {
-      // Get the current question
-      const currentQuestion = questions[currentQuestionIndex];
-      
-      if (!currentQuestion) {
-        throw new Error('Question not found');
+      // Validate questions array and currentQuestionIndex
+      if (!Array.isArray(questions) || questions.length === 0) {
+        throw new Error('No questions available');
       }
+      
+      // Get the current question with safe fallback
+      const currentQuestion = questions[currentQuestionIndex] || {
+        question: 'Unknown question',
+        type: 'Behavioral' as const,
+        keyPoints: []
+      };
       
       let analysisResult;
       
@@ -41,7 +46,10 @@ export const useAnswerAnalysis = (
           throw new Error(`Error from analyze-interview: ${error.message}`);
         }
         
-        analysisResult = data;
+        analysisResult = data || { 
+          sentiment: { confidence: 50, clarity: 50, relevance: 50, overall: 50 },
+          feedback: "Unable to analyze response properly."
+        };
       } else if (interviewType === 'narrowed' && jobFormData) {
         // Use the job-specific interview analysis function with job details
         const { data, error } = await supabase.functions.invoke('analyze-job-specific-interview', {
@@ -49,11 +57,11 @@ export const useAnswerAnalysis = (
             question: currentQuestion.question,
             transcription: response,
             jobDetails: {
-              jobTitle: jobFormData.jobTitle,
-              companyName: jobFormData.companyName,
-              jobDescription: jobFormData.jobDescription,
-              positionLevel: jobFormData.positionLevel,
-              keySkills: jobFormData.keySkills
+              jobTitle: jobFormData.jobTitle || 'Unknown position',
+              companyName: jobFormData.companyName || 'Unknown company',
+              jobDescription: jobFormData.jobDescription || '',
+              positionLevel: jobFormData.positionLevel || 'Entry level',
+              keySkills: jobFormData.keySkills || ''
             }
           }
         });
@@ -62,28 +70,32 @@ export const useAnswerAnalysis = (
           throw new Error(`Error from analyze-job-specific-interview: ${error.message}`);
         }
         
-        analysisResult = data;
+        // Ensure we have a valid result structure even if the response is unexpected
+        analysisResult = data || { 
+          sentiment: { confidence: 50, clarity: 50, relevance: 50, jobFit: 50, overall: 50 },
+          feedback: "Unable to analyze response properly."
+        };
       } else {
         throw new Error('Invalid interview type or missing job details');
       }
       
-      if (!analysisResult || !analysisResult.sentiment) {
-        throw new Error('Invalid analysis result format');
-      }
+      // Ensure sentiment data is always available with fallback values
+      const sentiment = analysisResult?.sentiment || {
+        confidence: 50,
+        clarity: 50,
+        relevance: 50,
+        jobFit: 50,
+        overall: 50
+      };
       
-      // Extract sentiment scores and feedback
-      const { sentiment, feedback } = analysisResult;
+      // Ensure feedback is always available
+      const feedback = analysisResult?.feedback || 'No feedback available.';
       
       // Add AI message with feedback and sentiment scores
       setMessages(prev => [...prev, {
         role: 'ai',
-        content: feedback || 'No feedback available.',
-        sentiment: sentiment || {
-          confidence: 0,
-          clarity: 0,
-          relevance: 0,
-          overall: 0
-        }
+        content: feedback,
+        sentiment: sentiment
       }]);
       
       setIsAnalyzing(false);
@@ -93,7 +105,7 @@ export const useAnswerAnalysis = (
         setTimeout(() => {
           setMessages(prev => [...prev, {
             role: 'ai',
-            content: questions[currentQuestionIndex + 1].question
+            content: questions[currentQuestionIndex + 1]?.question || "Next question"
           }]);
         }, 1500);
       } else {
@@ -121,18 +133,20 @@ export const useAnswerAnalysis = (
           confidence: 50,
           clarity: 50,
           relevance: 50,
+          jobFit: 50,
           overall: 50
         }
       }]);
       
       setIsAnalyzing(false);
       
-      // Still move to next question or results
-      if (currentQuestionIndex < questions.length - 1) {
+      // Still move to next question or results with safety checks
+      if (currentQuestionIndex < (questions?.length || 0) - 1) {
+        const nextQuestion = questions[currentQuestionIndex + 1]?.question || "Next question";
         setTimeout(() => {
           setMessages(prev => [...prev, {
             role: 'ai',
-            content: questions[currentQuestionIndex + 1].question
+            content: nextQuestion
           }]);
         }, 1500);
       } else {
