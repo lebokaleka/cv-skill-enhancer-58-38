@@ -9,18 +9,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Default response to ensure consistent structure
-const defaultResponse = {
-  sentiment: {
-    confidence: 50,
-    clarity: 50,
-    relevance: 50,
-    jobFit: 50,
-    overall: 50
-  },
-  feedback: "Unable to analyze response. Please try again."
-};
-
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -28,36 +16,17 @@ serve(async (req) => {
   }
 
   try {
-    const requestBody = await req.json();
-    const { question, transcription, jobDetails } = requestBody;
+    const { question, transcription, jobDetails } = await req.json();
     
     if (!question || !transcription || !jobDetails) {
-      console.error("Missing required parameters:", { 
-        hasQuestion: !!question, 
-        hasTranscription: !!transcription, 
-        hasJobDetails: !!jobDetails 
-      });
-      
       return new Response(
-        JSON.stringify({ 
-          error: "Missing required parameters",
-          ...defaultResponse
-        }),
+        JSON.stringify({ error: "Missing required parameters" }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
     
-    // Validate job details with fallbacks
-    const safeJobDetails = {
-      jobTitle: jobDetails.jobTitle || 'Unknown position',
-      companyName: jobDetails.companyName || 'Unknown company',
-      jobDescription: jobDetails.jobDescription || '',
-      positionLevel: jobDetails.positionLevel || 'Entry level',
-      keySkills: jobDetails.keySkills || ''
-    };
-    
     // Get job-specific analysis
-    const analysis = await analyzeJobSpecificResponse(question, transcription, safeJobDetails);
+    const analysis = await analyzeJobSpecificResponse(question, transcription, jobDetails);
     
     return new Response(
       JSON.stringify(analysis),
@@ -66,10 +35,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Error in job-specific interview analysis:", error);
     return new Response(
-      JSON.stringify({ 
-        error: error.message,
-        ...defaultResponse
-      }),
+      JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
@@ -138,52 +104,13 @@ Format your analysis as JSON with the following structure:
     
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`OpenAI API error (${response.status}):`, errorText);
-      throw new Error(`OpenAI API error: ${response.status}`);
+      throw new Error(`OpenAI API error: ${errorText}`);
     }
     
     const data = await response.json();
-    
-    // Make sure we have a content field
-    if (!data?.choices?.[0]?.message?.content) {
-      console.error("Invalid response format from OpenAI:", data);
-      throw new Error("Invalid response format from OpenAI");
-    }
-    
-    let parsedContent;
-    
-    try {
-      parsedContent = JSON.parse(data.choices[0].message.content);
-    } catch (parseError) {
-      console.error("Failed to parse OpenAI response:", data.choices[0].message.content);
-      throw new Error("Failed to parse OpenAI response");
-    }
-    
-    // Ensure the data structure is complete with fallbacks for any missing fields
-    const result = {
-      sentiment: {
-        confidence: parsedContent?.sentiment?.confidence ?? 50,
-        clarity: parsedContent?.sentiment?.clarity ?? 50,
-        relevance: parsedContent?.sentiment?.relevance ?? 50,
-        jobFit: parsedContent?.sentiment?.jobFit ?? 50,
-        overall: parsedContent?.sentiment?.overall ?? 50
-      },
-      feedback: parsedContent?.feedback || "No feedback provided."
-    };
-    
-    return result;
+    return JSON.parse(data.choices[0].message.content);
   } catch (error) {
     console.error("Job-specific analysis error:", error);
-    // Return a fallback structure instead of throwing
-    return {
-      sentiment: {
-        confidence: 50,
-        clarity: 50,
-        relevance: 50,
-        jobFit: 50,
-        overall: 50
-      },
-      feedback: `There was an error analyzing your response: ${error.message}. Please try again.`
-    };
+    throw new Error(`Failed to analyze response: ${error.message}`);
   }
 }

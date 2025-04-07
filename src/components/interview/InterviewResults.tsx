@@ -25,12 +25,8 @@ interface InterviewResultsProps {
 }
 
 const InterviewResults = ({ messages, questions, onStartNewInterview }: InterviewResultsProps) => {
-  // Ensure messages and questions are arrays with fallbacks
-  const safeMessages = Array.isArray(messages) ? messages : [];
-  const safeQuestions = Array.isArray(questions) ? questions : [];
-  
   const getAverageScore = () => {
-    const scoresArray = safeMessages
+    const scoresArray = messages
       .filter(msg => msg.sentiment)
       .map(msg => msg.sentiment ? msg.sentiment.overall : 0);
     
@@ -133,13 +129,13 @@ const InterviewResults = ({ messages, questions, onStartNewInterview }: Intervie
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {safeQuestions.map((question, index) => {
-              const userMsg = safeMessages.find(
-                (msg, i) => msg.role === 'user' && safeMessages[i - 1]?.content === question.question
+            {questions.map((question, index) => {
+              const userMsg = messages.find(
+                (msg, i) => msg.role === 'user' && messages[i - 1]?.content === question.question
               );
               
-              const aiMsg = userMsg ? safeMessages.find(
-                (msg, i) => msg.role === 'ai' && i > safeMessages.indexOf(userMsg) && msg.sentiment
+              const aiMsg = userMsg ? messages.find(
+                (msg, i) => msg.role === 'ai' && i > messages.indexOf(userMsg) && msg.sentiment
               ) : null;
               
               return (
@@ -150,7 +146,7 @@ const InterviewResults = ({ messages, questions, onStartNewInterview }: Intervie
                       <Badge 
                         variant="outline" 
                         className={`${
-                          (aiMsg.sentiment.overall > 75) 
+                          aiMsg.sentiment.overall > 75 
                             ? 'border-green-500 text-green-700' 
                             : 'border-orange-500 text-orange-700'
                         }`}
