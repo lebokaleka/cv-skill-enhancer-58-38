@@ -21,20 +21,30 @@ export const useAnswerAnalysis = (
       // Get the current question
       const currentQuestion = questions[currentQuestionIndex];
       
-      let data, error;
+      if (!currentQuestion) {
+        throw new Error('Question not found');
+      }
+      
+      let analysisResult;
       
       // Call the appropriate edge function based on interview type
       if (interviewType === 'general') {
         // Use the general interview analysis function
-        ({ data, error } = await supabase.functions.invoke('analyze-interview', {
+        const { data, error } = await supabase.functions.invoke('analyze-interview', {
           body: {
             question: currentQuestion.question,
             transcription: response
           }
-        }));
+        });
+        
+        if (error) {
+          throw new Error(`Error from analyze-interview: ${error.message}`);
+        }
+        
+        analysisResult = data;
       } else if (interviewType === 'narrowed' && jobFormData) {
         // Use the job-specific interview analysis function with job details
-        ({ data, error } = await supabase.functions.invoke('analyze-job-specific-interview', {
+        const { data, error } = await supabase.functions.invoke('analyze-job-specific-interview', {
           body: {
             question: currentQuestion.question,
             transcription: response,
@@ -46,30 +56,34 @@ export const useAnswerAnalysis = (
               keySkills: jobFormData.keySkills
             }
           }
-        }));
+        });
+        
+        if (error) {
+          throw new Error(`Error from analyze-job-specific-interview: ${error.message}`);
+        }
+        
+        analysisResult = data;
       } else {
         throw new Error('Invalid interview type or missing job details');
       }
       
-      if (error) {
-        console.error('Error analyzing response:', error);
-        toast({
-          title: 'Analysis Error',
-          description: 'There was an error analyzing your response. Please try again.',
-          variant: 'destructive'
-        });
-        setIsAnalyzing(false);
-        return;
+      if (!analysisResult || !analysisResult.sentiment) {
+        throw new Error('Invalid analysis result format');
       }
       
       // Extract sentiment scores and feedback
-      const { sentiment, feedback } = data;
+      const { sentiment, feedback } = analysisResult;
       
       // Add AI message with feedback and sentiment scores
       setMessages(prev => [...prev, {
         role: 'ai',
-        content: feedback,
-        sentiment: sentiment
+        content: feedback || 'No feedback available.',
+        sentiment: sentiment || {
+          confidence: 0,
+          clarity: 0,
+          relevance: 0,
+          overall: 0
+        }
       }]);
       
       setIsAnalyzing(false);
@@ -98,7 +112,38 @@ export const useAnswerAnalysis = (
         description: 'There was an error analyzing your response. Please try again.',
         variant: 'destructive'
       });
+      
+      // Add a fallback message to avoid blocking the interview flow
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        content: "I couldn't properly analyze your response, but let's continue with the interview.",
+        sentiment: {
+          confidence: 50,
+          clarity: 50,
+          relevance: 50,
+          overall: 50
+        }
+      }]);
+      
       setIsAnalyzing(false);
+      
+      // Still move to next question or results
+      if (currentQuestionIndex < questions.length - 1) {
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            role: 'ai',
+            content: questions[currentQuestionIndex + 1].question
+          }]);
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            role: 'ai',
+            content: "Interview session complete! You've answered all the questions. You can now view your results."
+          }]);
+          set('results');
+        }, 1500);
+      }
     }
   };
 

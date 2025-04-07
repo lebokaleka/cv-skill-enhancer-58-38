@@ -35,7 +35,18 @@ serve(async (req) => {
   } catch (error) {
     console.error("Error in job-specific interview analysis:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        // Provide default structure to prevent map errors
+        sentiment: {
+          confidence: 0,
+          clarity: 0,
+          relevance: 0,
+          jobFit: 0,
+          overall: 0
+        },
+        feedback: "Error analyzing response. Please try again."
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
@@ -108,9 +119,33 @@ Format your analysis as JSON with the following structure:
     }
     
     const data = await response.json();
-    return JSON.parse(data.choices[0].message.content);
+    const parsedContent = JSON.parse(data.choices[0].message.content);
+    
+    // Ensure the data structure is complete to prevent map errors
+    const result = {
+      sentiment: {
+        confidence: parsedContent.sentiment?.confidence || 0,
+        clarity: parsedContent.sentiment?.clarity || 0,
+        relevance: parsedContent.sentiment?.relevance || 0,
+        jobFit: parsedContent.sentiment?.jobFit || 0,
+        overall: parsedContent.sentiment?.overall || 0
+      },
+      feedback: parsedContent.feedback || "No feedback provided."
+    };
+    
+    return result;
   } catch (error) {
     console.error("Job-specific analysis error:", error);
-    throw new Error(`Failed to analyze response: ${error.message}`);
+    // Return a fallback structure instead of throwing
+    return {
+      sentiment: {
+        confidence: 0,
+        clarity: 0,
+        relevance: 0,
+        jobFit: 0,
+        overall: 0
+      },
+      feedback: `There was an error analyzing your response: ${error.message}. Please try again.`
+    };
   }
 }
