@@ -20,6 +20,7 @@ export interface SentimentScore {
   clarity: number;
   relevance: number;
   overall: number;
+  jobFit?: number;
 }
 
 export interface Message {

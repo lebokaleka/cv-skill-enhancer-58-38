@@ -9,13 +9,15 @@ import CompanyNameField from '../form-fields/CompanyNameField';
 import JobDescriptionField from '../form-fields/JobDescriptionField';
 import PositionLevelField from '../form-fields/PositionLevelField';
 import KeySkillsField from '../form-fields/KeySkillsField';
+import { FormData } from "@/types/interview";
 
 interface JobSpecificCardProps {
   isActive: boolean;
   showError: boolean;
-  formMethods: UseFormReturn<any>;
+  formMethods: UseFormReturn<FormData>;
   onSelectTab: () => void;
   onStartInterview: () => void;
+  onJobFormSubmit: (data: FormData) => void;
 }
 
 const JobSpecificCard = ({
@@ -23,9 +25,15 @@ const JobSpecificCard = ({
   showError,
   formMethods,
   onSelectTab,
-  onStartInterview
+  onStartInterview,
+  onJobFormSubmit
 }: JobSpecificCardProps) => {
-  const { control } = formMethods;
+  const { control, handleSubmit } = formMethods;
+
+  // Form validation and submission
+  const validateAndStartInterview = () => {
+    handleSubmit(onJobFormSubmit)();
+  };
 
   return (
     <Card 
@@ -43,7 +51,7 @@ const JobSpecificCard = ({
       </CardHeader>
       <CardContent className="flex-1">
         <FormProvider {...formMethods}>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit(onJobFormSubmit)}>
             <JobTitleField control={control} />
             <CompanyNameField control={control} />
             <JobDescriptionField control={control} />
@@ -64,7 +72,7 @@ const JobSpecificCard = ({
       <CardFooter className="mt-auto">
         <Button 
           className="w-full rounded-full"
-          onClick={onStartInterview}
+          onClick={validateAndStartInterview}
         >
           Start Job-Specific Interview
         </Button>

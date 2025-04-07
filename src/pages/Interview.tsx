@@ -1,14 +1,13 @@
 
 import { useInterviewState } from '@/hooks/useInterviewState';
 import InterviewLanding from '@/components/interview/InterviewLanding';
-import InterviewSelection from '@/components/interview/InterviewSelection';
 import InterviewSession from '@/components/interview/InterviewSession';
 import InterviewResults from '@/components/interview/InterviewResults';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
-import { InterviewType } from '@/types/interview';
-import { useEffect } from 'react';
+import { InterviewType, FormData } from '@/types/interview';
+import { Loader2 } from 'lucide-react';
 
 const Interview = () => {
   const {
@@ -26,6 +25,9 @@ const Interview = () => {
     isAnalyzing,
     isProcessing,
     transcription,
+    isLoading,
+    jobForm,
+    jobFormData,
     
     setDifficulty,
     setQuestionCount,
@@ -36,7 +38,8 @@ const Interview = () => {
     handleInterviewTypeSelect,
     handleStartInterview,
     handleStartNewInterview,
-    handleClearRecording
+    handleClearRecording,
+    handleJobFormSubmit
   } = useInterviewState();
   
   const { isAuthenticated, setIsAuthModalOpen } = useAuth();
@@ -48,6 +51,14 @@ const Interview = () => {
       return;
     }
     handleInterviewTypeSelect(type, selectedDifficulty);
+  };
+  
+  const handleJobFormSubmitWithAuth = (data: FormData) => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    handleJobFormSubmit(data);
   };
   
   const handleStartInterviewWithAuth = () => {
@@ -63,21 +74,26 @@ const Interview = () => {
     switch (currentStep) {
       case 'landing':
         return (
-          <InterviewLanding onSelectInterviewType={handleInterviewTypeSelectWithAuth} />
-        );
-      case 'selection':
-        return (
-          <InterviewSelection
-            interviewType={interviewType}
-            difficulty={difficulty}
-            questionCount={questionCount}
-            onSetDifficulty={setDifficulty}
-            onSetQuestionCount={setQuestionCount}
-            onStartInterview={handleStartInterviewWithAuth}
-            onBack={() => handleInterviewTypeSelect(null)}
+          <InterviewLanding 
+            onSelectInterviewType={handleInterviewTypeSelectWithAuth}
+            onJobFormSubmit={handleJobFormSubmitWithAuth}
+            jobForm={jobForm}
           />
         );
       case 'interview':
+        // Show loading state while questions are being generated
+        if (isLoading) {
+          return (
+            <div className="flex flex-col items-center justify-center h-64">
+              <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
+              <p className="text-lg">Generating your interview questions...</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                This may take a moment as we create personalized questions for your interview.
+              </p>
+            </div>
+          );
+        }
+        
         return (
           <InterviewSession
             interviewType={interviewType}
@@ -96,7 +112,7 @@ const Interview = () => {
             togglePlayback={handleTogglePlayback}
             submitRecording={handleSubmitRecording}
             clearRecording={handleClearRecording}
-            onGoBack={() => handleInterviewTypeSelect(null)}
+            onGoBack={() => handleStartNewInterview()}
           />
         );
       case 'results':

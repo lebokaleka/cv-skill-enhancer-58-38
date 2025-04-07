@@ -4,30 +4,24 @@ import { useForm } from "react-hook-form";
 import InterviewHeader from './landing/InterviewHeader';
 import GeneralInterviewCard from './landing/GeneralInterviewCard';
 import JobSpecificCard from './landing/JobSpecificCard';
-import { InterviewType } from '@/types/interview';
+import { InterviewType, FormData } from '@/types/interview';
 
 interface InterviewLandingProps {
   onSelectInterviewType: (type: InterviewType, selectedDifficulty?: string) => void;
+  onJobFormSubmit: (data: FormData) => void;
+  jobForm: any;
 }
 
 const InterviewLanding = ({
-  onSelectInterviewType
+  onSelectInterviewType,
+  onJobFormSubmit,
+  jobForm
 }: InterviewLandingProps) => {
   const [difficulty, setDifficulty] = useState<string | null>(null);
   const [questionCount, setQuestionCount] = useState<number | null>(10); // Default to 10 questions
   const [showGeneralError, setShowGeneralError] = useState(false);
   const [showJobError, setShowJobError] = useState(false);
   const [activeTab, setActiveTab] = useState<'general' | 'job'>('general');
-  
-  const jobForm = useForm({
-    defaultValues: {
-      jobTitle: '',
-      companyName: '',
-      jobDescription: '',
-      positionLevel: '',
-      keySkills: ''
-    }
-  });
 
   const handleGeneralInterviewStart = () => {
     if (difficulty) {
@@ -50,7 +44,7 @@ const InterviewLanding = ({
       formValues.keySkills.trim() !== '';
     
     if (isValid) {
-      onSelectInterviewType('narrowed');
+      // Will be handled by the form submit handler in JobSpecificCard
       setShowJobError(false);
     } else {
       setShowJobError(true);
@@ -83,6 +77,7 @@ const InterviewLanding = ({
           formMethods={jobForm}
           onSelectTab={() => setActiveTab('job')}
           onStartInterview={handleJobSpecificInterviewStart}
+          onJobFormSubmit={onJobFormSubmit}
         />
       </div>
     </div>

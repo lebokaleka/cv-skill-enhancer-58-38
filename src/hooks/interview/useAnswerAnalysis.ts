@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Message, InterviewQuestion } from '@/types/interview';
+import { Message, InterviewQuestion, FormData, InterviewType } from '@/types/interview';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -8,7 +8,9 @@ export const useAnswerAnalysis = (
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
   currentQuestionIndex: number,
   questions: InterviewQuestion[],
-  set: (step: 'results' | 'interview') => void
+  set: (step: 'results' | 'interview') => void,
+  interviewType: InterviewType,
+  jobFormData?: FormData
 ) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -19,13 +21,35 @@ export const useAnswerAnalysis = (
       // Get the current question
       const currentQuestion = questions[currentQuestionIndex];
       
-      // Call our Supabase Edge Function to analyze the response
-      const { data, error } = await supabase.functions.invoke('analyze-interview', {
-        body: {
-          question: currentQuestion.question,
-          transcription: response
-        }
-      });
+      let data, error;
+      
+      // Call the appropriate edge function based on interview type
+      if (interviewType === 'general') {
+        // Use the general interview analysis function
+        ({ data, error } = await supabase.functions.invoke('analyze-interview', {
+          body: {
+            question: currentQuestion.question,
+            transcription: response
+          }
+        }));
+      } else if (interviewType === 'narrowed' && jobFormData) {
+        // Use the job-specific interview analysis function with job details
+        ({ data, error } = await supabase.functions.invoke('analyze-job-specific-interview', {
+          body: {
+            question: currentQuestion.question,
+            transcription: response,
+            jobDetails: {
+              jobTitle: jobFormData.jobTitle,
+              companyName: jobFormData.companyName,
+              jobDescription: jobFormData.jobDescription,
+              positionLevel: jobFormData.positionLevel,
+              keySkills: jobFormData.keySkills
+            }
+          }
+        }));
+      } else {
+        throw new Error('Invalid interview type or missing job details');
+      }
       
       if (error) {
         console.error('Error analyzing response:', error);

@@ -1,9 +1,10 @@
 
 import { useState } from 'react';
-import { InterviewStep, InterviewType, InterviewQuestion } from '@/types/interview';
+import { InterviewStep, InterviewType, InterviewQuestion, FormData } from '@/types/interview';
 import { useRecording } from './interview/useRecording';
 import { useInterviewQuestions } from './interview/useInterviewQuestions';
 import { useAnswerAnalysis } from './interview/useAnswerAnalysis';
+import { useForm } from "react-hook-form";
 
 export const useInterviewState = () => {
   // Core interview state
@@ -11,15 +12,36 @@ export const useInterviewState = () => {
   const [interviewType, setInterviewType] = useState<InterviewType>(null);
   const [difficulty, setDifficulty] = useState('basic');
   const [questionCount, setQuestionCount] = useState(5); // Fixed to 5 for general interviews
+  const [jobFormData, setJobFormData] = useState<FormData | undefined>(undefined);
+
+  // Job form methods
+  const jobForm = useForm<FormData>({
+    defaultValues: {
+      jobTitle: '',
+      companyName: '',
+      jobDescription: '',
+      positionLevel: '',
+      keySkills: ''
+    }
+  });
 
   // Custom hooks
   const recording = useRecording();
-  const interviewQuestions = useInterviewQuestions(currentStep, interviewType, difficulty, questionCount);
+  const interviewQuestions = useInterviewQuestions(
+    currentStep, 
+    interviewType, 
+    difficulty, 
+    questionCount,
+    jobFormData
+  );
+  
   const answerAnalysis = useAnswerAnalysis(
     interviewQuestions.setMessages,
     interviewQuestions.currentQuestionIndex,
     interviewQuestions.questions,
-    (step) => setCurrentStep(step as InterviewStep)
+    (step) => setCurrentStep(step as InterviewStep),
+    interviewType,
+    jobFormData
   );
 
   // Submit recording handler
@@ -59,13 +81,26 @@ export const useInterviewState = () => {
     }
   };
 
-  const handleStartInterview = () => {
+  const handleJobFormSubmit = (data: FormData) => {
+    setJobFormData(data);
+    setInterviewType('narrowed');
     setCurrentStep('interview');
+  };
+
+  const handleStartInterview = () => {
+    if (interviewType === 'narrowed') {
+      const formData = jobForm.getValues();
+      handleJobFormSubmit(formData);
+    } else {
+      setCurrentStep('interview');
+    }
   };
 
   const handleStartNewInterview = () => {
     setCurrentStep('landing');
     setInterviewType(null);
+    setJobFormData(undefined);
+    jobForm.reset();
     interviewQuestions.setCurrentQuestionIndex(0);
     recording.setAudioUrl(null);
     recording.setTranscription(null);
@@ -87,6 +122,9 @@ export const useInterviewState = () => {
     isAnalyzing: answerAnalysis.isAnalyzing,
     isProcessing: recording.isProcessing,
     transcription: recording.transcription,
+    isLoading: interviewQuestions.isLoading,
+    jobForm,
+    jobFormData,
     
     // Handlers
     setDifficulty,
@@ -98,6 +136,7 @@ export const useInterviewState = () => {
     handleInterviewTypeSelect,
     handleStartInterview,
     handleStartNewInterview,
-    handleClearRecording: recording.handleClearRecording
+    handleClearRecording: recording.handleClearRecording,
+    handleJobFormSubmit
   };
 };
