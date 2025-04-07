@@ -16,33 +16,24 @@ serve(async (req) => {
   }
 
   try {
-    const { audio, question, transcription, jobDetails } = await req.json();
+    const { question, transcription, jobDetails } = await req.json();
     
-    // If transcription is already provided, use it directly
-    let userResponse = transcription;
-    
-    // If audio is provided but no transcription, transcribe it
-    if (audio && !transcription) {
-      userResponse = await transcribeAudio(audio);
-    }
-    
-    if (!userResponse || !question) {
+    if (!question || !transcription || !jobDetails) {
       return new Response(
-        JSON.stringify({ error: "Missing required fields: transcription/audio or question" }),
+        JSON.stringify({ error: "Missing required parameters" }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
-
-    // Analyze the response based on the question and job details
-    const analysis = await analyzeResponse(question, userResponse, jobDetails);
+    
+    // Get job-specific analysis
+    const analysis = await analyzeJobSpecificResponse(question, transcription, jobDetails);
     
     return new Response(
       JSON.stringify(analysis),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error("Error in analyze-job-specific-interview function:", error);
-    
+    console.error("Error in job-specific interview analysis:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -50,71 +41,51 @@ serve(async (req) => {
   }
 });
 
-async function transcribeAudio(base64Audio) {
-  try {
-    // Convert base64 to binary
-    const binaryAudio = Uint8Array.from(atob(base64Audio), c => c.charCodeAt(0));
-    
-    // Create file blob
-    const blob = new Blob([binaryAudio], { type: 'audio/webm' });
-    
-    // Prepare form data for OpenAI API
-    const formData = new FormData();
-    formData.append('file', blob, 'audio.webm');
-    formData.append('model', 'whisper-1');
-    
-    // Call OpenAI's Whisper API
-    const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-      },
-      body: formData,
-    });
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`OpenAI Whisper API error: ${errorText}`);
-    }
-    
-    const result = await response.json();
-    return result.text;
-  } catch (error) {
-    console.error("Transcription error:", error);
-    throw new Error(`Failed to transcribe audio: ${error.message}`);
+async function analyzeJobSpecificResponse(
+  question: string,
+  transcription: string,
+  jobDetails: {
+    jobTitle: string;
+    companyName: string;
+    jobDescription: string;
+    positionLevel: string;
+    keySkills: string;
   }
-}
-
-async function analyzeResponse(question, response, jobDetails) {
+) {
   try {
-    // Define the system prompt for job-specific analysis
-    const systemPrompt = `You are an expert interview coach providing feedback on job-specific interview responses.
-Analyze the following response to the given job interview question. 
+    const { jobTitle, companyName, jobDescription, positionLevel, keySkills } = jobDetails;
+    
+    const systemPrompt = `You are an expert interview coach analyzing a candidate's response to a job-specific interview question.
+    
+You will analyze the response based on several factors:
+1. Confidence (How confidently was the answer delivered? Consider tone, language, and clarity of expression)
+2. Clarity (How clear and well-structured was the answer?)
+3. Relevance (How relevant was the answer to the question asked?)
+4. Job Fit (How well does the answer demonstrate qualifications for the specific job?)
+5. Overall impression (Overall quality of the response)
 
-Consider these job details:
-- Job Title: ${jobDetails.jobTitle}
-- Company: ${jobDetails.companyName}
-- Position Level: ${jobDetails.positionLevel}
-- Key Skills Required: ${jobDetails.keySkills}
-- Job Description Summary: ${jobDetails.jobDescription.substring(0, 250)}...
+Provide scores for each factor on a scale of 0-100.
 
-Provide detailed feedback on:
+Also provide specific, actionable feedback on:
+- Strengths of the response
+- Areas for improvement
+- How the answer could better demonstrate qualifications for the ${jobTitle} role at ${companyName}
+- How well the answer addressed the job requirements and key skills: ${keySkills}
+- Whether the answer was appropriate for a ${positionLevel} position
 
-1. Relevance: How well did the response address the specific job requirements and skills?
-2. Confidence: How confidently did the candidate express themselves?
-3. Clarity: How clear and concise was the response?
-4. Job Fit: How well did the candidate demonstrate they are a good fit for this role?
+Format your analysis as JSON with the following structure:
+{
+  "sentiment": {
+    "confidence": number,
+    "clarity": number,
+    "relevance": number,
+    "jobFit": number,
+    "overall": number
+  },
+  "feedback": "detailed feedback with strengths, areas for improvement, and job-specific advice"
+}`;
 
-For each category, provide:
-- A score between 0-100
-- Specific strengths in the response
-- Concrete suggestions for improvement
-- What was missing from the answer (if anything)
-
-Provide an overall score and summary feedback that helps the candidate improve specifically for this job position. Your analysis should be constructive and actionable.`;
-
-    // Call OpenAI's API
-    const response2 = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${openAIApiKey}`,
@@ -124,48 +95,22 @@ Provide an overall score and summary feedback that helps the candidate improve s
         model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: `Question: ${question}\n\nCandidate's Response: ${response}` }
+          { role: 'user', content: `Question: ${question}\n\nCandidate's Response: ${transcription}\n\nPlease analyze this response in the context of a ${jobTitle} position at ${companyName}.` }
         ],
         temperature: 0.7,
+        response_format: { type: "json_object" }
       }),
     });
     
-    if (!response2.ok) {
-      const errorText = await response2.text();
-      throw new Error(`OpenAI Analysis API error: ${errorText}`);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`OpenAI API error: ${errorText}`);
     }
     
-    const result = await response2.json();
-    const analysisText = result.choices[0].message.content;
-    
-    // Parse the analysis text to extract scores
-    const relevanceMatch = analysisText.match(/Relevance:.*?(\d+)/s);
-    const confidenceMatch = analysisText.match(/Confidence:.*?(\d+)/s);
-    const clarityMatch = analysisText.match(/Clarity:.*?(\d+)/s);
-    const jobFitMatch = analysisText.match(/Job Fit:.*?(\d+)/s);
-    const overallMatch = analysisText.match(/[Oo]verall [Ss]core:.*?(\d+)/s);
-    
-    // Extract scores or use defaults
-    const relevance = relevanceMatch ? parseInt(relevanceMatch[1]) : 70;
-    const confidence = confidenceMatch ? parseInt(confidenceMatch[1]) : 70;
-    const clarity = clarityMatch ? parseInt(clarityMatch[1]) : 70;
-    const jobFit = jobFitMatch ? parseInt(jobFitMatch[1]) : 70;
-    const overall = overallMatch ? parseInt(overallMatch[1]) : 70;
-    
-    // Return structured analysis result
-    return {
-      sentiment: {
-        relevance,
-        confidence,
-        clarity,
-        jobFit,
-        overall
-      },
-      feedback: analysisText,
-      transcription: response
-    };
+    const data = await response.json();
+    return JSON.parse(data.choices[0].message.content);
   } catch (error) {
-    console.error("Analysis error:", error);
+    console.error("Job-specific analysis error:", error);
     throw new Error(`Failed to analyze response: ${error.message}`);
   }
 }

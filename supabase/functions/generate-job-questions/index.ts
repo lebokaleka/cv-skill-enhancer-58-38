@@ -50,12 +50,18 @@ async function generateJobQuestions(
   keySkills: string
 ) {
   try {
-    const systemPrompt = `You are an expert interviewer generating job-specific interview questions.
+    const systemPrompt = `You are an expert interviewer generating personalized job-specific interview questions.
     
 Based on the provided job details, generate 5 targeted interview questions that would be appropriate for an interview for this position.
 
+IMPORTANT: Each question MUST explicitly reference specific details from the job information provided, such as:
+- Directly mentioning the company name (e.g., "Why are you interested in working at [Company Name]?")
+- Explicitly referencing the job title (e.g., "What qualifies you for this [Job Title] position?")
+- Including elements from the job description or required skills
+- Tailoring questions to the specific position level
+
 For each question, provide:
-1. The question text
+1. The question text (with specific job details incorporated)
 2. The question type (select from: Behavioral, Self-Assessment, Company Knowledge, Motivational, Problem-Solving, Teamwork, Time Management, Communication, Persuasive, Work Ethic, Personality Fit, Career Goals, Project Management, Conflict Resolution, Leadership, Customer Service, Analytical Thinking, Productivity & Efficiency, Decision-Making, Leadership & Change Management, Strategic Thinking, Change Management, Process Improvement, Conflict Resolution & Cross-Functional Leadership, Resilience & Problem-Solving, Strategic Risk Assessment, People Management, Leadership & HR Management, Leadership & Team Building, Mentorship & Leadership, Financial Decision-Making, Business Performance Analysis, Project & Stakeholder Management, Data-Driven Decision-Making, Executive Communication, Negotiation & Business Development, Public Speaking & Brand Representation, Cross-Cultural & Remote Leadership, Adaptability, Leadership Potential, Self-Improvement)
 3. A list of 3-5 key points the candidate should address in their answer
 
@@ -77,7 +83,7 @@ Job Description: ${jobDescription}
 Position Level: ${positionLevel}
 Key Skills: ${keySkills}
 
-Generate 5 interview questions for this position.` }
+Generate 5 personalized interview questions for this specific position that directly incorporate the job details.` }
         ],
         temperature: 0.7,
         response_format: { type: "json_object" }
